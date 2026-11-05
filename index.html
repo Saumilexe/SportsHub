@@ -60,6 +60,37 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .empty,.loading,.error{padding:24px;text-align:center;color:var(--mute);grid-column:1/-1}
 .error{color:#ffb4ad}
 .error button{margin-left:8px;background:var(--accent);color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer}
+.scorecard-toggle{margin-top:12px;padding:7px 10px;background:var(--panel2);color:var(--ink);border:1px solid var(--line);border-radius:7px;font:600 13px Barlow,sans-serif;cursor:pointer}
+.scorecard-toggle:hover{border-color:var(--accent)}
+.scorecard{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.scorecard-state{color:var(--mute);font-size:13px}
+.scorecard-state button{margin-left:8px}
+.scorecard-innings{margin-top:14px}
+.scorecard-innings h4{margin:0 0 7px;font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase}
+.scorecard-table-wrap{overflow-x:auto}
+.scorecard-table{width:100%;border-collapse:collapse;font-size:12px;white-space:nowrap}
+.scorecard-table th,.scorecard-table td{padding:6px 7px;border-bottom:1px solid var(--line);text-align:right}
+.scorecard-table th:first-child,.scorecard-table td:first-child{text-align:left}
+.scorecard-table thead th{color:var(--mute);font-size:10px;letter-spacing:.06em;text-transform:uppercase}
+.scorecard-table tbody tr:last-child td{border-bottom:0}
+.scorecard-total{display:flex;justify-content:space-between;gap:12px;margin-top:8px;color:var(--mute);font-size:12px}
+.scorecard-total b{color:var(--ink)}
+.scorecard-note{margin-top:10px;color:var(--mute);font-size:12px}
+.scorecard-overlay{position:fixed;inset:0;display:none;place-items:center;padding:16px;background:rgba(5,6,8,.78);backdrop-filter:blur(7px);z-index:30}
+.scorecard-overlay.open{display:grid;animation:rise .25s ease both}
+.scorecard-modal{position:relative;width:min(760px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:16px;padding:24px}
+.scorecard-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding-right:44px}
+.scorecard-modal-head .code{font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+.scorecard-modal-head h2{margin:2px 0 0;font:italic 800 clamp(28px,6vw,40px)/.95 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.scorecard-modal .pclose{position:absolute}
+.scorecard-modal .scorecard{margin-top:14px;padding-top:14px}
+.scorecard-modal .scorecard-toggle{margin-top:14px}
+.scorecard-modal .scorecard-innings{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.scorecard-modal .scorecard-innings+.scorecard-innings{margin-top:10px}
+.scorecard-modal .scorecard-innings h4{margin-bottom:8px;color:var(--accent)}
+.scorecard-modal .scorecard-table{font-size:13px}
+.scorecard-modal .scorecard-table th,.scorecard-modal .scorecard-table td{padding:8px}
+.scorecard-modal .scorecard-state{padding:18px 0}
 
 /* Stats */
 .seg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -458,6 +489,13 @@ header{justify-content:space-between}
 
 </template>
 <div class="pov" id="pov" role="dialog" aria-modal="true" aria-labelledby="pname"><div class="pcard" id="pcard"></div></div>
+<div class="scorecard-overlay" id="scorecard-overlay" role="dialog" aria-modal="true" aria-labelledby="scorecard-title" aria-hidden="true">
+  <div class="scorecard-modal">
+    <button class="pclose" type="button" aria-label="Close scorecard" data-scorecard-close>×</button>
+    <div class="scorecard-modal-head"><div><div class="code" id="scorecard-league"></div><h2 id="scorecard-title">Live scorecard</h2></div></div>
+    <div class="scorecard" id="scorecard-content" aria-live="polite"></div>
+  </div>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -477,6 +515,86 @@ function scoreText(team){
   const lines = (team.linescores || []).map(l => l.displayValue || l.value).filter(Boolean);
   return lines.length ? lines.join(" & ") : "—";
 }
+function cricketSeriesId(event){
+  if (/^\d+$/.test(String(event._leagueId || ""))) return String(event._leagueId);
+  for (const link of event.links || []) {
+    const match = String(link.href || "").match(/\/series\/(\d+)\/game\/\d+/);
+    if (match) return match[1];
+  }
+  return "";
+}
+function scorecardTable(rows, type){
+  if (!rows.length) return "";
+  if (type === "Partnerships") {
+    const cols = [["partnershipWicketName","Wkt"],["player1Name","Batter"],["player1Runs","R"],["player2Name","Batter"],["player2Runs","R"],["partnershipRuns","Partnership"],["partnershipOvers","Overs"],["fowType","Dismissal"]];
+    return `<div class="scorecard-table-wrap"><table class="scorecard-table"><thead><tr>${cols.map(([,label]) => `<th>${label}</th>`).join("")}</tr></thead><tbody>${rows.map(row => `<tr>${cols.map(([key]) => `<td>${esc(row[key] || "—")}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+  }
+  const batting = type === "Batting";
+  const cols = batting
+    ? [["playerName","Batter"],["dismissal","Dismissal"],["runs","R"],["ballsFaced","B"],["fours","4s"],["sixes","6s"],["strikeRate","SR"]]
+    : [["playerName","Bowler"],["overs","O"],["maidens","M"],["conceded","R"],["wickets","W"],["economyRate","Econ"]];
+  return `<div class="scorecard-table-wrap"><table class="scorecard-table"><thead><tr>${cols.map(([,label]) => `<th>${label}</th>`).join("")}</tr></thead><tbody>${rows.map(player => {
+    const strikeRate = Number(player.ballsFaced) > 0 ? (Number(player.runs) * 100 / Number(player.ballsFaced)).toFixed(1) : "—";
+    return `<tr>${cols.map(([key]) => `<td>${esc(key === "strikeRate" ? strikeRate : player[key] || (key === "dismissal" ? "—" : ""))}</td>`).join("")}</tr>`;
+  }).join("")}</tbody></table></div>`;
+}
+function scorecardHTML(data){
+  const cards = data.matchcards || [];
+  const innings = new Map();
+  for (const card of cards) {
+    if (!["Batting", "Bowling", "Partnerships"].includes(card.headline)) continue;
+    const key = `${card.inningsNumber || ""}-${card.teamName || ""}`;
+    if (!innings.has(key)) innings.set(key, {team: card.teamName || "Innings", cards: []});
+    innings.get(key).cards.push(card);
+  }
+  const inningsHTML = [...innings.values()].map(innings => `<section class="scorecard-innings">
+    <h4>${esc(innings.team)}</h4>${innings.cards.map(card => {
+      const batting = card.headline === "Batting" || card.typeID === "11";
+      const label = card.headline || (batting ? "Batting" : "Bowling");
+      return `<div><div class="scorecard-note">${esc(label)}${card.total ? ` · ${esc(card.total)}` : ""}</div>
+        ${scorecardTable(card.playerDetails || [], label)}
+        ${batting && card.extras ? `<div class="scorecard-total"><span>Extras</span><b>${esc(card.extras)}</b></div>` : ""}</div>`;
+    }).join("")}</section>`).join("");
+  const header = data.header || {}, competition = header.competitions?.[0] || {};
+  const status = competition.status?.type?.detail || competition.status?.type?.shortDetail || competition.status?.summary || "";
+  const teams = (competition.competitors || []).map(team => `<div class="scorecard-total"><span>${esc(team.team?.displayName || team.team?.name || "Team")}</span><b>${esc(scoreText(team))}</b></div>`).join("");
+  const venue = data.gameInfo?.venue?.fullName || competition.venue?.fullName || "";
+  const officials = (data.gameInfo?.officials || []).map(person => person.displayName).filter(Boolean);
+  return `${status ? `<div class="scorecard-note">${esc(status)}</div>` : ""}${teams}${venue ? `<div class="scorecard-note">${esc(venue)}</div>` : ""}
+    ${inningsHTML || `<div class="scorecard-state">The provider hasn’t published the detailed innings scorecard yet.</div>`}
+    ${officials.length ? `<div class="scorecard-note">Officials: ${esc(officials.join(", "))}</div>` : ""}`;
+}
+let scorecardRequest = 0, scorecardFocus = null;
+async function loadMatchScorecard(matchId, seriesId, buttonText){
+  const request = ++scorecardRequest;
+  const content = $("scorecard-content");
+  content.innerHTML = `<div class="scorecard-state">Loading full scorecard…</div>`;
+  try {
+    const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/cricket/${encodeURIComponent(seriesId)}/summary?event=${encodeURIComponent(matchId)}`);
+    if (!res.ok) throw new Error(`Scorecard returned HTTP ${res.status}`);
+    const data = await res.json();
+    if (request !== scorecardRequest) return;
+    content.innerHTML = `${scorecardHTML(data)}<button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
+  } catch (error) {
+    if (request !== scorecardRequest) return;
+    content.innerHTML = `<div class="scorecard-state">${esc(error.message)} <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">Retry</button></div>`;
+  }
+}
+function openMatchScorecard(button){
+  scorecardFocus = button;
+  $("scorecard-title").textContent = button.dataset.matchName || "Live match";
+  $("scorecard-league").textContent = button.dataset.league || "Cricket";
+  $("scorecard-overlay").classList.add("open");
+  $("scorecard-overlay").setAttribute("aria-hidden", "false");
+  $("scorecard-overlay").querySelector("[data-scorecard-close]").focus();
+  loadMatchScorecard(button.dataset.scorecard, button.dataset.series, "Refresh scorecard");
+}
+function closeMatchScorecard(){
+  ++scorecardRequest;
+  $("scorecard-overlay").classList.remove("open");
+  $("scorecard-overlay").setAttribute("aria-hidden", "true");
+  if (scorecardFocus?.isConnected) scorecardFocus.focus();
+}
 function card(event, sport){
   const comp = event.competitions?.[0] || {};
   const status = comp.status || event.status || {};
@@ -488,11 +606,13 @@ function card(event, sport){
   const extra = [sport === "cricket" ? (status.summary || type.detail) : "", comp.venue?.fullName, comp.series?.summary]
     .filter((v, i, a) => v && a.indexOf(v) === i && v !== label).join(" · ");
   const link = (event.links || []).find(l => (l.rel || []).some(r => r === "summary" || r === "event" || r === "desktop"));
+  const seriesId = sport === "cricket" && live ? cricketSeriesId(event) : "";
   return `<article class="score-card${live ? " is-live" : ""}">
     <div class="match-top"><span>${esc(event._league || "")}</span><span class="status${live ? " live" : ""}">${live ? "● " : ""}${esc(label)}</span></div>
     <div class="teams">${rows || `<div class="team"><span class="team-name">${esc(event.name || "Match")}</span><span class="score">—</span></div>`}</div>
     ${extra ? `<div class="details">${esc(extra)}</div>` : ""}
     ${link?.href ? `<div class="details"><a href="${esc(link.href)}" target="_blank" rel="noopener">Match page ↗</a></div>` : ""}
+    ${seriesId ? `<button class="scorecard-toggle" type="button" data-scorecard-open data-scorecard="${esc(event.id)}" data-series="${esc(seriesId)}" data-match-name="${esc(event.name || "Live match")}" data-league="${esc(event._league || "Cricket")}">View full scorecard</button>` : ""}
   </article>`;
 }
 function render(sport, events){
@@ -528,7 +648,7 @@ async function loadLive(sport, quiet){
       if (!res.ok) throw new Error(`Score feed returned HTTP ${res.status}`);
       data = await res.json();
     } catch (proxyError) {
-      if (sport !== "football") throw proxyError;
+      if (sport !== "football" && sport !== "cricket") throw proxyError;
       data = await loadEspnScoreboard(sport);
       if (!data) throw proxyError;
     }
@@ -543,11 +663,29 @@ async function loadLive(sport, quiet){
 }
 
 async function loadEspnScoreboard(sport){
-  const leagues = sport === "football"
-    ? [["eng.1","Premier League"],["uefa.champions","Champions League"],["uefa.europa","Europa League"],["esp.1","La Liga"],["ger.1","Bundesliga"],["ita.1","Serie A"],["fra.1","Ligue 1"],["usa.1","MLS"]]
-    : [["cricket","Cricket"]];
+  if (sport === "cricket") {
+    const domestic = /ranji|irani|duleep|vijay hazare|syed mushtaq|deodhar|buchi babu|indian premier|\bipl\b|\bwpl\b|women'?s premier league|big bash|\bbbl\b|\bwbbl\b|sheffield|marsh (one-day )?cup|county|vitality|t20 blast|royal london|the hundred|metro bank|\bpsl\b|pakistan super league|quaid|national t20|president'?s|\bbpl\b|bangladesh premier|\bcpl\b|caribbean premier|\bsa20\b|\bilt20\b|\bmlc\b|major league cricket|lanka premier|super smash|plunket|ford trophy|csa (4|t20|one)|momentum|super50|super 50|pro50|nepal premier|global t20|abu dhabi t10|\bt10\b|\bu-?19\b|under[- ]?19|emerging|franchise|inter-?provincial|\b(india|australia|england|pakistan|sri lanka|bangladesh|south africa|new zealand|west indies|afghanistan|ireland|zimbabwe) a\b/i;
+    const header = await fetch("https://site.api.espn.com/apis/personalized/v2/scoreboard/header?sport=cricket&region=in&tz=UTC");
+    if (!header.ok) throw new Error(`Cricket series feed returned HTTP ${header.status}`);
+    const listing = await header.json();
+    const leagues = (listing.sports || []).flatMap(s => s.leagues || [])
+      .filter(l => /^\d+$/.test(String(l.id || "")) && !domestic.test(`${l.name || ""} ${l.shortName || ""}`))
+      .slice(0, 15);
+    const results = await Promise.allSettled(leagues.map(async league => {
+      const res = await fetch(`https://site.api.espn.com/apis/site/v2/sports/cricket/${encodeURIComponent(league.id)}/scoreboard?limit=100`);
+      if (!res.ok) throw new Error(`Cricket feed returned HTTP ${res.status}`);
+      const data = await res.json();
+      return (data.events || [])
+        .filter(event => !domestic.test(`${event.name || ""} ${event.shortName || ""} ${event.competitions?.[0]?.series?.summary || ""}`))
+        .map(event => ({...event, _league: data.leagues?.[0]?.name || league.name || "International cricket", _leagueId: league.id}));
+    }));
+    if (results.every(result => result.status === "rejected")) throw new Error("Unable to load Cricket scores from ESPN");
+    const events = results.flatMap(result => result.status === "fulfilled" ? result.value : []);
+    return {events: [...new Map(events.map(event => [event.id, event])).values()].sort((a, b) => new Date(a.date) - new Date(b.date))};
+  }
+  const leagues = [["eng.1","Premier League"],["uefa.champions","Champions League"],["uefa.europa","Europa League"],["esp.1","La Liga"],["ger.1","Bundesliga"],["ita.1","Serie A"],["fra.1","Ligue 1"],["usa.1","MLS"]];
   const results = await Promise.allSettled(leagues.map(async ([league, name]) => {
-    const url = `https://site.api.espn.com/apis/site/v2/sports/${sport === "football" ? "soccer" : "cricket"}/${league}/scoreboard`;
+    const url = `https://site.api.espn.com/apis/site/v2/sports/soccer/${league}/scoreboard`;
     const res = await fetch(url);
     if (!res.ok) throw new Error(`${name} feed returned HTTP ${res.status}`);
     const data = await res.json();
@@ -739,7 +877,15 @@ $("tabs").addEventListener("keydown", e => {
 });
 document.addEventListener("click", e => {
   const r = e.target.closest("[data-refresh]"); if (r) loadLive(r.dataset.refresh, false);
+  const scorecardOpen = e.target.closest("[data-scorecard-open]");
+  if (scorecardOpen) openMatchScorecard(scorecardOpen);
+  const scorecardRefresh = e.target.closest("[data-scorecard-refresh]");
+  if (scorecardRefresh) loadMatchScorecard(scorecardRefresh.dataset.scorecard, scorecardRefresh.dataset.series, "Refresh scorecard");
+  if (e.target.closest("[data-scorecard-close]") || e.target === $("scorecard-overlay")) closeMatchScorecard();
   const f = e.target.closest("[data-format]"); if (f) { format = f.dataset.format; renderStats(); }
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && $("scorecard-overlay").classList.contains("open")) closeMatchScorecard();
 });
 setInterval(() => { if (!document.hidden && LIVE.includes(current)) loadLive(current, true); }, REFRESH_MS);
 document.addEventListener("visibilitychange", () => { if (!document.hidden && LIVE.includes(current)) loadLive(current, true); });
