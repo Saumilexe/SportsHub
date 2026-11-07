@@ -51,6 +51,52 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .score-card{padding:14px 16px;animation:rise .35s ease both}
 .score-card.is-live{border-color:#2a6b4f;box-shadow:0 0 0 1px #2a6b4f55}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}}
+.score-card.is-cricket{--cricket-accent:#46c78b;position:relative;overflow:hidden;padding:16px 18px;background:linear-gradient(145deg,#17221f 0%,var(--panel) 48%,#171a20 100%);border-color:#294239;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.score-card.is-cricket::before{position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,transparent,var(--cricket-accent),transparent);content:"";opacity:.8}
+.score-card.is-cricket:hover{transform:translateY(-3px);border-color:#3e7259;box-shadow:0 12px 28px #0005}
+.score-card.is-cricket.is-live{border-color:#347252;box-shadow:0 0 0 1px #2a6b4f55,0 8px 28px #42d39212}
+.score-card.is-cricket.is-live::after{position:absolute;top:0;left:-60%;width:45%;height:1px;background:linear-gradient(90deg,transparent,#8fffc6,transparent);content:"";animation:cricket-sweep 5s ease-in-out infinite}
+@keyframes cricket-sweep{0%,55%{transform:translateX(0);opacity:0}65%{opacity:.9}100%{transform:translateX(360%);opacity:0}}
+.score-card.is-cricket .match-top{align-items:center;margin-bottom:14px}
+.score-card.is-cricket .match-top>span:first-child{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.score-card.is-cricket .status{padding:4px 8px;border:1px solid var(--line);border-radius:99px;background:#0a0b0e88;font-size:11px}
+.score-card.is-cricket .status.live{border-color:#347252;background:#173624;color:#9af0bd}
+.score-live-dot{display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#61e69e;vertical-align:1px;box-shadow:0 0 9px #61e69eaa;animation:score-pulse 1.8s ease-in-out infinite}
+@keyframes score-pulse{50%{opacity:.45;transform:scale(.78)}}
+.score-card.is-cricket .teams{gap:0}
+.score-card.is-cricket .team{min-height:48px;padding:8px 0;border-top:1px solid #ffffff0d}
+.score-card.is-cricket .team-name{gap:9px}
+.score-card.is-cricket .team-name .tn{font-size:15px}
+.score-card.is-cricket .score{font-size:29px;font-variant-numeric:tabular-nums;letter-spacing:.015em}
+.score-card.is-cricket .details{margin-top:11px;padding-top:9px;border-top:1px solid #ffffff0d;line-height:1.5}
+.score-card.is-cricket .scorecard-toggle{background:#1b3328;border-color:#315c45;color:#b8f3ce;transition:background .2s ease,transform .2s ease}
+.score-card.is-cricket .scorecard-toggle:hover{transform:translateY(-1px);background:#244633;border-color:#4b9b6b}
+.score-card.is-cricket .favorite-toggle{width:28px;height:28px;border-color:#ffffff12;background:#ffffff08}
+.score-card.is-cricket .favorite-toggle[aria-pressed=true]{background:#e4b84b22}
+.cricket-filter{margin:20px 0 14px;padding:14px 16px;background:linear-gradient(125deg,#17211c,var(--panel) 64%);border:1px solid #294239;border-radius:14px;box-shadow:0 10px 28px #0002}
+.cricket-selected{margin-top:16px}
+.cricket-selected[hidden]{display:none}
+.cricket-selected .group-title{margin-top:0}
+.cricket-filter-summary{display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;list-style:none}
+.cricket-filter-summary::-webkit-details-marker{display:none}
+.cricket-filter-title{display:grid;gap:2px}
+.cricket-filter-title strong{font:700 18px "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase}
+.cricket-filter-kicker{color:#8ed6a8;font-size:10px;font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+.cricket-filter-selection{display:flex;align-items:center;gap:10px;color:#b8f3ce;font-size:12px;font-weight:600}
+.cricket-filter-selection::after{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;content:"";transform:rotate(45deg) translateY(-2px);transition:transform .2s ease}
+.cricket-filter[open] .cricket-filter-selection::after{transform:rotate(225deg) translate(-2px,-1px)}
+.cricket-filter-help{margin:8px 0 12px;color:var(--mute);font-size:12px}
+.cricket-filter summary:focus-visible{outline:3px solid #70d99a;outline-offset:4px;border-radius:4px}
+.team-filters{display:flex;gap:8px;flex-wrap:wrap}
+.team-filter{display:inline-flex;align-items:center;gap:7px;min-height:36px;padding:5px 10px;border:1px solid #ffffff12;border-radius:99px;background:#0e1311;color:#c5cec8;font:600 13px Barlow,sans-serif;cursor:pointer;transition:background .18s ease,border-color .18s ease,color .18s ease,transform .18s ease}
+.team-filter:hover{transform:translateY(-1px);border-color:#4b9b6b;color:#effff3}
+.team-filter[aria-pressed=true]{border-color:#4b9b6b;background:#205238;color:#d4f7df;box-shadow:inset 0 0 0 1px #46c78b22}
+.team-filter .flag{width:20px;height:20px}
+.team-filter:focus-visible{outline:3px solid #70d99a;outline-offset:2px}
+.team-filter:disabled{opacity:.55;cursor:default}
+.group-title.is-cricket{display:flex;align-items:center;gap:9px;color:#c2d5ca}
+.group-title.is-cricket::before{width:4px;height:20px;border-radius:9px;background:#46c78b;content:""}
+.group-title.is-cricket .count{color:#7f9b89;font-size:16px}
 .match-top{display:flex;justify-content:space-between;gap:12px;color:var(--mute);font-size:12px;margin-bottom:12px}
 .status{color:var(--ink);font-weight:600;text-align:right}
 .status.live{color:var(--green)}
@@ -58,6 +104,10 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .team{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:baseline;font-weight:600}
 .team-name{display:flex;align-items:center;gap:10px;min-width:0}
 .team-name .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.favorite-toggle{display:inline-grid;place-items:center;flex:none;width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--mute);font:700 17px/1 Barlow,sans-serif;cursor:pointer}
+.favorite-toggle:hover,.favorite-toggle[aria-pressed=true]{border-color:#e4b84b;color:#ffd45e}
+.favorite-toggle[aria-pressed=true]{background:#e4b84b22}
+.favorite-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .flag{flex:none;width:26px;height:26px;border-radius:50%;overflow:hidden;display:inline-grid;place-items:center;background:var(--panel2);border:1px solid var(--line);vertical-align:middle}
 .flag img{display:block;width:100%;height:100%;object-fit:cover}
 .flag-fb{font:700 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--ink)}
@@ -88,19 +138,51 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .scorecard-note{margin-top:10px;color:var(--mute);font-size:12px}
 .scorecard-overlay{position:fixed;inset:0;display:none;place-items:center;padding:16px;background:rgba(5,6,8,.78);backdrop-filter:blur(7px);z-index:30}
 .scorecard-overlay.open{display:grid;animation:rise .25s ease both}
-.scorecard-modal{position:relative;width:min(760px,100%);max-height:calc(100vh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:16px;padding:24px}
+.scorecard-modal{--accent:#46c78b;--green:#42d392;position:relative;width:min(820px,100%);max-height:calc(100vh - 32px);overflow:auto;background:radial-gradient(ellipse at 92% 0%,#1d493326,transparent 35%),linear-gradient(145deg,#151b19,var(--panel) 40%);border:1px solid #335044;border-top:5px solid var(--accent);border-radius:18px;padding:24px;box-shadow:0 24px 80px #0009;animation:scorecard-enter .32s cubic-bezier(.2,.8,.2,1) both}
+@keyframes scorecard-enter{from{opacity:0;transform:translateY(12px) scale(.985)}}
 .scorecard-modal-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding-right:44px}
 .scorecard-modal-head .code{font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
 .scorecard-modal-head h2{margin:2px 0 0;font:italic 800 clamp(28px,6vw,40px)/.95 "Barlow Condensed",sans-serif;text-transform:uppercase}
 .scorecard-modal .pclose{position:absolute}
-.scorecard-modal .scorecard{margin-top:14px;padding-top:14px}
-.scorecard-modal .scorecard-toggle{margin-top:14px}
-.scorecard-modal .scorecard-innings{padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.scorecard-modal .scorecard{margin-top:18px;padding-top:0;border-top:0}
+.scorecard-modal .seg{gap:6px;padding:4px;background:#0e1311;border:1px solid #26372e;border-radius:10px}
+.scorecard-modal .seg button{border-radius:7px}
+.scorecard-modal .seg button[aria-pressed=true]{background:#205238;border-color:#3b815a;color:#c5f7d6}
+.scorecard-modal .scorecard-toggle{margin-top:14px;border-color:#315c45;background:#1b3328;color:#b8f3ce}
+.scorecard-modal .scorecard-innings{margin-top:14px;padding:14px;background:linear-gradient(145deg,#19211e,#171a20);border:1px solid #2c3932;border-radius:12px;animation:rise .3s ease both}
 .scorecard-modal .scorecard-innings+.scorecard-innings{margin-top:10px}
-.scorecard-modal .scorecard-innings h4{margin-bottom:8px;color:var(--accent)}
+.scorecard-modal .scorecard-innings h4{margin-bottom:10px;color:#a9edc1;font-size:19px}
+.scorecard-modal .scorecard-note{margin:10px 0 6px;color:#94a99c;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .scorecard-modal .scorecard-table{font-size:13px}
-.scorecard-modal .scorecard-table th,.scorecard-modal .scorecard-table td{padding:8px}
+.scorecard-modal .scorecard-table th,.scorecard-modal .scorecard-table td{padding:9px 10px}
+.scorecard-modal .scorecard-table thead th{position:sticky;top:0;background:#1b2420;color:#9eb4a5}
+.scorecard-modal .scorecard-table tbody tr:nth-child(even){background:#ffffff04}
+.scorecard-modal .scorecard-table tbody tr:hover{background:#46c78b0d}
+.scorecard-modal .scorecard-table td:first-child{color:#f0f4f1;font-weight:600}
+.scorecard-modal .scorecard-table td:nth-child(2){color:#9ba79e}
+.scorecard-modal .scorecard-total{margin-top:8px;padding:8px 10px;border-top:1px solid #ffffff0d;font-size:13px}
+.scorecard-modal .scorecard-total b{font:700 18px "Barlow Condensed",sans-serif;color:#c7f5d6}
 .scorecard-modal .scorecard-state{padding:18px 0}
+.sc-match-summary{margin-top:16px;padding:13px 14px;background:linear-gradient(110deg,#193a2b,#18201c 70%);border:1px solid #315c45;border-radius:12px}
+.sc-match-state{margin:0 0 10px;color:#a8e7be;font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase}
+.sc-team-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sc-team-score{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;padding:9px 10px;background:#0b100dcc;border:1px solid #ffffff0d;border-radius:9px}
+.sc-team-score>span{display:flex;align-items:center;gap:8px;min-width:0;color:#c2cec6;font-size:13px}
+.sc-team-score>span>span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-team-score .flag{width:24px;height:24px}
+.sc-team-score>b{flex:none;color:#f4fff7;font:700 22px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.sc-match-venue{margin-top:9px;color:#93a69a;font-size:12px}
+.scorecard-modal .sc-inn{background:linear-gradient(145deg,#19211e,#171a20);border-color:#2c3932}
+.scorecard-modal .sc-inn h4{color:#a9edc1}
+.scorecard-modal .sc-stats{gap:7px;margin:10px 0 12px}
+.scorecard-modal .sc-stats span{padding:5px 8px;background:#0c1210;border:1px solid #ffffff0b;border-radius:99px;color:#9db0a3}
+.scorecard-modal .sc-stats b{color:#e5f5e9}
+.scorecard-modal .sc-feed .h{padding-bottom:7px;border-bottom:1px solid #315c45;color:#a9edc1}
+.scorecard-modal .sc-feed .eo{background:#1b2921;border-color:#2c4936}
+.scorecard-modal .sc-ball{border-color:#ffffff0d}
+.scorecard-modal .sc-ball .o{color:#9db0a3}
+.scorecard-modal .sc-chart .bar{fill:#4fc985}
+.scorecard-modal .sc-chart .wk{fill:#ff766e}
 
 /* Stats */
 .seg{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
@@ -142,7 +224,9 @@ li:first-child .val{color:var(--accent)}
 .footnote,footer{margin-top:22px;color:var(--mute);font-size:12px}
 .footnote a,footer a{color:inherit}
 @media(max-width:640px){.wrap{padding-top:24px}.live-note{font-size:12px}.section-head{align-items:flex-start;flex-direction:column}.score-grid,.stat-grid{grid-template-columns:1fr}.tabs button{font-size:15px;padding:10px 2px}}
+@media(max-width:560px){.scorecard-overlay{padding:8px}.scorecard-modal{max-height:calc(100vh - 16px);padding:18px 14px;border-radius:14px}.sc-team-scores{grid-template-columns:1fr}.scorecard-modal .scorecard-innings{padding:10px}.scorecard-modal .scorecard-table th,.scorecard-modal .scorecard-table td{padding:8px 7px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){.score-card.is-cricket.is-live::after,.score-live-dot{animation:none!important}}
 
 /* ---- Sport themes + animated scenes ---- */
 @property --glow-a{syntax:"<color>";inherits:true;initial-value:rgba(225,6,0,.2)}
@@ -330,6 +414,45 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
  .f1x-tl{padding-left:26px}.f1x-tl::before{left:9px}.f1x-race .node{left:-23px}
  .f1x-race summary{grid-template-columns:34px minmax(0,1fr) auto;gap:10px;padding:12px}
  .f1x-race .flag{font-size:24px}.f1x-race .nm b{font-size:21px}.f1x-tile{min-width:48px}.f1x-tile b{font-size:25px}.f1x-ss{padding:0 12px 12px}}
+/* ---- Cricket: over by over + commentary ---- */
+.sc-tabs{margin:14px 0 4px}
+.sc-tabs button{padding:7px 12px;font-size:13px}
+.sc-inn{margin-top:14px;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.sc-inn h4{display:flex;align-items:center;gap:9px;margin:0 0 8px;font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase;color:var(--accent)}
+.sc-inn h4 .flag{width:22px;height:22px}
+.sc-stats{display:flex;flex-wrap:wrap;gap:4px 16px;margin-bottom:8px;color:var(--mute);font-size:12px}
+.sc-stats b{color:var(--ink);font-weight:700}
+.sc-chart{display:block;width:100%;height:auto;max-height:96px;margin:2px 0 10px}
+.sc-chart .bar{fill:var(--accent);opacity:.85}
+.sc-chart .base{stroke:var(--line);stroke-width:1}
+.sc-chart .wk{fill:#ff5a4f}
+.sc-overs,.sc-feed{list-style:none;margin:0;padding:0}
+.sc-overs li{display:grid;grid-template-columns:34px minmax(0,1fr) 34px 58px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.sc-overs .n{font:800 20px "Barlow Condensed",sans-serif;color:var(--mute);text-align:center}
+.sc-overs .b{min-width:0}
+.sc-overs .b small{display:block;margin-top:4px;color:var(--mute);font-size:12px}
+.sc-overs .r{font:800 22px "Barlow Condensed",sans-serif;text-align:right}
+.sc-overs .c{text-align:right;color:var(--mute);font-size:12px;font-variant-numeric:tabular-nums}
+.sc-overs li.partial .n::after{content:"*";color:var(--accent)}
+.bc{display:inline-grid;place-items:center;min-width:25px;height:25px;margin:0 4px 3px 0;padding:0 5px;border-radius:99px;background:var(--bg);border:1px solid var(--line);font:700 13px/1 Barlow,sans-serif;color:var(--ink)}
+.bc.dot{color:var(--mute)}
+.bc.b4{background:#1f6f43;border-color:#2fa064}
+.bc.b6{background:#5a35b0;border-color:#8a63e6}
+.bc.w{background:#b3261e;border-color:#ff5a4f;color:#fff}
+.bc.ex{background:#6b5311;border-color:#c9a227;color:#ffe08a;font-size:11px}
+.sc-feed .h{margin:16px 0 4px;font:700 15px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sc-feed .eo{margin:10px 0 4px;padding:7px 10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--mute)}
+.sc-feed .eo b{color:var(--ink)}
+.sc-ball{display:grid;grid-template-columns:42px 30px minmax(0,1fr);gap:8px;align-items:start;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.sc-ball .o{font:700 14px "Barlow Condensed",sans-serif;color:var(--mute);padding-top:3px;font-variant-numeric:tabular-nums}
+.sc-ball.is-w .t{color:#ff9a92;font-weight:600}
+.sc-ball.is-6 .t,.sc-ball.is-4 .t{font-weight:600}
+.sc-more{display:block;margin:10px auto 0}
+.sc-diag{margin-top:10px;font-size:12px}
+.sc-diag summary{cursor:pointer;color:var(--mute)}
+.sc-diag ul{margin:6px 0 0;padding-left:18px;color:var(--mute)}
+.sc-diag a{color:var(--accent)}
+@media(max-width:640px){.sc-overs li{grid-template-columns:28px minmax(0,1fr) 30px 50px;gap:6px}.sc-ball{grid-template-columns:36px 28px minmax(0,1fr);gap:6px}}
 @media(prefers-reduced-motion:reduce){.scene *{animation:none!important}.sixtxt,.goaltxt,.gotxt{opacity:0}.fcar{opacity:1}.fc1{transform:translate(400px,0)}.fc2{transform:translate(150px,0)}.fc3,.fc4{display:none}}
 </style>
 </head>
@@ -355,10 +478,21 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
   <section id="p-cricket" role="tabpanel" aria-labelledby="t-cricket" hidden>
     <div class="scene" data-scene="cricket" aria-hidden="true"></div>
     <div class="section-head">
-      <div><h2>Cricket</h2><p>International matches happening now</p></div>
+      <div><h2>Cricket</h2><p>International live and upcoming match scoreboards</p></div>
       <button class="refresh" type="button" data-refresh="cricket">Refresh</button>
     </div>
     <div id="cricket-list" aria-live="polite"><div class="score-grid"><div class="loading">Loading live cricket…</div></div></div>
+    <details class="cricket-filter">
+      <summary class="cricket-filter-summary">
+        <span class="cricket-filter-title"><span class="cricket-filter-kicker">More scoreboards</span><strong>Choose teams</strong></span>
+        <span class="cricket-filter-selection" id="cricket-filter-selection" aria-live="polite">All teams</span>
+      </summary>
+      <p class="cricket-filter-help">Select one or more teams to show their match scoreboards below.</p>
+      <div id="cricket-team-filters" class="team-filters" role="group" aria-label="Filter cricket scoreboards by team">
+        <button type="button" class="team-filter" data-team-filter="all" aria-pressed="true">All teams</button>
+      </div>
+    </details>
+    <section id="cricket-selected" class="cricket-selected" aria-live="polite" hidden></section>
   </section>
 
   <section id="p-football" role="tabpanel" aria-labelledby="t-football" hidden>
@@ -425,8 +559,15 @@ button:focus-visible,select:focus-visible,.row:focus-visible{outline:3px solid v
 .row.click{cursor:pointer}
 .row.click:hover{transform:translateX(6px);border-color:var(--tc);background:var(--panel2)}
 .row:hover::before{width:9px}.row:hover::after{transform:translateX(120%)}
+.row-wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.row-wrap .favorite-toggle{position:relative;z-index:1}
+.fav-heading{margin:12px 0 0;color:var(--red);font:700 16px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.favorite-toggle{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--mute);font:700 18px/1 Barlow,sans-serif;cursor:pointer}
+.favorite-toggle:hover,.favorite-toggle[aria-pressed=true]{border-color:#e4b84b;color:#ffd45e}
+.favorite-toggle[aria-pressed=true]{background:#e4b84b22}
+.fav-heading{margin:8px 0 0;color:var(--red);font:700 16px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
 .pos{font:800 34px "Barlow Condensed",sans-serif;text-align:center;color:var(--mute)}
-.row:nth-child(-n+3) .pos{color:var(--ink)}
+.row[data-rank="1"] .pos,.row[data-rank="2"] .pos,.row[data-rank="3"] .pos{color:var(--ink)}
 .name{font:700 24px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.01em}
 .name small{font:400 14px Barlow,sans-serif;color:var(--mute);margin-left:8px}
 .track{height:5px;background:#232731;margin-top:8px;border-radius:3px;overflow:hidden}
@@ -520,7 +661,27 @@ const TABS = ["f1", "cricket", "football", "stats"];
 const LIVE = ["cricket", "football"];
 const REFRESH_MS = 60000;
 let current = "f1";
-const loaded = {}, loadIds = {cricket: 0, football: 0};
+const loaded = {}, loadIds = {cricket: 0, football: 0}, liveEvents = {};
+const FAVORITES_KEY = "gridline-sports-favorites";
+let sportsFavorites = new Set();
+try {
+  const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]");
+  if (Array.isArray(saved)) sportsFavorites = new Set(saved.filter(value => typeof value === "string"));
+} catch (error) {
+  console.warn("Couldn’t load saved sports favorites.", error);
+}
+window.isSportsFavorite = (type, id) => sportsFavorites.has(`${type}:${id}`);
+window.toggleSportsFavorite = (type, id, name) => {
+  const key = `${type}:${id}`;
+  if (sportsFavorites.has(key)) sportsFavorites.delete(key);
+  else sportsFavorites.add(key);
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...sportsFavorites]));
+  } catch (error) {
+    console.warn("Couldn’t save sports favorites.", error);
+  }
+  window.dispatchEvent(new CustomEvent("sportsfavoriteschange", {detail: {type, id, name}}));
+};
 
 /* ---------- Live matches ---------- */
 const stateOf = e => ((e.competitions?.[0]?.status || e.status || {}).type || {}).state || "";
@@ -567,6 +728,11 @@ function scoreText(team){
   const lines = (team.linescores || []).map(l => l.displayValue || l.value).filter(Boolean);
   return lines.length ? lines.join(" & ") : "—";
 }
+function favoriteButton(type, id, name){
+  if (!id) return "";
+  const isFavorite = window.isSportsFavorite(type, id);
+  return `<button type="button" class="favorite-toggle" data-favorite data-favorite-type="${esc(type)}" data-favorite-id="${esc(id)}" data-favorite-name="${esc(name)}" aria-label="${isFavorite ? "Remove" : "Add"} ${esc(name)} ${type === "cricket-team" ? "team" : "favorite"}" aria-pressed="${isFavorite}" title="${isFavorite ? "Remove favorite" : "Add favorite"}">${isFavorite ? "★" : "☆"}</button>`;
+}
 function cricketSeriesId(event){
   if (/^\d+$/.test(String(event._leagueId || ""))) return String(event._leagueId);
   for (const link of event.links || []) {
@@ -611,14 +777,184 @@ function scorecardHTML(data){
     }).join("")}</section>`).join("");
   const header = data.header || {}, competition = header.competitions?.[0] || {};
   const status = competition.status?.type?.detail || competition.status?.type?.shortDetail || competition.status?.summary || "";
-  const teams = (competition.competitors || []).map(team => `<div class="scorecard-total"><span>${teamFlag(team.team)}${esc(team.team?.displayName || team.team?.name || "Team")}</span><b>${esc(scoreText(team))}</b></div>`).join("");
+  const teams = (competition.competitors || []).map(team => `<div class="sc-team-score"><span>${teamFlag(team.team)}<span>${esc(team.team?.displayName || team.team?.name || "Team")}</span></span><b>${esc(scoreText(team))}</b></div>`).join("");
   const venue = data.gameInfo?.venue?.fullName || competition.venue?.fullName || "";
   const officials = (data.gameInfo?.officials || []).map(person => person.displayName).filter(Boolean);
-  return `${status ? `<div class="scorecard-note">${esc(status)}</div>` : ""}${teams}${venue ? `<div class="scorecard-note">${esc(venue)}</div>` : ""}
+  return `<div class="sc-match-summary">${status ? `<div class="sc-match-state">${esc(status)}</div>` : ""}<div class="sc-team-scores">${teams || `<div class="scorecard-note">Match scores unavailable</div>`}</div>${venue ? `<div class="sc-match-venue">${esc(venue)}</div>` : ""}</div>
     ${inningsHTML || `<div class="scorecard-state">The provider hasn’t published the detailed innings scorecard yet.</div>`}
-    ${officials.length ? `<div class="scorecard-note">Officials: ${esc(officials.join(", "))}</div>` : ""}`;
+    ${officials.length ? `<div class="scorecard-note">Officials · ${esc(officials.join(", "))}</div>` : ""}`;
 }
 let scorecardRequest = 0, scorecardFocus = null;
+/* ---------- Over by over + commentary (inside the cricket scorecard) ---------- */
+let scTab = "scorecard", scCur = {match: "", series: ""}, scInningsTeams = {}, scLive = false, scPlays = {key: "", at: 0, items: null}, scLimit = 60, scPoll = null;
+const numOr = (v, d) => { const n = Number(v); return v !== null && v !== "" && Number.isFinite(n) ? n : d; };
+
+
+// Turns one raw ESPN "play" into a simple delivery record (or null if it isn't a delivery).
+function normPlay(p){
+  if (!p || typeof p !== "object") return null;
+  if (p.norm) return p;
+  const text = String(p.text || p.shortText || p.description || "").replace(/<[^>]+>/g, " ").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+  const shortText = String(p.shortText || "").replace(/\s+/g, " ").trim();
+  const ov = p.over || {};
+  let over0 = numOr(ov.number, NaN) - 1, ball = numOr(ov.ball, NaN);
+  if (!Number.isFinite(over0)) over0 = numOr(ov.overs, NaN);
+  if (!Number.isFinite(over0) || !Number.isFinite(ball)) {
+    const actual = numOr(ov.actual ?? ov.unique, NaN);
+    if (!Number.isFinite(actual)) return null;
+    over0 = Math.trunc(actual); ball = Math.round((actual - over0) * 10);
+  }
+  if (ball === 0 && over0 > 0) { over0 -= 1; ball = 6; }      // "13.0" style = last ball of over 13
+  if (!(ball >= 1)) return null;
+  let runs = numOr(p.scoreValue, NaN);
+  if (!Number.isFinite(runs)) {
+    const outcome = shortText || text;
+    const m = /(\d+)\s+runs?\b/i.exec(outcome);
+    runs = /\bSIX\b/i.test(outcome) ? 6 : /\bFOUR\b/i.test(outcome) ? 4 : m ? +m[1] : /\bone run\b/i.test(outcome) ? 1 : 0;
+  }
+  const t = (shortText || text).toLowerCase();
+  const extra = numOr(p.wides, 0) > 0 || /\bwides?\b/.test(t) ? "wd"
+    : numOr(p.noballs, 0) > 0 || /\bno[- ]?balls?\b/.test(t) ? "nb"
+    : numOr(p.legbyes, 0) > 0 || /\bleg[- ]?byes?\b/.test(t) ? "lb"
+    : numOr(p.byes, 0) > 0 || /\bbyes?\b/.test(t) ? "b" : "";
+  const d = p.dismissal;
+  const wicket = !!(d && d.dismissal === true) || /\b(OUT|WICKET)\b/.test(shortText || text);
+  const m = /^(.+?) to (.+?)(?:,|\.| - |$)/.exec(shortText || text);
+  const inn = numOr(p.period ?? (p.innings && (p.innings.number ?? p.innings.id)), 1);
+  const seq = numOr(p.sequence ?? p.sequenceNumber, numOr(p.id, inn * 1e4 + over0 * 10 + ball));
+  return {id: String(p.id ?? p.$ref ?? seq), seq, inn, over: over0 + 1, ball, label: `${over0}.${ball}`, text, runs, extra, wicket,
+    four: (runs === 4 || /\bFOUR\b/i.test(shortText)) && !extra && !wicket, six: (runs === 6 || /\bSIX\b/i.test(shortText)) && !extra && !wicket,
+    bowler: (p.bowler && p.bowler.athlete && p.bowler.athlete.displayName) || (m ? m[1] : ""),
+    batter: (p.batsman && p.batsman.athlete && p.batsman.athlete.displayName) || (m ? m[2] : "")};
+}
+function analysePlays(items){
+  const seen = new Set(), balls = [];
+  for (const p of items || []) { const b = normPlay(p); if (b && !seen.has(b.id)) { seen.add(b.id); balls.push(b); } }
+  balls.sort((a, b) => a.inn - b.inn || a.over - b.over || a.ball - b.ball || a.seq - b.seq);
+  const byInn = new Map();
+  for (const b of balls) {
+    if (!byInn.has(b.inn)) byInn.set(b.inn, {inn: b.inn, overs: new Map(), runs: 0, wkts: 0, legal: 0, fours: 0, sixes: 0, dots: 0});
+    const I = byInn.get(b.inn);
+    let o = I.overs.get(b.over);
+    if (!o) { o = {over: b.over, balls: [], runs: 0, wkts: 0, legal: 0, bowlers: {}}; I.overs.set(b.over, o); }
+    o.balls.push(b); o.runs += b.runs; if (b.wicket) o.wkts++;
+    const legal = b.extra !== "wd" && b.extra !== "nb";
+    if (legal) { o.legal++; I.legal++; }
+    if (b.bowler) o.bowlers[b.bowler] = (o.bowlers[b.bowler] || 0) + 1;
+    I.runs += b.runs; if (b.wicket) I.wkts++; if (b.four) I.fours++; if (b.six) I.sixes++; if (b.runs === 0 && !b.extra) I.dots++;
+  }
+  return [...byInn.values()].sort((a, b) => a.inn - b.inn).map(I => {
+    let r = 0, w = 0;
+    const overs = [...I.overs.values()].sort((a, b) => a.over - b.over);
+    overs.forEach(o => { r += o.runs; w += o.wkts; o.cumRuns = r; o.cumWk = w; o.bowler = Object.entries(o.bowlers).sort((a, b) => b[1] - a[1])[0]?.[0] || ""; o.complete = o.legal >= 6; });
+    return {...I, overs, rr: I.legal ? I.runs / I.legal * 6 : 0, oversText: `${Math.floor(I.legal / 6)}.${I.legal % 6}`};
+  });
+}
+function ballChip(b){
+  const cls = b.wicket ? "w" : b.six ? "b6" : b.four ? "b4" : b.extra ? "ex" : b.runs === 0 ? "dot" : "";
+  const lab = b.wicket ? "W" : b.extra ? (b.runs > 1 ? `${b.runs}${b.extra}` : b.extra) : b.runs === 0 ? "•" : String(b.runs);
+  return `<span class="bc ${cls}" title="${esc(b.label + " " + b.text)}">${esc(lab)}</span>`;
+}
+function inningsTitle(I){
+  const name = scInningsTeams[I.inn] || scInningsTeams[String(I.inn)] || "";
+  return `${name ? teamFlag({}, name) : ""}${esc(name || "Innings " + I.inn)}${name ? ` <span class="sc-stats" style="margin:0"> · innings ${I.inn}</span>` : ""}`;
+}
+function overChart(overs){
+  const n = Math.max(overs.length, 20), W = n * 14, H = 66, max = Math.max(10, ...overs.map(o => o.runs));
+  const bars = overs.map((o, i) => {
+    const h = Math.max(o.runs ? 2 : 0, Math.round(o.runs / max * (H - 16))), x = i * 14 + 2;
+    return `<g><title>Over ${o.over}: ${o.runs} run${o.runs === 1 ? "" : "s"}${o.wkts ? ", " + o.wkts + " wkt" : ""}</title><rect class="bar" x="${x}" y="${H - h}" width="10" height="${h}" rx="2"/>${o.wkts ? `<circle class="wk" cx="${x + 5}" cy="${H - h - 5}" r="3.2"/>` : ""}</g>`;
+  }).join("");
+  return `<svg class="sc-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMax meet" role="img" aria-label="Runs per over; red dots mark wickets">${bars}<line class="base" x1="0" y1="${H}" x2="${W}" y2="${H}"/></svg>`;
+}
+function oversHTML(an){
+  return an.map(I => `<section class="sc-inn"><h4>${inningsTitle(I)}</h4>
+    <div class="sc-stats"><span><b>${I.runs}/${I.wkts}</b> after ${esc(I.oversText)} ov</span><span>Run rate <b>${I.rr.toFixed(2)}</b></span><span>4s <b>${I.fours}</b></span><span>6s <b>${I.sixes}</b></span><span>Dots <b>${I.dots}</b></span></div>
+    ${overChart(I.overs)}
+    <ol class="sc-overs">${I.overs.slice().reverse().map(o => `<li class="${o.complete ? "" : "partial"}"><span class="n">${o.over}</span>
+      <span class="b">${o.balls.map(ballChip).join("")}${o.bowler ? `<small>${esc(o.bowler)}</small>` : ""}</span>
+      <span class="r">${o.runs}</span><span class="c">${o.cumRuns}/${o.cumWk}</span></li>`).join("")}</ol></section>`).join("");
+}
+function commentaryHTML(an, limit){
+  let shown = 0, more = false, html = "";
+  outer: for (const I of an.slice().reverse()) {
+    html += `<li class="h">${inningsTitle(I)}</li>`;
+    for (const o of I.overs.slice().reverse()) {
+      if (o.complete) html += `<li class="eo"><b>End of over ${o.over}</b> · ${o.runs} run${o.runs === 1 ? "" : "s"}${o.wkts ? ` · ${o.wkts} wkt${o.wkts > 1 ? "s" : ""}` : ""} · ${o.cumRuns}/${o.cumWk}${o.bowler ? " · " + esc(o.bowler) : ""}</li>`;
+      for (const b of o.balls.slice().reverse()) {
+        if (shown >= limit) { more = true; break outer; }
+        shown++;
+        html += `<li class="sc-ball ${b.wicket ? "is-w" : b.six ? "is-6" : b.four ? "is-4" : ""}"><span class="o">${esc(b.label)}</span>${ballChip(b)}<span class="t">${esc(b.text || "—")}</span></li>`;
+      }
+    }
+  }
+  return `<ul class="sc-feed">${html}</ul>${more ? `<button type="button" class="scorecard-toggle sc-more" data-sc-more>Show earlier balls</button>` : ""}`;
+}
+async function fetchPlays(series, match){
+  const attempts = [];
+  try {
+    const r = await fetch(`/api/scoreboard?sport=cricket&view=commentary&league=${encodeURIComponent(series)}&event=${encodeURIComponent(match)}`);
+    const j = await r.json().catch(() => null);
+    if (j && Array.isArray(j.attempts)) attempts.push(...j.attempts);
+    if (r.ok && j && Array.isArray(j.items)) return {items: j.items, partial: !!j.partial, attempts};
+    attempts.push({name: "Our API", status: r.status, note: (j && j.error) || (r.ok ? "the play-by-play route returned an invalid response" : "")});
+    const error = new Error((j && j.error) || "Ball-by-ball data couldn’t be loaded");
+    error.attempts = attempts;
+    throw error;
+  } catch (e) {
+    if (e.attempts) throw e;
+    const local = location.protocol === "file:";
+    attempts.push({name: "Our API", status: 0, note: e.message + (local ? " — this page was opened as a local file" : " — /api/scoreboard can’t be reached")});
+    const hint = local
+      ? "You opened this page as a local file, so its /api/scoreboard function doesn’t exist. Deploy the project to Vercel (or run `vercel dev`) and open it from there."
+      : "This page can’t reach its /api/scoreboard function. That happens when it’s hosted somewhere without serverless functions (for example GitHub Pages) or the api folder wasn’t deployed. Host it on Vercel with api/scoreboard.js.";
+    const error = new Error("Ball-by-ball data couldn’t be loaded");
+    error.attempts = attempts;
+    error.hint = hint;
+    throw error;
+  }
+}
+function diagHTML(attempts){
+  if (!attempts || !attempts.length) return "";
+  return `<details class="sc-diag"><summary>Technical details</summary><ul>${attempts.slice(0, 14).map(a =>
+    `<li>${esc(a.name)} — ${a.status ? "HTTP " + esc(a.status) : "no response"}${a.note ? " · " + esc(a.note) : ""}${a.url ? ` · <a href="${esc(a.url)}" target="_blank" rel="noopener">open</a>` : ""}</li>`).join("")}</ul></details>`;
+}
+async function getPlays(force){
+  const key = `${scCur.series}/${scCur.match}`;
+  if (!force && scPlays.key === key && scPlays.items && Date.now() - scPlays.at < 15000) return scPlays.items;
+  const res = await fetchPlays(scCur.series, scCur.match);
+  scPlays = {key, at: Date.now(), items: res};
+  return res;
+}
+async function renderPlaysPane(tab, force){
+  const pane = $("sc-pane-" + tab); if (!pane) return;
+  const request = scorecardRequest;
+  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${tab === "overs" ? "over-by-over stats" : "commentary"}…</div>`;
+  try {
+    const res = await getPlays(force);
+    const an = analysePlays(res.items);
+    if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
+    pane.dataset.done = "1";
+    pane.innerHTML = !an.length
+      ? `<div class="scorecard-state">Ball-by-ball data isn’t available for this match from our data source. It is only published for some matches, and usually once play has started.${diagHTML(res.attempts)}</div>`
+      : (tab === "overs" ? oversHTML(an) : commentaryHTML(an, scLimit)) + (res.partial ? `<div class="scorecard-state" style="margin-top:10px">Showing a limited selection of deliveries for long innings.</div>` : "");
+  } catch (err) {
+    if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
+    if (pane.dataset.done) return;                                   // keep last good data on a failed background refresh
+    pane.innerHTML = `<div class="scorecard-state">${esc(err.message)}. <button type="button" class="scorecard-toggle" data-sc-retry>Retry</button>${err.hint ? `<p style="margin:10px 0 0">${esc(err.hint)}</p>` : ""}${diagHTML(err.attempts)}</div>`;
+  }
+}
+function showScTab(tab){
+  scTab = tab;
+  document.querySelectorAll("[data-sctab]").forEach(b => b.setAttribute("aria-pressed", b.dataset.sctab === tab));
+  ["scorecard", "overs", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
+  clearInterval(scPoll); scPoll = null;
+  if (tab !== "scorecard") {
+    renderPlaysPane(tab, false);
+    if (scLive) scPoll = setInterval(() => { if (!document.hidden && $("scorecard-overlay").classList.contains("open")) renderPlaysPane(scTab, true); }, 20000);
+  }
+}
+
 async function loadMatchScorecard(matchId, seriesId, buttonText){
   const request = ++scorecardRequest;
   const content = $("scorecard-content");
@@ -628,7 +964,16 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
     if (!res.ok) throw new Error(`Scorecard returned HTTP ${res.status}`);
     const data = await res.json();
     if (request !== scorecardRequest) return;
-    content.innerHTML = `${scorecardHTML(data)}<button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
+    scCur = {match: matchId, series: seriesId};
+    scInningsTeams = {};
+    for (const c of data.matchcards || []) if (c.inningsNumber && c.teamName) scInningsTeams[c.inningsNumber] = c.teamName;
+    scLive = (data.header?.competitions?.[0]?.status?.type?.state) === "in";
+    scPlays = {key: "", at: 0, items: null};
+    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["commentary", "Commentary"]];
+    content.innerHTML = `<div class="seg sc-tabs" role="group" aria-label="Match view">${tabs.map(([k, l]) => `<button type="button" data-sctab="${k}" aria-pressed="${k === scTab}">${l}</button>`).join("")}</div>
+      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
+      <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
+    showScTab(scTab);
   } catch (error) {
     if (request !== scorecardRequest) return;
     content.innerHTML = `<div class="scorecard-state">${esc(error.message)} <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">Retry</button></div>`;
@@ -636,6 +981,7 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
 }
 function openMatchScorecard(button){
   scorecardFocus = button;
+  scTab = "scorecard"; scLimit = 60;
   $("scorecard-title").textContent = button.dataset.matchName || "Live match";
   $("scorecard-league").textContent = button.dataset.league || "Cricket";
   $("scorecard-overlay").classList.add("open");
@@ -645,6 +991,7 @@ function openMatchScorecard(button){
 }
 function closeMatchScorecard(){
   ++scorecardRequest;
+  clearInterval(scPoll); scPoll = null;
   $("scorecard-overlay").classList.remove("open");
   $("scorecard-overlay").setAttribute("aria-hidden", "true");
   if (scorecardFocus?.isConnected) scorecardFocus.focus();
@@ -655,36 +1002,85 @@ function card(event, sport){
   const type = status.type || {};
   const live = type.state === "in";
   const label = live ? (type.shortDetail || type.detail || "Live") : (type.state === "pre" ? when(event.date) : (type.shortDetail || type.description || ""));
-  const rows = (comp.competitors || []).map(t => `
-    <div class="team"><span class="team-name">${sport === "cricket" ? teamFlag(t.team || {displayName: t.displayName}) : ""}<span class="tn">${esc(t.team?.displayName || t.team?.name || t.displayName || "TBC")}</span></span><span class="score">${esc(scoreText(t))}</span></div>`).join("");
+  const rows = (comp.competitors || []).map(t => {
+    const name = t.team?.displayName || t.team?.name || t.displayName || "TBC";
+    const teamId = cricketTeamId(t);
+    return `<div class="team"><span class="team-name">${sport === "cricket" ? teamFlag(t.team || {displayName: t.displayName}) : ""}<span class="tn">${esc(name)}</span>${sport === "cricket" ? favoriteButton("cricket-team", teamId, name) : ""}</span><span class="score">${esc(scoreText(t))}</span></div>`;
+  }).join("");
   const extra = [sport === "cricket" ? (status.summary || type.detail) : "", comp.venue?.fullName, comp.series?.summary]
     .filter((v, i, a) => v && a.indexOf(v) === i && v !== label).join(" · ");
   const link = (event.links || []).find(l => (l.rel || []).some(r => r === "summary" || r === "event" || r === "desktop"));
   const seriesId = sport === "cricket" && live ? cricketSeriesId(event) : "";
-  return `<article class="score-card${live ? " is-live" : ""}">
-    <div class="match-top"><span>${esc(event._league || "")}</span><span class="status${live ? " live" : ""}">${live ? "● " : ""}${esc(label)}</span></div>
+  return `<article class="score-card${sport === "cricket" ? " is-cricket" : ""}${live ? " is-live" : ""}">
+    <div class="match-top"><span>${esc(event._league || "")}</span><span class="status${live ? " live" : ""}">${live ? (sport === "cricket" ? `<i class="score-live-dot" aria-hidden="true"></i>` : "● ") : ""}${esc(label)}</span></div>
     <div class="teams">${rows || `<div class="team"><span class="team-name">${esc(event.name || "Match")}</span><span class="score">—</span></div>`}</div>
     ${extra ? `<div class="details">${esc(extra)}</div>` : ""}
     ${link?.href ? `<div class="details"><a href="${esc(link.href)}" target="_blank" rel="noopener">Match page ↗</a></div>` : ""}
     ${seriesId ? `<button class="scorecard-toggle" type="button" data-scorecard-open data-scorecard="${esc(event.id)}" data-series="${esc(seriesId)}" data-match-name="${esc(event.name || "Live match")}" data-league="${esc(event._league || "Cricket")}">View full scorecard</button>` : ""}
   </article>`;
 }
-function render(sport, events){
-  const el = $(`${sport}-list`);
-  const live = events.filter(e => stateOf(e) === "in");
+function cricketTeamId(team){
+  const name = team.team?.displayName || team.team?.name || team.displayName || "TBC";
+  return String(team.team?.id || team.id || name.toLowerCase().replace(/[^a-z0-9]+/g, "-"));
+}
+const selectedCricketTeams = new Set();
+function renderCricketTeamFilters(events){
+  const filter = $("cricket-team-filters");
+  if (!filter) return;
+  const teams = new Map();
+  for (const event of events) for (const competitor of event.competitions?.[0]?.competitors || []) {
+    const team = competitor.team || competitor;
+    const name = team.displayName || team.name || competitor.displayName || "TBC";
+    const id = cricketTeamId(competitor);
+    if (name !== "TBC" && !teams.has(id)) teams.set(id, {id, name, team});
+  }
+  const options = [...teams.values()].sort((a, b) => a.name.localeCompare(b.name));
+  for (const id of [...selectedCricketTeams]) if (!teams.has(id)) selectedCricketTeams.delete(id);
+  const selection = $("cricket-filter-selection");
+  if (selection) selection.textContent = selectedCricketTeams.size
+    ? `${selectedCricketTeams.size} team${selectedCricketTeams.size === 1 ? "" : "s"} selected`
+    : "All teams";
+  filter.innerHTML = `<button type="button" class="team-filter" data-team-filter="all" aria-pressed="${selectedCricketTeams.size === 0}">All teams</button>${options.map(({id, name, team}) =>
+    `<button type="button" class="team-filter" data-team-filter="${esc(id)}" aria-pressed="${selectedCricketTeams.has(id)}">${teamFlag(team, name)}<span>${esc(name)}</span></button>`
+  ).join("")}`;
+}
+function scoreboardHTML(sport, events, selectedView = false){
+  const hasFavorite = event => (event.competitions?.[0]?.competitors || []).some(team => {
+    const id = cricketTeamId(team);
+    return sport === "cricket" && window.isSportsFavorite("cricket-team", id);
+  });
+  const favoriteFirst = (a, b) => Number(hasFavorite(b)) - Number(hasFavorite(a));
+  const live = events.filter(e => stateOf(e) === "in").sort(favoriteFirst);
   const next = events.filter(e => stateOf(e) === "pre" && new Date(e.date) >= Date.now() - 36e5)
-    .sort((a,b) => new Date(a.date) - new Date(b.date)).slice(0, 6);
-  setLiveDot(sport, live.length);
+    .sort((a,b) => favoriteFirst(a, b) || new Date(a.date) - new Date(b.date)).slice(0, 6);
   let html = "";
   if (live.length) {
-    html += `<h3 class="group-title">Live now · ${live.length}</h3><div class="score-grid">${live.map(e => card(e, sport)).join("")}</div>`;
+    html += `<h3 class="group-title${sport === "cricket" ? " is-cricket" : ""}">${selectedView ? "Selected teams · Live now" : "Live now"} <span class="count">· ${live.length}</span></h3><div class="score-grid">${live.map(e => card(e, sport)).join("")}</div>`;
   } else {
-    html += `<div class="score-grid"><div class="empty">No ${sport} match is live right now.</div></div>`;
+    const message = next.length
+      ? `No ${sport} match is live right now.`
+      : selectedView ? "No live or upcoming matches for the selected teams." : `No ${sport} match is live right now.`;
+    html += `<div class="score-grid"><div class="empty">${message}</div></div>`;
   }
   if (next.length) {
-    html += `<h3 class="group-title">${live.length ? "Up next" : "Coming up"}</h3><div class="score-grid">${next.map(e => card(e, sport)).join("")}</div>`;
+    html += `<h3 class="group-title${sport === "cricket" ? " is-cricket" : ""}">${selectedView ? (live.length ? "Selected teams · Up next" : "Selected teams · Coming up") : (live.length ? "Up next" : "Coming up")}${sport === "cricket" ? '<span class="count">· ' + next.length + '</span>' : ""}</h3><div class="score-grid">${next.map(e => card(e, sport)).join("")}</div>`;
   }
-  el.innerHTML = html;
+  return html;
+}
+function render(sport, events){
+  const el = $(`${sport}-list`);
+  liveEvents[sport] = events;
+  if (sport === "cricket") renderCricketTeamFilters(events);
+  setLiveDot(sport, events.filter(e => stateOf(e) === "in").length);
+  el.innerHTML = scoreboardHTML(sport, events);
+  if (sport === "cricket") {
+    const selected = $("cricket-selected");
+    const selectedEvents = events.filter(event => (event.competitions?.[0]?.competitors || []).some(team => selectedCricketTeams.has(cricketTeamId(team))));
+    selected.hidden = selectedCricketTeams.size === 0;
+    selected.innerHTML = selectedCricketTeams.size
+      ? scoreboardHTML(sport, selectedEvents, true)
+      : "";
+  }
 }
 function setLiveDot(sport, count){
   const btn = $(`t-${sport}`);
@@ -931,9 +1327,26 @@ $("tabs").addEventListener("keydown", e => {
   if (next >= 0) { e.preventDefault(); show(TABS[next], true); $(`t-${TABS[next]}`).focus(); }
 });
 document.addEventListener("click", e => {
+  const teamFilter = e.target.closest("[data-team-filter]");
+  if (teamFilter) {
+    if (teamFilter.dataset.teamFilter === "all") selectedCricketTeams.clear();
+    else if (selectedCricketTeams.has(teamFilter.dataset.teamFilter)) selectedCricketTeams.delete(teamFilter.dataset.teamFilter);
+    else selectedCricketTeams.add(teamFilter.dataset.teamFilter);
+    render("cricket", liveEvents.cricket || []);
+    return;
+  }
+  const favorite = e.target.closest("[data-favorite]");
+  if (favorite) {
+    window.toggleSportsFavorite(favorite.dataset.favoriteType, favorite.dataset.favoriteId, favorite.dataset.favoriteName);
+    if (favorite.dataset.favoriteType === "cricket-team") render("cricket", liveEvents.cricket || []);
+    return;
+  }
   const r = e.target.closest("[data-refresh]"); if (r) loadLive(r.dataset.refresh, false);
   const scorecardOpen = e.target.closest("[data-scorecard-open]");
   if (scorecardOpen) openMatchScorecard(scorecardOpen);
+  const sct = e.target.closest("[data-sctab]"); if (sct) showScTab(sct.dataset.sctab);
+  if (e.target.closest("[data-sc-more]")) { scLimit += 60; renderPlaysPane("commentary", false); }
+  if (e.target.closest("[data-sc-retry]")) renderPlaysPane(scTab, true);
   const scorecardRefresh = e.target.closest("[data-scorecard-refresh]");
   if (scorecardRefresh) loadMatchScorecard(scorecardRefresh.dataset.scorecard, scorecardRefresh.dataset.series, "Refresh scorecard");
   if (e.target.closest("[data-scorecard-close]") || e.target === $("scorecard-overlay")) closeMatchScorecard();
@@ -964,6 +1377,10 @@ const DRIVER_TITLES = {farina:1,fangio:5,ascari:2,hawthorn:1,jack_brabham:3,phil
 const $ = id => root.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let shown = String(now0()), tab = "drivers", season = "current", rowsCache = [], lastFocus = null, loadId = 0;
+const favoriteType = mode => mode === "drivers" ? "f1-driver" : "f1-team";
+const favoriteId = (row, mode) => mode === "drivers" ? row.Driver.driverId : row.Constructor.constructorId;
+const favoriteName = (row, mode) => mode === "drivers" ? `${row.Driver.givenName} ${row.Driver.familyName}` : row.Constructor.name;
+const isFavorite = (row, mode) => window.isSportsFavorite(favoriteType(mode), favoriteId(row, mode));
 
 $("season").innerHTML = '<option value="current">Current season</option>' +
   Array.from({length: now0() - 1949}, (_, i) => now0() - i).map(y => `<option>${y}</option>`).join("");
@@ -978,6 +1395,30 @@ function setTab(t){
 $("t-d").onclick = () => setTab("drivers");
 $("t-c").onclick = () => setTab("constructors");
 $("season").onchange = e => { season = e.target.value; load(); };
+
+function renderStandings(){
+  const mode = tab;
+  const max = Math.max(...rowsCache.map(row => +row.points), 1);
+  const entries = rowsCache.map((row, i) => ({row, i}));
+  const favorites = entries.filter(entry => isFavorite(entry.row, mode));
+  const others = entries.filter(entry => !isFavorite(entry.row, mode));
+  const renderRow = ({row: r, i}) => {
+    const team = mode === "drivers" ? r.Constructors[r.Constructors.length - 1] : r.Constructor;
+    const color = COLORS[team && team.constructorId] || "#8a919e";
+    const name = mode === "drivers"
+      ? `${esc(r.Driver.givenName)} ${esc(r.Driver.familyName)}<small>${esc(team && team.name)}</small>`
+      : esc(team.name);
+    const type = favoriteType(mode), id = String(favoriteId(r, mode)), label = favoriteName(r, mode);
+    const active = window.isSportsFavorite(type, id);
+    return `<div class="row-wrap"><div class="row click" tabindex="0" role="button" data-i="${i}" data-rank="${esc(r.positionText)}" style="--i:${Math.min(i, 24)};--tc:${color}">
+        <div class="pos">${esc(r.positionText)}</div>
+        <div><div class="name">${name}</div><div class="track"><i style="--w:${(+r.points / max * 100).toFixed(1)}%"></i></div></div>
+        <div class="pts" data-n="${esc(r.points)}">0<small>${r.wins} win${r.wins == 1 ? "" : "s"}</small></div></div>
+      <button type="button" class="favorite-toggle" data-favorite data-favorite-type="${type}" data-favorite-id="${esc(id)}" data-favorite-name="${esc(label)}" aria-label="${active ? "Remove" : "Add"} ${esc(label)} favorite" aria-pressed="${active}" title="${active ? "Remove favorite" : "Add favorite"}">${active ? "★" : "☆"}</button></div>`;
+  };
+  $("list").innerHTML = `${favorites.length ? `<h3 class="fav-heading">Favorites</h3>${favorites.map(renderRow).join("")}<h3 class="fav-heading">Standings</h3>` : ""}${others.map(renderRow).join("")}`;
+  root.querySelectorAll(".pts").forEach((p, i) => countUp(p, +p.dataset.n, i));
+}
 
 async function load(){
   const requestId = ++loadId;
@@ -996,19 +1437,7 @@ async function load(){
     shown = sl.season;
     $("sub").textContent = `${sl.season} season · after round ${sl.round}`;
     $("meta").textContent = requestTab === "drivers" ? "Drivers’ Championship" : "Constructors’ Championship";
-    const max = Math.max(...rowsCache.map(r => +r.points), 1);
-    $("list").innerHTML = rowsCache.map((r, i) => {
-      const team = tab === "drivers" ? r.Constructors[r.Constructors.length - 1] : r.Constructor;
-      const color = COLORS[team && team.constructorId] || "#8a919e";
-      const name = tab === "drivers"
-        ? `${esc(r.Driver.givenName)} ${esc(r.Driver.familyName)}<small>${esc(team && team.name)}</small>`
-        : esc(team.name);
-      return `<div class="row click" tabindex="0" role="button" data-i="${i}" style="--i:${Math.min(i, 24)};--tc:${color}">
-        <div class="pos">${esc(r.positionText)}</div>
-        <div><div class="name">${name}</div><div class="track"><i style="--w:${(+r.points / max * 100).toFixed(1)}%"></i></div></div>
-        <div class="pts" data-n="${esc(r.points)}">0<small>${r.wins} win${r.wins == 1 ? "" : "s"}</small></div></div>`;
-    }).join("");
-    root.querySelectorAll(".pts").forEach((p, i) => countUp(p, +p.dataset.n, i));
+    renderStandings();
   } catch (e) {
     if (requestId !== loadId) return;
     $("list").innerHTML = `<div class="state">Couldn’t load standings (${esc(e.message)}).<br>Check your connection and try again.<br><button id="retry">Retry</button></div>`;
@@ -1171,6 +1600,12 @@ $("list").addEventListener("click", e => { const r = e.target.closest(".row.clic
 $("list").addEventListener("keydown", e => {
   if ((e.key === "Enter" || e.key === " ") && e.target.matches(".row.click")) { e.preventDefault(); openCard(tab === "drivers" ? "d" : "c", +e.target.dataset.i); }
 });
+root.addEventListener("click", e => {
+  const favorite = e.target.closest("[data-favorite]");
+  if (!favorite) return;
+  window.toggleSportsFavorite(favorite.dataset.favoriteType, favorite.dataset.favoriteId, favorite.dataset.favoriteName);
+});
+window.addEventListener("sportsfavoriteschange", () => { if (rowsCache.length) renderStandings(); });
 load();
 
 })();

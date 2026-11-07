@@ -2,6 +2,7 @@
 // GET /api/scoreboard?sport=cricket   -> live/upcoming INTERNATIONAL cricket matches
 // GET /api/scoreboard?sport=football  -> live/today's football matches across top leagues
 // GET /api/scoreboard?sport=f1        -> current F1 race weekend (sessions + live running order)
+// GET /api/scoreboard?sport=cricket&view=commentary&league=<seriesId>&event=<matchId> -> recent ball-by-ball plays
 
 const FOOTBALL_LEAGUES = {
   "eng.1": "Premier League",
@@ -106,14 +107,86 @@ async function f1() {
   return data.events || [];
 }
 
+
+async function getJson(url, headers = {}, timeoutMs = 6000) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, { headers: { Accept: "application/json", ...headers }, signal: ctl.signal });
+    let json = null;
+    try { json = await r.json(); } catch (e) { /* not JSON */ }
+    return { ok: r.ok, status: r.status, json };
+  } finally { clearTimeout(timer); }
+}
+
+// ESPN's play-by-play feed exposes deliveries by innings and paginates oldest-first.
+// Fetch the final page for long innings so the UI gets recent overs without downloading the full match.
+async function espnInningsPlays(league, event, inn, attempts) {
+  const loadPage = async page => {
+    const url = `https://site.api.espn.com/apis/site/v2/sports/cricket/${league}/playbyplay?event=${event}&period=${inn}&limit=100&page=${page}`;
+    try {
+      const response = await getJson(url, {}, 4500);
+      attempts.push({ name: `ESPN play-by-play, innings ${inn}${page > 1 ? " (latest page)" : ""}`, url, status: response.status });
+      if (!response.ok) return null;
+      return response.json?.commentary || {};
+    } catch (error) {
+      attempts.push({ name: `ESPN play-by-play, innings ${inn}${page > 1 ? " (latest page)" : ""}`, url, status: 0,
+        note: error.name === "AbortError" ? "timed out" : error.message });
+      return null;
+    }
+  };
+
+  const first = await loadPage(1);
+  if (!first) return { items: [], reachable: false, partial: false };
+  const pageCount = Number(first.pageCount) || 1;
+  if (pageCount <= 1) return { items: first.items || [], reachable: true, partial: false };
+
+  const latest = await loadPage(pageCount);
+  return {
+    items: latest?.items || first.items || [],
+    reachable: true,
+    partial: true
+  };
+}
+
+async function cricketPlays(league, event) {
+  const attempts = [];
+  const innings = await Promise.all([1, 2, 3, 4].map(inn => espnInningsPlays(league, event, inn, attempts)));
+  if (!innings.some(result => result.reachable)) {
+    const err = new Error("ESPN didn’t answer the play-by-play request");
+    err.attempts = attempts;
+    throw err;
+  }
+  const seen = new Set();
+  const items = innings.flatMap(result => result.items).filter(play => {
+    const key = `${play.period ?? ""}-${play.sequence ?? play.id ?? ""}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  return { items, count: items.length, source: "espn", partial: innings.some(result => result.partial), attempts };
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ error: "Method not allowed" });
   }
-  const { sport } = req.query;
+  const { sport, view, league, event } = req.query;
   if (sport !== "cricket" && sport !== "football" && sport !== "f1") {
     return res.status(400).json({ error: "Unsupported sport" });
+  }
+  if (view === "commentary") {
+    if (sport !== "cricket" || !/^[A-Za-z0-9._-]+$/.test(league || "") || !/^\d+$/.test(event || "")) {
+      return res.status(400).json({ error: "Invalid commentary request" });
+    }
+    try {
+      const data = await cricketPlays(league, event);
+      res.setHeader("Cache-Control", "public, s-maxage=15, stale-while-revalidate=30");
+      return res.status(200).json(data);
+    } catch (error) {
+      return res.status(502).json({ error: error.message || "Unable to reach the score provider", attempts: error.attempts || [] });
+    }
   }
   try {
     const events = sport === "cricket" ? await cricket() : sport === "f1" ? await f1() : await football();

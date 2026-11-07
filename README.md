@@ -3,9 +3,11 @@
 A single-page sports hub with four tabs:
 
 - **Formula 1** – driver and constructor standings (click a driver or team for details), race countdown, full-season calendar with per-race results, and a live panel while a session is running.
-- **Cricket Live** – live and upcoming *international* matches (ICC events and bilateral series; domestic leagues, "A" teams and U19 are filtered out), with team flags and a full scorecard pop-up.
+- **Cricket Live** – live and upcoming *international* matches (ICC events and bilateral series; domestic leagues, "A" teams and U19 are filtered out), with team filters, team flags and a match pop-up that has three views: the full scorecard, over-by-over stats (runs per over chart, ball chips, run rate, boundaries) and ball-by-ball commentary.
 - **Football Live** – live and upcoming matches from the Premier League, Champions League, Europa League, La Liga, Bundesliga, Serie A, Ligue 1 and MLS.
 - **Cricket Stats** – all-time Test / ODI / T20I records, World Cup winners, and player info pop-ups.
+
+The complete Cricket Live scoreboard appears first. Team chips beneath it show an additional scoreboard for matches featuring one or more selected teams; select **All teams** to clear the selection. Use the star buttons to favorite cricket teams, F1 drivers, or F1 constructors. Favorites are saved in this browser and appear first in their live match list or F1 standings.
 
 ## Files
 
@@ -30,6 +32,7 @@ GitHub Pages can't run the `api/` function, so use Vercel (or any host that supp
 ## Data sources
 
 - Live cricket, football and F1 session data: ESPN's public scoreboard feeds, via `/api/scoreboard`.
+- Cricket over-by-over and commentary: ESPN's play-by-play feed, via `/api/scoreboard?sport=cricket&view=commentary&league=<seriesId>&event=<matchId>`. Recent deliveries are returned for each innings; innings without published play-by-play data remain empty. Request failures and provider responses are available under "Technical details".
 - F1 standings, calendar and race results: the Jolpica F1 API (called directly from the browser).
 - Cricket records and player bios are typed into `index.html` (search for `STATS` and `PLAYERS`). Active players' totals change, so update them occasionally.
 
