@@ -136,6 +136,15 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .scorecard-total{display:flex;justify-content:space-between;gap:12px;margin-top:8px;color:var(--mute);font-size:12px}
 .scorecard-total b{color:var(--ink)}
 .scorecard-note{margin-top:10px;color:var(--mute);font-size:12px}
+.sc-innings-score{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 10px;padding:10px 12px;border:1px solid #347252;border-radius:9px;background:linear-gradient(100deg,#173624,#101713)}
+.sc-innings-score span{color:#a8e7be;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.sc-innings-score b{color:#e4ffeb;font:700 22px/1 "Barlow Condensed",sans-serif;text-align:right}
+.sc-batters-head{margin:12px 0 7px;color:#a8e7be;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.sc-live-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.sc-live-metric{min-width:0;padding:10px 11px;border:1px solid #ffffff10;border-radius:9px;background:#0d1410}
+.sc-live-metric span{display:block;color:var(--mute);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.sc-live-metric b{display:block;margin-top:4px;color:#dcf4e3;font:700 19px/1 "Barlow Condensed",sans-serif}
+@media(max-width:560px){.sc-live-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .scorecard-overlay{position:fixed;inset:0;display:none;place-items:center;padding:16px;background:rgba(5,6,8,.78);backdrop-filter:blur(7px);z-index:30}
 .scorecard-overlay.open{display:grid;animation:rise .25s ease both}
 .scorecard-modal{--accent:#46c78b;--green:#42d392;position:relative;width:min(820px,100%);max-height:calc(100vh - 32px);overflow:auto;background:radial-gradient(ellipse at 92% 0%,#1d493326,transparent 35%),linear-gradient(145deg,#151b19,var(--panel) 40%);border:1px solid #335044;border-top:5px solid var(--accent);border-radius:18px;padding:24px;box-shadow:0 24px 80px #0009;animation:scorecard-enter .32s cubic-bezier(.2,.8,.2,1) both}
@@ -163,6 +172,21 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .scorecard-modal .scorecard-total{margin-top:8px;padding:8px 10px;border-top:1px solid #ffffff0d;font-size:13px}
 .scorecard-modal .scorecard-total b{font:700 18px "Barlow Condensed",sans-serif;color:#c7f5d6}
 .scorecard-modal .scorecard-state{padding:18px 0}
+.sc-innings-current{border-color:#4b9b6b!important;box-shadow:inset 3px 0 #46c78b,0 8px 26px #42d3920c}
+.sc-current-badge{margin-left:auto;padding:4px 8px;border:1px solid #347252;border-radius:99px;background:#173624;color:#9af0bd;font:700 10px Barlow,sans-serif;letter-spacing:.08em}
+.ball-celebration{position:fixed;inset:0;z-index:80;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at center,#153a2bd9,#050806f2 72%);opacity:0;pointer-events:none}
+.ball-celebration.show{animation:ball-celebration-in 1.8s ease both}
+.ball-celebration::before,.ball-celebration::after{position:absolute;width:min(78vw,560px);aspect-ratio:1;border:1px solid #71f6a633;border-radius:50%;content:"";transform:scale(.35);opacity:0}
+.ball-celebration.show::before{animation:ball-ripple 1.8s ease-out both}
+.ball-celebration.show::after{animation:ball-ripple 1.8s .18s ease-out both}
+.ball-celebration-mark{position:relative;color:#eaffef;font:italic 800 clamp(112px,28vw,250px)/.8 "Barlow Condensed",sans-serif;letter-spacing:-.05em;text-shadow:0 0 25px #42d39299,0 0 90px #42d39266}
+.ball-celebration.wicket .ball-celebration-mark{color:#fff0eb;text-shadow:0 0 25px #ff5b4d99,0 0 90px #ff342966}
+.ball-celebration.six .ball-celebration-mark{color:#fff7d9;text-shadow:0 0 25px #ffc94d99,0 0 90px #ff9f2d66}
+.ball-celebration.extra .ball-celebration-mark{color:#d7e7ff;text-shadow:0 0 25px #559bff99,0 0 90px #3876dc66}
+.ball-celebration.run .ball-celebration-mark{font-size:clamp(112px,28vw,250px)}
+.ball-celebration-label{position:absolute;top:calc(50% + clamp(82px,18vw,180px));color:#a6c8b0;font-size:clamp(12px,2.4vw,16px);font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+@keyframes ball-celebration-in{0%{opacity:0}10%,72%{opacity:1}100%{opacity:0}}
+@keyframes ball-ripple{0%{transform:scale(.35);opacity:0}18%{opacity:.8}100%{transform:scale(1.25);opacity:0}}
 .sc-match-summary{margin-top:16px;padding:13px 14px;background:linear-gradient(110deg,#193a2b,#18201c 70%);border:1px solid #315c45;border-radius:12px}
 .sc-match-state{margin:0 0 10px;color:#a8e7be;font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.09em;text-transform:uppercase}
 .sc-team-scores{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -225,6 +249,7 @@ li:first-child .val{color:var(--accent)}
 .footnote a,footer a{color:inherit}
 @media(max-width:640px){.wrap{padding-top:24px}.live-note{font-size:12px}.section-head{align-items:flex-start;flex-direction:column}.score-grid,.stat-grid{grid-template-columns:1fr}.tabs button{font-size:15px;padding:10px 2px}}
 @media(max-width:560px){.scorecard-overlay{padding:8px}.scorecard-modal{max-height:calc(100vh - 16px);padding:18px 14px;border-radius:14px}.sc-team-scores{grid-template-columns:1fr}.scorecard-modal .scorecard-innings{padding:10px}.scorecard-modal .scorecard-table th,.scorecard-modal .scorecard-table td{padding:8px 7px}}
+@media(prefers-reduced-motion:reduce){.ball-celebration.show,.ball-celebration.show::before,.ball-celebration.show::after{animation:none}.ball-celebration.show{opacity:1}.ball-celebration::before,.ball-celebration::after{display:none}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition:none!important}}
 @media(prefers-reduced-motion:reduce){.score-card.is-cricket.is-live::after,.score-live-dot{animation:none!important}}
 
@@ -653,6 +678,10 @@ header{justify-content:space-between}
     <div class="scorecard" id="scorecard-content" aria-live="polite"></div>
   </div>
 </div>
+<div class="ball-celebration" id="ball-celebration" role="status" aria-live="assertive" aria-atomic="true">
+  <span class="ball-celebration-mark"></span>
+  <span class="ball-celebration-label"></span>
+</div>
 
 <script>
 const $ = id => document.getElementById(id);
@@ -667,6 +696,10 @@ const faviconLink = document.querySelector('link[rel="icon"][type="image/svg+xml
 const defaultFavicon = faviconLink?.href || "";
 const openFavicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#42d392"/><circle cx="32" cy="32" r="19" fill="#f7ecd2" stroke="#137441" stroke-width="2"/><path d="M20 17c7 8 7 22 0 30m24-30c-7 8-7 22 0 30" fill="none" stroke="#137441" stroke-width="2.5" stroke-linecap="round"/><path d="M22 23l4 2m-5 3 4 2m-4 3 4 2m-3 3 4 2m12-17-4 2m5 3-4 2m4 3-4 2m3 3-4 2" stroke="#137441" stroke-width="1.5" stroke-linecap="round"/></svg>')}`;
 let openCricketMatchId = "";
+let cricketBallPoll = null, cricketBallRequest = 0;
+let cricketBallState = {key: "", delivery: "", score: null};
+let cricketBallCursor = {key: "", position: null, initialized: false};
+let celebrationTimer = null;
 const FAVORITES_KEY = "gridline-sports-favorites";
 let sportsFavorites = new Set();
 try {
@@ -733,31 +766,155 @@ function scoreText(team){
   const lines = (team.linescores || []).map(l => l.displayValue || l.value).filter(Boolean);
   return lines.length ? lines.join(" & ") : "—";
 }
-function cricketTabTitle(event){
-  const teams = event.competitions?.[0]?.competitors || [];
+function cricketTabTitle(event, delivery = "", liveScore = null){
+  const teams = (event.competitions?.[0]?.competitors || []).slice(0, 2);
   if (teams.length < 2) return "";
-  const labels = teams.slice(0, 2).map(team => {
+  const liveBattingTeam = liveScore && teams.find(team => String(team.team?.id || team.id || "") === liveScore.teamId);
+  const battingTeam = liveBattingTeam || teams.find(team => (team.linescores || []).some(innings => innings.isCurrent && innings.isBatting));
+  const orderedTeams = battingTeam ? [battingTeam, ...teams.filter(team => team !== battingTeam)] : teams;
+  const labels = orderedTeams.map(team => {
     const name = team.team?.displayName || team.team?.name || team.displayName || "";
     const abbreviation = team.team?.abbreviation || team.abbreviation || name.split(/\s+/).map(part => part[0]).join("");
     const code = String(abbreviation || "TBD").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3) || "TBD";
-    const score = String(scoreText(team)).replace(/\((\d+(?:\.\d+)?)(?:\/\d+(?:\.\d+)?)?\s*ov(?:,[^)]*)?\)/i, "($1)").trim();
+    const score = liveScore && String(team.team?.id || team.id || "") === liveScore.teamId
+      ? liveScore.score
+      : String(scoreText(team)).replace(/\((\d+(?:\.\d+)?)(?:\/\d+(?:\.\d+)?)?\s*ov(?:,[^)]*)?\)/i, "($1)").trim();
     return `${code} ${score}`;
   });
-  return labels.join(" vs ");
+  return `${labels.join(" vs ")}${delivery ? ` · ${delivery}` : ""}`;
+}
+function currentCricketTitleMatch(){
+  const events = liveEvents.cricket || [];
+  const selectedMatch = events.find(event => String(event.id) === openCricketMatchId && stateOf(event) === "in");
+  return selectedMatch || events.filter(event => stateOf(event) === "in").sort((a, b) => {
+    const hasFavorite = event => (event.competitions?.[0]?.competitors || []).some(team => window.isSportsFavorite("cricket-team", cricketTeamId(team)));
+    return Number(hasFavorite(b)) - Number(hasFavorite(a));
+  })[0] || null;
 }
 function updateCricketTabTitle(){
   if (current !== "cricket") {
     document.title = defaultPageTitle;
     return;
   }
-  const events = liveEvents.cricket || [];
-  const selectedMatch = events.find(event => String(event.id) === openCricketMatchId && stateOf(event) === "in");
-  const match = selectedMatch || events.filter(event => stateOf(event) === "in").sort((a, b) => {
-    const hasFavorite = event => (event.competitions?.[0]?.competitors || []).some(team => window.isSportsFavorite("cricket-team", cricketTeamId(team)));
-    return Number(hasFavorite(b)) - Number(hasFavorite(a));
-  })[0];
-  const score = match && cricketTabTitle(match);
+  const match = currentCricketTitleMatch();
+  const key = match ? `${cricketSeriesId(match)}/${match.id}` : "";
+  const ballState = cricketBallState.key === key ? cricketBallState : null;
+  const score = match && cricketTabTitle(match, ballState?.delivery || "", ballState?.score || null);
   document.title = score ? score : defaultPageTitle;
+}
+function deliveryTitle(item){
+  if (!item) return "";
+  const outcome = item.wicket ? "W" : item.extra ? `${item.runs}${item.extra}` : String(item.runs);
+  return `${item.label} ${outcome}`;
+}
+function ballPosition(play){
+  return [play.inn, play.over, play.ball, play.seq];
+}
+function compareBallPositions(a, b){
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    const difference = Number(a[i] || 0) - Number(b[i] || 0);
+    if (difference) return difference;
+  }
+  return 0;
+}
+function showBallCelebration(play){
+  if (!$("scorecard-overlay").classList.contains("open")) return;
+  const overlay = $("ball-celebration");
+  const kind = play.wicket ? "wicket" : play.extra ? "extra" : play.six ? "six" : "run";
+  const mark = play.wicket ? "W"
+    : play.extra === "wd" ? "WD"
+    : play.extra === "nb" ? "NB"
+    : play.extra === "lb" ? "LB"
+    : play.extra === "b" ? "BYE"
+    : play.six ? "SIX"
+    : play.four ? "FOUR"
+    : play.runs === 0 ? "DOT"
+    : String(play.runs);
+  const description = play.wicket ? "Wicket"
+    : play.extra === "wd" ? "Wide"
+    : play.extra === "nb" ? "No ball"
+    : play.extra === "lb" ? "Leg bye"
+    : play.extra === "b" ? "Bye"
+    : play.six ? "Six"
+    : play.four ? "Four"
+    : play.runs === 0 ? "Dot ball"
+    : `${play.runs} run${play.runs === 1 ? "" : "s"}`;
+  const extraRuns = play.extra && play.runs > 0 ? ` · ${play.runs} run${play.runs === 1 ? "" : "s"}` : "";
+  clearTimeout(celebrationTimer);
+  overlay.classList.remove("show", "wicket", "six", "extra", "run");
+  overlay.classList.add(kind);
+  overlay.querySelector(".ball-celebration-mark").textContent = mark;
+  overlay.querySelector(".ball-celebration-label").textContent = `${description}${extraRuns} · Over ${play.label}${play.batter ? ` · ${play.batter}` : ""}`;
+  overlay.setAttribute("aria-label", `${description} at over ${play.label}`);
+  void overlay.offsetWidth;
+  overlay.classList.add("show");
+  celebrationTimer = setTimeout(() => {
+    overlay.classList.remove("show", "wicket", "six", "extra", "run");
+    celebrationTimer = null;
+  }, 1800);
+}
+async function refreshCricketBallTitle(){
+  if (current !== "cricket") return;
+  const request = ++cricketBallRequest;
+  const match = currentCricketTitleMatch();
+  const series = match && cricketSeriesId(match);
+  const key = match && series ? `${series}/${match.id}` : "";
+  if (!key) {
+    cricketBallState = {key: "", delivery: ""};
+    cricketBallCursor = {key: "", position: null, initialized: false};
+    updateCricketTabTitle();
+    return;
+  }
+  if (cricketBallState.key !== key) cricketBallState = {key, delivery: "", score: null};
+  updateCricketTabTitle();
+  try {
+    const result = await fetchPlays(series, String(match.id));
+    if (request !== cricketBallRequest || current !== "cricket") return;
+    const plays = (result.items || []).map(item => ({item, play: normPlay(item)})).filter(entry => entry.play)
+      .sort((a, b) => compareBallPositions(ballPosition(a.play), ballPosition(b.play)));
+    if (cricketBallCursor.key !== key || !cricketBallCursor.initialized) {
+      cricketBallCursor = {
+        key,
+        position: plays.length ? ballPosition(plays[plays.length - 1].play) : null,
+        initialized: true
+      };
+    } else {
+      const newPlays = plays.filter(entry => !cricketBallCursor.position || compareBallPositions(ballPosition(entry.play), cricketBallCursor.position) > 0);
+      if (newPlays.length) {
+        cricketBallCursor.position = ballPosition(newPlays[newPlays.length - 1].play);
+        showBallCelebration(newPlays[newPlays.length - 1].play);
+      }
+    }
+    const latest = plays[plays.length - 1];
+    const inningsRuns = latest && numOr(latest.item.innings?.runs, NaN);
+    const inningsWickets = latest && numOr(latest.item.innings?.wickets, NaN);
+    const teamId = String(latest?.item.team?.id || latest?.item.teamId || "");
+    cricketBallState = {
+      key,
+      delivery: deliveryTitle(latest?.play),
+      score: teamId && Number.isFinite(inningsRuns) && Number.isFinite(inningsWickets)
+        ? {teamId, score: `${inningsRuns}/${inningsWickets} (${latest.play.label})`}
+        : null
+    };
+    updateCricketTabTitle();
+  } catch (error) {
+    if (request === cricketBallRequest) console.warn("Couldn’t update the Cricket Live tab with the latest ball.", error);
+  }
+}
+function syncCricketBallPolling(){
+  clearInterval(cricketBallPoll);
+  cricketBallPoll = null;
+  cricketBallRequest++;
+  if (current !== "cricket") {
+    clearTimeout(celebrationTimer);
+    celebrationTimer = null;
+    $("ball-celebration").classList.remove("show", "wicket", "six", "extra", "run");
+    return;
+  }
+  refreshCricketBallTitle();
+  cricketBallPoll = setInterval(() => {
+    if (current === "cricket") refreshCricketBallTitle();
+  }, 20000);
 }
 function favoriteButton(type, id, name){
   if (!id) return "";
@@ -787,31 +944,98 @@ function scorecardTable(rows, type){
     return `<tr>${cols.map(([key]) => `<td>${esc(key === "strikeRate" ? strikeRate : player[key] || (key === "dismissal" ? "—" : ""))}</td>`).join("")}</tr>`;
   }).join("")}</tbody></table></div>`;
 }
+function parseCricketRuns(value){
+  const direct = numOr(value, NaN);
+  if (Number.isFinite(direct)) return direct;
+  const display = typeof value === "object" && value ? value.displayValue : value;
+  const match = /^\s*(\d+)(?:\/\d+)?/.exec(String(display ?? ""));
+  return match ? Number(match[1]) : NaN;
+}
+function parseCricketBalls(value){
+  const match = /^\s*(\d+)(?:\.(\d+))?\s*(?:ov|overs?)?\s*$/i.exec(String(value ?? ""));
+  if (!match) return NaN;
+  const ballsInOver = Number(match[2] || 0);
+  return ballsInOver <= 6 ? Number(match[1]) * 6 + ballsInOver : NaN;
+}
+function liveBattingMetrics(competition){
+  const competitors = competition.competitors || [];
+  const battingTeamId = competition.status?.battingTeamId;
+  const batting = competitors.find(team => battingTeamId != null && String(team.team?.id || team.id || "") === String(battingTeamId))
+    || competitors.find(team => (team.linescores || []).some(line => line.isCurrent && line.isBatting));
+  const line = batting && (batting.linescores || []).find(item => item.isCurrent && item.isBatting);
+  const inningsLine = line || (batting && (batting.linescores || []).find(item => item.period === competition.status?.period));
+  if (!batting || !inningsLine) return "";
+  const runs = parseCricketRuns(inningsLine.runs ?? inningsLine.value ?? inningsLine.displayValue ?? batting.score);
+  const ballsBowled = numOr(inningsLine.ballsBowled ?? inningsLine.legalBalls, NaN);
+  const parsedBalls = Number.isFinite(ballsBowled) ? ballsBowled : parseCricketBalls(inningsLine.overs ?? inningsLine.over);
+  const calculatedCurrentRate = Number.isFinite(parsedBalls) && parsedBalls > 0 && Number.isFinite(runs) ? runs * 6 / parsedBalls : NaN;
+  const currentRate = Number.isFinite(calculatedCurrentRate) ? calculatedCurrentRate : numOr(inningsLine.runRate ?? inningsLine.currentRunRate, NaN);
+  const rawTarget = numOr(inningsLine.targetRuns ?? inningsLine.targetScore ?? inningsLine.target ?? batting.target ?? competition.target, NaN);
+  const target = rawTarget > 0 ? rawTarget : NaN;
+  const runsNeeded = Number.isFinite(target) && Number.isFinite(runs) ? Math.max(0, target - runs) : NaN;
+  const explicitBallsRemaining = numOr(inningsLine.ballsRemaining ?? inningsLine.remainingBalls, NaN);
+  const maxOvers = numOr(inningsLine.maxOvers ?? inningsLine.scheduledOvers ?? inningsLine.oversLimit ?? competition.maxOvers ?? competition.oversLimit ?? competition.format?.overs, NaN);
+  const ballsRemaining = Number.isFinite(explicitBallsRemaining) ? explicitBallsRemaining
+    : Number.isFinite(maxOvers) && Number.isFinite(parsedBalls) ? Math.max(0, maxOvers * 6 - parsedBalls) : NaN;
+  const requiredRate = Number.isFinite(runsNeeded) && Number.isFinite(ballsRemaining) && ballsRemaining > 0 ? runsNeeded * 6 / ballsRemaining : NaN;
+  const show = value => Number.isFinite(value) ? String(value) : "—";
+  const rate = value => Number.isFinite(value) ? value.toFixed(2) : "—";
+  return `<div class="sc-live-metrics" aria-label="Live batting metrics">
+    <div class="sc-live-metric"><span>Current run rate</span><b>${rate(currentRate)}</b></div>
+    <div class="sc-live-metric"><span>Runs needed</span><b>${show(runsNeeded)}</b></div>
+    <div class="sc-live-metric"><span>Balls remaining</span><b>${show(ballsRemaining)}</b></div>
+    <div class="sc-live-metric"><span>Required run rate</span><b>${rate(requiredRate)}</b></div>
+  </div>`;
+}
 function scorecardHTML(data){
   const cards = data.matchcards || [];
+  const header = data.header || {}, competition = header.competitions?.[0] || {};
+  const competitors = competition.competitors || [];
+  const battingTeamId = competition.status?.battingTeamId;
+  const battingTeam = competitors.find(team => battingTeamId != null && String(team.team?.id || team.id || "") === String(battingTeamId))
+    || competitors.find(team => (team.linescores || []).some(innings => innings.isCurrent && innings.isBatting));
+  const battingName = battingTeam?.team?.displayName || battingTeam?.team?.name || "";
+  const isCurrentBattingInnings = name => !!battingName && flagKey(name).toLowerCase() === flagKey(battingName).toLowerCase();
+  const cardKind = card => ({11: "Batting", 12: "Bowling", 13: "Partnerships"}[Number(card.typeID)] || ({
+    batting: "Batting", bowling: "Bowling", partnerships: "Partnerships"
+  }[String(card.headline || "").toLowerCase()] || ""));
   const teamLookup = {};
-  for (const c of data.header?.competitions?.[0]?.competitors || []) if (c.team) { teamLookup[c.team.displayName] = c.team; teamLookup[flagKey(c.team.displayName)] = c.team; }
+  for (const c of competitors) if (c.team) { teamLookup[c.team.displayName] = c.team; teamLookup[flagKey(c.team.displayName)] = c.team; }
+  const currentPeriod = competition.status?.period == null ? "" : String(competition.status.period);
+  const isBattingCardForTeam = card => cardKind(card) === "Batting"
+    && (!card.teamName || flagKey(card.teamName).toLowerCase() === flagKey(battingName).toLowerCase());
+  const currentBattingCard = battingTeam && (cards.find(card => isBattingCardForTeam(card) && String(card.inningsNumber || "") === currentPeriod)
+    || cards.find(isBattingCardForTeam)
+    || cards.find(card => cardKind(card) === "Batting" && String(card.inningsNumber || "") === currentPeriod));
   const innings = new Map();
   for (const card of cards) {
-    if (!["Batting", "Bowling", "Partnerships"].includes(card.headline)) continue;
+    const kind = cardKind(card);
+    if (!kind) continue;
     const key = `${card.inningsNumber || ""}-${card.teamName || ""}`;
     if (!innings.has(key)) innings.set(key, {team: card.teamName || "Innings", cards: []});
-    innings.get(key).cards.push(card);
+    innings.get(key).cards.push({...card, _scorecardKind: kind, _source: card});
   }
-  const inningsHTML = [...innings.values()].map(innings => `<section class="scorecard-innings">
-    <h4>${teamFlag(teamLookup[innings.team] || teamLookup[flagKey(innings.team)] || {}, innings.team)}${esc(innings.team)}</h4>${innings.cards.map(card => {
-      const batting = card.headline === "Batting" || card.typeID === "11";
-      const label = card.headline || (batting ? "Batting" : "Bowling");
+  if (battingName && ![...innings.values()].some(innings => isCurrentBattingInnings(innings.team))) {
+    innings.set(`current-${currentPeriod}-${battingName}`, {team: battingName, cards: []});
+  }
+  const currentBattingHTML = `<div class="sc-batters-head">Batting scorecard · R / B · 4s / 6s · SR</div>${currentBattingCard?.playerDetails?.length ? scorecardTable(currentBattingCard.playerDetails, "Batting") : `<div class="scorecard-state">Batter-level details aren’t available in ESPN’s scorecard feed yet.</div>`}${currentBattingCard?.extras ? `<div class="scorecard-total"><span>Extras</span><b>${esc(currentBattingCard.extras)}</b></div>` : ""}`;
+  const inningsHTML = [...innings.values()].sort((a, b) => Number(isCurrentBattingInnings(b.team)) - Number(isCurrentBattingInnings(a.team))).map(innings => `<section class="scorecard-innings${isCurrentBattingInnings(innings.team) ? " sc-innings-current" : ""}">
+    <h4>${teamFlag(teamLookup[innings.team] || teamLookup[flagKey(innings.team)] || {}, innings.team)}${esc(innings.team)}${isCurrentBattingInnings(innings.team) ? '<span class="sc-current-badge">BATTING NOW</span>' : ""}</h4>${isCurrentBattingInnings(innings.team) && battingTeam ? `<div class="sc-innings-score"><span>Current innings score</span><b>${esc(scoreText(battingTeam))}</b></div>${currentBattingHTML}` : ""}${innings.cards.map(card => {
+      if (isCurrentBattingInnings(innings.team) && card._source === currentBattingCard) return "";
+      const batting = card._scorecardKind === "Batting";
+      const label = card._scorecardKind;
       return `<div><div class="scorecard-note">${esc(label)}${card.total ? ` · ${esc(card.total)}` : ""}</div>
         ${scorecardTable(card.playerDetails || [], label)}
         ${batting && card.extras ? `<div class="scorecard-total"><span>Extras</span><b>${esc(card.extras)}</b></div>` : ""}</div>`;
     }).join("")}</section>`).join("");
-  const header = data.header || {}, competition = header.competitions?.[0] || {};
   const status = competition.status?.type?.detail || competition.status?.type?.shortDetail || competition.status?.summary || "";
-  const teams = (competition.competitors || []).map(team => `<div class="sc-team-score"><span>${teamFlag(team.team)}<span>${esc(team.team?.displayName || team.team?.name || "Team")}</span></span><b>${esc(scoreText(team))}</b></div>`).join("");
+  const teams = competitors.slice().sort((a, b) => Number((b.linescores || []).some(innings => innings.isCurrent && innings.isBatting)) - Number((a.linescores || []).some(innings => innings.isCurrent && innings.isBatting))).map(team => {
+    const isBatting = (team.linescores || []).some(innings => innings.isCurrent && innings.isBatting);
+    return `<div class="sc-team-score${isBatting ? " sc-innings-current" : ""}"><span>${teamFlag(team.team)}<span>${esc(team.team?.displayName || team.team?.name || "Team")}${isBatting ? ' <small class="sc-current-badge">BATTING</small>' : ""}</span></span><b>${esc(scoreText(team))}</b></div>`;
+  }).join("");
   const venue = data.gameInfo?.venue?.fullName || competition.venue?.fullName || "";
   const officials = (data.gameInfo?.officials || []).map(person => person.displayName).filter(Boolean);
-  return `<div class="sc-match-summary">${status ? `<div class="sc-match-state">${esc(status)}</div>` : ""}<div class="sc-team-scores">${teams || `<div class="scorecard-note">Match scores unavailable</div>`}</div>${venue ? `<div class="sc-match-venue">${esc(venue)}</div>` : ""}</div>
+  return `<div class="sc-match-summary">${status ? `<div class="sc-match-state">${esc(status)}</div>` : ""}<div class="sc-team-scores">${teams || `<div class="scorecard-note">Match scores unavailable</div>`}</div>${liveBattingMetrics(competition)}${venue ? `<div class="sc-match-venue">${esc(venue)}</div>` : ""}</div>
     ${inningsHTML || `<div class="scorecard-state">The provider hasn’t published the detailed innings scorecard yet.</div>`}
     ${officials.length ? `<div class="scorecard-note">Officials · ${esc(officials.join(", "))}</div>` : ""}`;
 }
@@ -843,11 +1067,10 @@ function normPlay(p){
     const m = /(\d+)\s+runs?\b/i.exec(outcome);
     runs = /\bSIX\b/i.test(outcome) ? 6 : /\bFOUR\b/i.test(outcome) ? 4 : m ? +m[1] : /\bone run\b/i.test(outcome) ? 1 : 0;
   }
-  const t = (shortText || text).toLowerCase();
-  const extra = numOr(p.wides, 0) > 0 || /\bwides?\b/.test(t) ? "wd"
-    : numOr(p.noballs, 0) > 0 || /\bno[- ]?balls?\b/.test(t) ? "nb"
-    : numOr(p.legbyes, 0) > 0 || /\bleg[- ]?byes?\b/.test(t) ? "lb"
-    : numOr(p.byes, 0) > 0 || /\bbyes?\b/.test(t) ? "b" : "";
+  const extra = numOr(p.wides, 0) > 0 ? "wd"
+    : numOr(p.noballs, 0) > 0 ? "nb"
+    : numOr(p.legbyes, 0) > 0 ? "lb"
+    : numOr(p.byes, 0) > 0 ? "b" : "";
   const d = p.dismissal;
   const wicket = !!(d && d.dismissal === true) || /\b(OUT|WICKET)\b/.test(shortText || text);
   const m = /^(.+?) to (.+?)(?:,|\.| - |$)/.exec(shortText || text);
@@ -1014,6 +1237,7 @@ function openMatchScorecard(button){
   scorecardFocus = button;
   openCricketMatchId = button.dataset.scorecard || "";
   updateCricketTabTitle();
+  refreshCricketBallTitle();
   scTab = "scorecard"; scLimit = 60;
   $("scorecard-title").textContent = button.dataset.matchName || "Live match";
   $("scorecard-league").textContent = button.dataset.league || "Cricket";
@@ -1027,6 +1251,9 @@ function closeMatchScorecard(){
   clearInterval(scPoll); scPoll = null;
   $("scorecard-overlay").classList.remove("open");
   $("scorecard-overlay").setAttribute("aria-hidden", "true");
+  clearTimeout(celebrationTimer);
+  celebrationTimer = null;
+  $("ball-celebration").classList.remove("show", "wicket", "six", "extra", "run");
   openCricketMatchId = "";
   updateCricketTabTitle();
   if (scorecardFocus?.isConnected) scorecardFocus.focus();
@@ -1116,6 +1343,7 @@ function render(sport, events){
       ? scoreboardHTML(sport, selectedEvents, true)
       : "";
     updateCricketTabTitle();
+    if (current === "cricket") refreshCricketBallTitle();
   }
 }
 function setLiveDot(sport, count){
@@ -1356,6 +1584,7 @@ function show(tab, push){
   });
   document.body.dataset.tab = tab;
   if (push) history.replaceState(null, "", `#${tab}`);
+  syncCricketBallPolling();
   if (LIVE.includes(tab)) loadLive(tab, loaded[tab]);
 }
 $("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) show(b.dataset.tab, true); });
@@ -1395,6 +1624,7 @@ document.addEventListener("keydown", e => {
 });
 setInterval(() => { if (!document.hidden && LIVE.includes(current)) loadLive(current, true); }, REFRESH_MS);
 document.addEventListener("visibilitychange", () => { if (!document.hidden && LIVE.includes(current)) loadLive(current, true); });
+document.addEventListener("visibilitychange", () => syncCricketBallPolling());
 window.addEventListener("hashchange", () => show(location.hash.slice(1), false));
 
 renderStats();
