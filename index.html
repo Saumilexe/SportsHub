@@ -662,6 +662,11 @@ const LIVE = ["cricket", "football"];
 const REFRESH_MS = 60000;
 let current = "f1";
 const loaded = {}, loadIds = {cricket: 0, football: 0}, liveEvents = {};
+const defaultPageTitle = document.title;
+const faviconLink = document.querySelector('link[rel="icon"][type="image/svg+xml"]');
+const defaultFavicon = faviconLink?.href || "";
+const openFavicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="#42d392"/><circle cx="32" cy="32" r="19" fill="#f7ecd2" stroke="#137441" stroke-width="2"/><path d="M20 17c7 8 7 22 0 30m24-30c-7 8-7 22 0 30" fill="none" stroke="#137441" stroke-width="2.5" stroke-linecap="round"/><path d="M22 23l4 2m-5 3 4 2m-4 3 4 2m-3 3 4 2m12-17-4 2m5 3-4 2m4 3-4 2m3 3-4 2" stroke="#137441" stroke-width="1.5" stroke-linecap="round"/></svg>')}`;
+let openCricketMatchId = "";
 const FAVORITES_KEY = "gridline-sports-favorites";
 let sportsFavorites = new Set();
 try {
@@ -727,6 +732,32 @@ function scoreText(team){
   if (team.score != null && team.score !== "") return typeof team.score === "object" ? (team.score.displayValue || "—") : team.score;
   const lines = (team.linescores || []).map(l => l.displayValue || l.value).filter(Boolean);
   return lines.length ? lines.join(" & ") : "—";
+}
+function cricketTabTitle(event){
+  const teams = event.competitions?.[0]?.competitors || [];
+  if (teams.length < 2) return "";
+  const labels = teams.slice(0, 2).map(team => {
+    const name = team.team?.displayName || team.team?.name || team.displayName || "";
+    const abbreviation = team.team?.abbreviation || team.abbreviation || name.split(/\s+/).map(part => part[0]).join("");
+    const code = String(abbreviation || "TBD").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3) || "TBD";
+    const score = String(scoreText(team)).replace(/\((\d+(?:\.\d+)?)(?:\/\d+(?:\.\d+)?)?\s*ov(?:,[^)]*)?\)/i, "($1)").trim();
+    return `${code} ${score}`;
+  });
+  return labels.join(" vs ");
+}
+function updateCricketTabTitle(){
+  if (current !== "cricket") {
+    document.title = defaultPageTitle;
+    return;
+  }
+  const events = liveEvents.cricket || [];
+  const selectedMatch = events.find(event => String(event.id) === openCricketMatchId && stateOf(event) === "in");
+  const match = selectedMatch || events.filter(event => stateOf(event) === "in").sort((a, b) => {
+    const hasFavorite = event => (event.competitions?.[0]?.competitors || []).some(team => window.isSportsFavorite("cricket-team", cricketTeamId(team)));
+    return Number(hasFavorite(b)) - Number(hasFavorite(a));
+  })[0];
+  const score = match && cricketTabTitle(match);
+  document.title = score ? score : defaultPageTitle;
 }
 function favoriteButton(type, id, name){
   if (!id) return "";
@@ -981,6 +1012,8 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
 }
 function openMatchScorecard(button){
   scorecardFocus = button;
+  openCricketMatchId = button.dataset.scorecard || "";
+  updateCricketTabTitle();
   scTab = "scorecard"; scLimit = 60;
   $("scorecard-title").textContent = button.dataset.matchName || "Live match";
   $("scorecard-league").textContent = button.dataset.league || "Cricket";
@@ -994,6 +1027,8 @@ function closeMatchScorecard(){
   clearInterval(scPoll); scPoll = null;
   $("scorecard-overlay").classList.remove("open");
   $("scorecard-overlay").setAttribute("aria-hidden", "true");
+  openCricketMatchId = "";
+  updateCricketTabTitle();
   if (scorecardFocus?.isConnected) scorecardFocus.focus();
 }
 function card(event, sport){
@@ -1080,6 +1115,7 @@ function render(sport, events){
     selected.innerHTML = selectedCricketTeams.size
       ? scoreboardHTML(sport, selectedEvents, true)
       : "";
+    updateCricketTabTitle();
   }
 }
 function setLiveDot(sport, count){
@@ -1309,6 +1345,8 @@ document.querySelectorAll("[data-scene]").forEach(el => { el.innerHTML = SCENES[
 function show(tab, push){
   if (!TABS.includes(tab)) tab = "f1";
   current = tab;
+  if (faviconLink) faviconLink.href = tab === "cricket" ? openFavicon : defaultFavicon;
+  updateCricketTabTitle();
   TABS.forEach((t, i) => {
     const sel = t === tab;
     $(`t-${t}`).setAttribute("aria-selected", sel);

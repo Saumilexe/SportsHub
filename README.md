@@ -7,7 +7,7 @@ A single-page sports hub with four tabs:
 - **Football Live** – live and upcoming matches from the Premier League, Champions League, Europa League, La Liga, Bundesliga, Serie A, Ligue 1 and MLS.
 - **Cricket Stats** – all-time Test / ODI / T20I records, World Cup winners, and player info pop-ups.
 
-The complete Cricket Live scoreboard appears first. Team chips beneath it show an additional scoreboard for matches featuring one or more selected teams; select **All teams** to clear the selection. Use the star buttons to favorite cricket teams, F1 drivers, or F1 constructors. Favorites are saved in this browser and appear first in their live match list or F1 standings.
+The complete Cricket Live scoreboard appears first. Team chips beneath it show an additional scoreboard for matches featuring one or more selected teams; select **All teams** to clear the selection. While Cricket Live is open, the browser tab shows a green cricket favicon and the active live match score; opening a match scorecard shows that match's score. Switching away restores the default favicon and page title. Use the star buttons to favorite cricket teams, F1 drivers, or F1 constructors. Favorites are saved in this browser and appear first in their live match list or F1 standings.
 
 ## Files
 
