@@ -175,10 +175,10 @@ h2{margin:0;font:700 34px/.95 "Barlow Condensed",sans-serif;text-transform:upper
 .sc-innings-current{border-color:#4b9b6b!important;box-shadow:inset 3px 0 #46c78b,0 8px 26px #42d3920c}
 .sc-current-badge{margin-left:auto;padding:4px 8px;border:1px solid #347252;border-radius:99px;background:#173624;color:#9af0bd;font:700 10px Barlow,sans-serif;letter-spacing:.08em}
 .ball-celebration{position:fixed;inset:0;z-index:80;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at center,#153a2bd9,#050806f2 72%);opacity:0;pointer-events:none}
-.ball-celebration.show{animation:ball-celebration-in 1.8s ease both}
+.ball-celebration.show{animation:ball-celebration-in var(--ball-event-duration,1.8s) ease both}
 .ball-celebration::before,.ball-celebration::after{position:absolute;width:min(78vw,560px);aspect-ratio:1;border:1px solid #71f6a633;border-radius:50%;content:"";transform:scale(.35);opacity:0}
-.ball-celebration.show::before{animation:ball-ripple 1.8s ease-out both}
-.ball-celebration.show::after{animation:ball-ripple 1.8s .18s ease-out both}
+.ball-celebration.show::before{animation:ball-ripple var(--ball-event-duration,1.8s) ease-out both}
+.ball-celebration.show::after{animation:ball-ripple var(--ball-event-duration,1.8s) .12s ease-out both}
 .ball-celebration-mark{position:relative;color:#eaffef;font:italic 800 clamp(112px,28vw,250px)/.8 "Barlow Condensed",sans-serif;letter-spacing:-.05em;text-shadow:0 0 25px #42d39299,0 0 90px #42d39266}
 .ball-celebration.wicket .ball-celebration-mark{color:#fff0eb;text-shadow:0 0 25px #ff5b4d99,0 0 90px #ff342966}
 .ball-celebration.six .ball-celebration-mark{color:#fff7d9;text-shadow:0 0 25px #ffc94d99,0 0 90px #ff9f2d66}
@@ -698,8 +698,8 @@ const openFavicon = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http:/
 let openCricketMatchId = "";
 let cricketBallPoll = null, cricketBallRequest = 0;
 let cricketBallState = {key: "", delivery: "", score: null};
-let cricketBallCursor = {key: "", position: null, initialized: false};
-let celebrationTimer = null;
+let cricketBallCursor = {key: "", position: null, initialized: false, ids: new Set()};
+let celebrationTimer = null, ballCelebrationQueue = [];
 const FAVORITES_KEY = "gridline-sports-favorites";
 let sportsFavorites = new Set();
 try {
@@ -817,6 +817,12 @@ function compareBallPositions(a, b){
   }
   return 0;
 }
+function clearBallCelebrations(){
+  clearTimeout(celebrationTimer);
+  celebrationTimer = null;
+  ballCelebrationQueue = [];
+  $("ball-celebration").classList.remove("show", "wicket", "six", "extra", "run");
+}
 function showBallCelebration(play){
   if (!$("scorecard-overlay").classList.contains("open")) return;
   const overlay = $("ball-celebration");
@@ -840,9 +846,11 @@ function showBallCelebration(play){
     : play.runs === 0 ? "Dot ball"
     : `${play.runs} run${play.runs === 1 ? "" : "s"}`;
   const extraRuns = play.extra && play.runs > 0 ? ` · ${play.runs} run${play.runs === 1 ? "" : "s"}` : "";
-  clearTimeout(celebrationTimer);
+  const reducedMotion = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  const duration = reducedMotion ? 420 : play.wicket || play.six || play.four ? 1350 : 850;
   overlay.classList.remove("show", "wicket", "six", "extra", "run");
   overlay.classList.add(kind);
+  overlay.style.setProperty("--ball-event-duration", `${duration}ms`);
   overlay.querySelector(".ball-celebration-mark").textContent = mark;
   overlay.querySelector(".ball-celebration-label").textContent = `${description}${extraRuns} · Over ${play.label}${play.batter ? ` · ${play.batter}` : ""}`;
   overlay.setAttribute("aria-label", `${description} at over ${play.label}`);
@@ -851,7 +859,17 @@ function showBallCelebration(play){
   celebrationTimer = setTimeout(() => {
     overlay.classList.remove("show", "wicket", "six", "extra", "run");
     celebrationTimer = null;
-  }, 1800);
+    playNextBallCelebration();
+  }, duration);
+}
+function playNextBallCelebration(){
+  if (!ballCelebrationQueue.length || !$("scorecard-overlay").classList.contains("open")) return;
+  showBallCelebration(ballCelebrationQueue.shift());
+}
+function enqueueBallCelebrations(plays){
+  if (!$("scorecard-overlay").classList.contains("open")) return;
+  ballCelebrationQueue.push(...plays);
+  if (celebrationTimer === null) playNextBallCelebration();
 }
 async function refreshCricketBallTitle(){
   if (current !== "cricket") return;
@@ -861,28 +879,44 @@ async function refreshCricketBallTitle(){
   const key = match && series ? `${series}/${match.id}` : "";
   if (!key) {
     cricketBallState = {key: "", delivery: ""};
-    cricketBallCursor = {key: "", position: null, initialized: false};
+    cricketBallCursor = {key: "", position: null, initialized: false, ids: new Set()};
+    clearBallCelebrations();
     updateCricketTabTitle();
     return;
   }
-  if (cricketBallState.key !== key) cricketBallState = {key, delivery: "", score: null};
+  if (cricketBallState.key !== key) {
+    cricketBallState = {key, delivery: "", score: null};
+    clearBallCelebrations();
+  }
   updateCricketTabTitle();
   try {
     const result = await fetchPlays(series, String(match.id));
     if (request !== cricketBallRequest || current !== "cricket") return;
-    const plays = (result.items || []).map(item => ({item, play: normPlay(item)})).filter(entry => entry.play)
-      .sort((a, b) => compareBallPositions(ballPosition(a.play), ballPosition(b.play)));
-    if (cricketBallCursor.key !== key || !cricketBallCursor.initialized) {
-      cricketBallCursor = {
-        key,
-        position: plays.length ? ballPosition(plays[plays.length - 1].play) : null,
-        initialized: true
-      };
+    const ids = new Set();
+    const plays = (result.items || []).map(item => ({item, play: normPlay(item)})).filter(entry => {
+      if (!entry.play || ids.has(entry.play.id)) return false;
+      ids.add(entry.play.id);
+      return true;
+    }).sort((a, b) => compareBallPositions(ballPosition(a.play), ballPosition(b.play)));
+    if (cricketBallCursor.key !== key) {
+      cricketBallCursor = {key, position: null, initialized: false, ids: new Set()};
+    }
+    if (!cricketBallCursor.initialized) {
+      if (plays.length) {
+        cricketBallCursor = {
+          key,
+          position: ballPosition(plays[plays.length - 1].play),
+          initialized: true,
+          ids: new Set(plays.map(entry => entry.play.id))
+        };
+      }
     } else {
-      const newPlays = plays.filter(entry => !cricketBallCursor.position || compareBallPositions(ballPosition(entry.play), cricketBallCursor.position) > 0);
+      const newPlays = plays.filter(entry => !cricketBallCursor.ids.has(entry.play.id)
+        && (!cricketBallCursor.position || compareBallPositions(ballPosition(entry.play), cricketBallCursor.position) > 0));
       if (newPlays.length) {
         cricketBallCursor.position = ballPosition(newPlays[newPlays.length - 1].play);
-        showBallCelebration(newPlays[newPlays.length - 1].play);
+        newPlays.forEach(entry => cricketBallCursor.ids.add(entry.play.id));
+        enqueueBallCelebrations(newPlays.map(entry => entry.play));
       }
     }
     const latest = plays[plays.length - 1];
@@ -906,9 +940,7 @@ function syncCricketBallPolling(){
   cricketBallPoll = null;
   cricketBallRequest++;
   if (current !== "cricket") {
-    clearTimeout(celebrationTimer);
-    celebrationTimer = null;
-    $("ball-celebration").classList.remove("show", "wicket", "six", "extra", "run");
+    clearBallCelebrations();
     return;
   }
   refreshCricketBallTitle();
@@ -957,6 +989,11 @@ function parseCricketBalls(value){
   const ballsInOver = Number(match[2] || 0);
   return ballsInOver <= 6 ? Number(match[1]) * 6 + ballsInOver : NaN;
 }
+function parseCricketOversLimit(score){
+  const display = typeof score === "object" && score ? score.displayValue : score;
+  const match = /\/\s*(\d+(?:\.\d+)?)\s*ov\b/i.exec(String(display ?? ""));
+  return match ? Number(match[1]) : NaN;
+}
 function liveBattingMetrics(competition){
   const competitors = competition.competitors || [];
   const battingTeamId = competition.status?.battingTeamId;
@@ -974,9 +1011,11 @@ function liveBattingMetrics(competition){
   const target = rawTarget > 0 ? rawTarget : NaN;
   const runsNeeded = Number.isFinite(target) && Number.isFinite(runs) ? Math.max(0, target - runs) : NaN;
   const explicitBallsRemaining = numOr(inningsLine.ballsRemaining ?? inningsLine.remainingBalls, NaN);
-  const maxOvers = numOr(inningsLine.maxOvers ?? inningsLine.scheduledOvers ?? inningsLine.oversLimit ?? competition.maxOvers ?? competition.oversLimit ?? competition.format?.overs, NaN);
-  const ballsRemaining = Number.isFinite(explicitBallsRemaining) ? explicitBallsRemaining
-    : Number.isFinite(maxOvers) && Number.isFinite(parsedBalls) ? Math.max(0, maxOvers * 6 - parsedBalls) : NaN;
+  const maxOvers = numOr(inningsLine.maxOvers ?? inningsLine.scheduledOvers ?? inningsLine.oversLimit ?? competition.maxOvers ?? competition.oversLimit ?? competition.format?.overs, parseCricketOversLimit(batting.score));
+  const ballsRemaining = Number.isFinite(target)
+    ? Number.isFinite(explicitBallsRemaining) ? explicitBallsRemaining
+      : Number.isFinite(maxOvers) && Number.isFinite(parsedBalls) ? Math.max(0, maxOvers * 6 - parsedBalls) : NaN
+    : NaN;
   const requiredRate = Number.isFinite(runsNeeded) && Number.isFinite(ballsRemaining) && ballsRemaining > 0 ? runsNeeded * 6 / ballsRemaining : NaN;
   const show = value => Number.isFinite(value) ? String(value) : "—";
   const rate = value => Number.isFinite(value) ? value.toFixed(2) : "—";
@@ -1251,9 +1290,7 @@ function closeMatchScorecard(){
   clearInterval(scPoll); scPoll = null;
   $("scorecard-overlay").classList.remove("open");
   $("scorecard-overlay").setAttribute("aria-hidden", "true");
-  clearTimeout(celebrationTimer);
-  celebrationTimer = null;
-  $("ball-celebration").classList.remove("show", "wicket", "six", "extra", "run");
+  clearBallCelebrations();
   openCricketMatchId = "";
   updateCricketTabTitle();
   if (scorecardFocus?.isConnected) scorecardFocus.focus();
