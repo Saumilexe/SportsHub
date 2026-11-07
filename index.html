@@ -330,6 +330,45 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
  .f1x-tl{padding-left:26px}.f1x-tl::before{left:9px}.f1x-race .node{left:-23px}
  .f1x-race summary{grid-template-columns:34px minmax(0,1fr) auto;gap:10px;padding:12px}
  .f1x-race .flag{font-size:24px}.f1x-race .nm b{font-size:21px}.f1x-tile{min-width:48px}.f1x-tile b{font-size:25px}.f1x-ss{padding:0 12px 12px}}
+/* ---- Cricket: over by over + commentary ---- */
+.sc-tabs{margin:14px 0 4px}
+.sc-tabs button{padding:7px 12px;font-size:13px}
+.sc-inn{margin-top:14px;padding:12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}
+.sc-inn h4{display:flex;align-items:center;gap:9px;margin:0 0 8px;font:700 17px "Barlow Condensed",sans-serif;text-transform:uppercase;color:var(--accent)}
+.sc-inn h4 .flag{width:22px;height:22px}
+.sc-stats{display:flex;flex-wrap:wrap;gap:4px 16px;margin-bottom:8px;color:var(--mute);font-size:12px}
+.sc-stats b{color:var(--ink);font-weight:700}
+.sc-chart{display:block;width:100%;height:auto;max-height:96px;margin:2px 0 10px}
+.sc-chart .bar{fill:var(--accent);opacity:.85}
+.sc-chart .base{stroke:var(--line);stroke-width:1}
+.sc-chart .wk{fill:#ff5a4f}
+.sc-overs,.sc-feed{list-style:none;margin:0;padding:0}
+.sc-overs li{display:grid;grid-template-columns:34px minmax(0,1fr) 34px 58px;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.sc-overs .n{font:800 20px "Barlow Condensed",sans-serif;color:var(--mute);text-align:center}
+.sc-overs .b{min-width:0}
+.sc-overs .b small{display:block;margin-top:4px;color:var(--mute);font-size:12px}
+.sc-overs .r{font:800 22px "Barlow Condensed",sans-serif;text-align:right}
+.sc-overs .c{text-align:right;color:var(--mute);font-size:12px;font-variant-numeric:tabular-nums}
+.sc-overs li.partial .n::after{content:"*";color:var(--accent)}
+.bc{display:inline-grid;place-items:center;min-width:25px;height:25px;margin:0 4px 3px 0;padding:0 5px;border-radius:99px;background:var(--bg);border:1px solid var(--line);font:700 13px/1 Barlow,sans-serif;color:var(--ink)}
+.bc.dot{color:var(--mute)}
+.bc.b4{background:#1f6f43;border-color:#2fa064}
+.bc.b6{background:#5a35b0;border-color:#8a63e6}
+.bc.w{background:#b3261e;border-color:#ff5a4f;color:#fff}
+.bc.ex{background:#6b5311;border-color:#c9a227;color:#ffe08a;font-size:11px}
+.sc-feed .h{margin:16px 0 4px;font:700 15px "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.sc-feed .eo{margin:10px 0 4px;padding:7px 10px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;font-size:12px;color:var(--mute)}
+.sc-feed .eo b{color:var(--ink)}
+.sc-ball{display:grid;grid-template-columns:42px 30px minmax(0,1fr);gap:8px;align-items:start;padding:9px 0;border-top:1px solid var(--line);font-size:14px}
+.sc-ball .o{font:700 14px "Barlow Condensed",sans-serif;color:var(--mute);padding-top:3px;font-variant-numeric:tabular-nums}
+.sc-ball.is-w .t{color:#ff9a92;font-weight:600}
+.sc-ball.is-6 .t,.sc-ball.is-4 .t{font-weight:600}
+.sc-more{display:block;margin:10px auto 0}
+.sc-diag{margin-top:10px;font-size:12px}
+.sc-diag summary{cursor:pointer;color:var(--mute)}
+.sc-diag ul{margin:6px 0 0;padding-left:18px;color:var(--mute)}
+.sc-diag a{color:var(--accent)}
+@media(max-width:640px){.sc-overs li{grid-template-columns:28px minmax(0,1fr) 30px 50px;gap:6px}.sc-ball{grid-template-columns:36px 28px minmax(0,1fr);gap:6px}}
 @media(prefers-reduced-motion:reduce){.scene *{animation:none!important}.sixtxt,.goaltxt,.gotxt{opacity:0}.fcar{opacity:1}.fc1{transform:translate(400px,0)}.fc2{transform:translate(150px,0)}.fc3,.fc4{display:none}}
 </style>
 </head>
@@ -619,6 +658,232 @@ function scorecardHTML(data){
     ${officials.length ? `<div class="scorecard-note">Officials: ${esc(officials.join(", "))}</div>` : ""}`;
 }
 let scorecardRequest = 0, scorecardFocus = null;
+/* ---------- Over by over + commentary (inside the cricket scorecard) ---------- */
+let scTab = "scorecard", scCur = {match: "", series: ""}, scInningsTeams = {}, scLive = false, scPlays = {key: "", at: 0, items: null}, scLimit = 60, scPoll = null;
+const numOr = (v, d) => { const n = Number(v); return v !== null && v !== "" && Number.isFinite(n) ? n : d; };
+
+
+const ciStrip = x => String(x || "").replace(/<[^>]+>/g, " ").replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/\s+/g, " ").trim();
+function ciFindDeliveries(node, depth = 0){
+  if (!node || typeof node !== "object" || depth > 6) return null;
+  if (Array.isArray(node)) {
+    if (node.length && node[0] && typeof node[0] === "object" && "oversActual" in node[0]) return node;
+    for (const v of node) { const r = ciFindDeliveries(v, depth + 1); if (r) return r; }
+    return null;
+  }
+  for (const v of Object.values(node)) { const r = ciFindDeliveries(v, depth + 1); if (r) return r; }
+  return null;
+}
+function ciFindKey(node, key, depth = 0){
+  if (!node || typeof node !== "object" || depth > 6) return undefined;
+  if (!Array.isArray(node) && key in node) return node[key];
+  for (const v of Object.values(node)) { const r = ciFindKey(v, key, depth + 1); if (r !== undefined) return r; }
+  return undefined;
+}
+// One raw ESPNcricinfo comment -> our delivery record (the server does the same before sending).
+function normCricinfoRaw(c, fallbackInn){
+  const oa = Number(c && c.oversActual);
+  if (!Number.isFinite(oa)) return null;
+  let over0 = Math.trunc(oa), ball = Math.round((oa - over0) * 10);
+  if (ball === 0 && over0 > 0) { over0 -= 1; ball = 6; }
+  if (ball < 1) return null;
+  const inn = Number(c.inningNumber) || fallbackInn || 1;
+  const runs = Number(c.totalRuns ?? c.scoreValue ?? 0) || 0;
+  const extra = c.wides > 0 ? "wd" : c.noballs > 0 ? "nb" : c.legbyes > 0 ? "lb" : c.byes > 0 ? "b" : "";
+  const nameOf = o => (o && (o.name || o.longName || o.battingName || o.fieldingName)) || "";
+  const title = ciStrip(c.title);
+  const outcome = c.isWicket ? "OUT" : c.isSix ? "SIX" : c.isFour ? "FOUR" : extra === "wd" ? "wide" : extra === "nb" ? "no ball" : extra === "lb" ? "leg byes" : extra === "b" ? "byes" : runs === 0 ? "no run" : `${runs} run${runs === 1 ? "" : "s"}`;
+  const commentary = (c.commentTextItems || []).map(x => ciStrip(x && (x.html || x.text))).filter(Boolean).join(" ");
+  const dismissal = c.isWicket && c.dismissalText ? ciStrip(c.dismissalText.commentary || c.dismissalText.long || c.dismissalText.short) : "";
+  const text = [title ? `${title}, ${outcome}` : outcome, commentary, dismissal].filter(Boolean).join(". ");
+  const m = /^(.+?) to (.+)$/.exec(title);
+  return {norm: true, id: String(c.id ?? `${inn}-${oa}-${runs}`), seq: Number(c.id) || inn * 1e5 + over0 * 10 + ball, inn, over: over0 + 1, ball,
+    label: `${over0}.${ball}`, text, runs, extra, wicket: !!c.isWicket, four: !!c.isFour && !extra, six: !!c.isSix && !extra,
+    bowler: nameOf(c.bowler) || (m ? m[1] : ""), batter: nameOf(c.batsman) || (m ? m[2] : "")};
+}
+// Last resort when /api/scoreboard can't be reached: ask Cricinfo straight from the browser (may be blocked by CORS).
+async function fetchCricinfoDirect(series, match, attempts){
+  const out = [];
+  await Promise.all([1, 2, 3, 4].map(async inn => {
+    let from = null;
+    for (let page = 0; page < 4; page++) {
+      const url = `https://hs-consumer-api.espncricinfo.com/v1/pages/match/comments?lang=en&seriesId=${encodeURIComponent(series)}&matchId=${encodeURIComponent(match)}&inningNumber=${inn}&commentType=ALL&sortDirection=DESC${from != null ? "&fromInningOver=" + encodeURIComponent(from) : ""}`;
+      try {
+        const r = await fetch(url);
+        if (inn === 1 || !r.ok) attempts.push({name: `Cricinfo (direct), innings ${inn}`, url, status: r.status});
+        if (!r.ok) return;
+        const j = await r.json(), list = ciFindDeliveries(j) || [];
+        list.forEach(c => { const n = normCricinfoRaw(c, inn); if (n) out.push(n); });
+        const next = ciFindKey(j, "nextInningOver");
+        if (!list.length || next == null || next === from) return;
+        from = next;
+      } catch (e) { if (inn === 1) attempts.push({name: "Cricinfo (direct)", url, status: 0, note: "blocked by the browser (CORS) or offline"}); return; }
+    }
+  }));
+  return out;
+}
+
+// Turns one raw ESPN "play" into a simple delivery record (or null if it isn't a delivery).
+function normPlay(p){
+  if (!p || typeof p !== "object") return null;
+  if (p.norm) return p;
+  if (p.oversActual !== undefined && p.over === undefined) return normCricinfoRaw(p);
+  const text = String(p.text || p.shortText || p.description || "").replace(/\s+/g, " ").trim();
+  const ov = p.over || {};
+  let over0 = numOr(ov.overs, NaN), ball = numOr(ov.ball, NaN);
+  if (!Number.isFinite(over0) || !Number.isFinite(ball)) {
+    const actual = numOr(ov.actual ?? ov.unique, NaN);
+    if (!Number.isFinite(actual)) return null;
+    over0 = Math.trunc(actual); ball = Math.round((actual - over0) * 10);
+  }
+  if (ball === 0 && over0 > 0) { over0 -= 1; ball = 6; }      // "13.0" style = last ball of over 13
+  if (!(ball >= 1)) return null;
+  let runs = numOr(p.scoreValue, NaN);
+  if (!Number.isFinite(runs)) {
+    const m = /(\d+)\s+runs?\b/i.exec(text);
+    runs = /\bSIX\b/i.test(text) ? 6 : /\bFOUR\b/i.test(text) ? 4 : m ? +m[1] : /\bone run\b/i.test(text) ? 1 : 0;
+  }
+  const t = text.toLowerCase();
+  const extra = numOr(p.wides, 0) > 0 || /\bwides?\b/.test(t) ? "wd"
+    : numOr(p.noballs, 0) > 0 || /\bno[- ]?balls?\b/.test(t) ? "nb"
+    : numOr(p.legbyes, 0) > 0 || /\bleg[- ]?byes?\b/.test(t) ? "lb"
+    : numOr(p.byes, 0) > 0 || /\bbyes?\b/.test(t) ? "b" : "";
+  const d = p.dismissal;
+  const wicket = !!(d && d.dismissal === true) || /\b(OUT|WICKET)\b/.test(text);
+  const m = /^(.+?) to (.+?)(?:,|\.| - |$)/.exec(text);
+  const inn = numOr(p.period ?? (p.innings && (p.innings.number ?? p.innings.id)), 1);
+  const seq = numOr(p.sequenceNumber, numOr(p.id, inn * 1e4 + over0 * 10 + ball));
+  return {id: String(p.id ?? p.$ref ?? seq), seq, inn, over: over0 + 1, ball, label: `${over0}.${ball}`, text, runs, extra, wicket,
+    four: runs === 4 && !extra && !wicket, six: runs === 6 && !extra && !wicket,
+    bowler: (p.bowler && p.bowler.athlete && p.bowler.athlete.displayName) || (m ? m[1] : ""), batter: m ? m[2] : ""};
+}
+function analysePlays(items){
+  const seen = new Set(), balls = [];
+  for (const p of items || []) { const b = normPlay(p); if (b && !seen.has(b.id)) { seen.add(b.id); balls.push(b); } }
+  balls.sort((a, b) => a.inn - b.inn || a.over - b.over || a.ball - b.ball || a.seq - b.seq);
+  const byInn = new Map();
+  for (const b of balls) {
+    if (!byInn.has(b.inn)) byInn.set(b.inn, {inn: b.inn, overs: new Map(), runs: 0, wkts: 0, legal: 0, fours: 0, sixes: 0, dots: 0});
+    const I = byInn.get(b.inn);
+    let o = I.overs.get(b.over);
+    if (!o) { o = {over: b.over, balls: [], runs: 0, wkts: 0, legal: 0, bowlers: {}}; I.overs.set(b.over, o); }
+    o.balls.push(b); o.runs += b.runs; if (b.wicket) o.wkts++;
+    const legal = b.extra !== "wd" && b.extra !== "nb";
+    if (legal) { o.legal++; I.legal++; }
+    if (b.bowler) o.bowlers[b.bowler] = (o.bowlers[b.bowler] || 0) + 1;
+    I.runs += b.runs; if (b.wicket) I.wkts++; if (b.four) I.fours++; if (b.six) I.sixes++; if (b.runs === 0 && !b.extra) I.dots++;
+  }
+  return [...byInn.values()].sort((a, b) => a.inn - b.inn).map(I => {
+    let r = 0, w = 0;
+    const overs = [...I.overs.values()].sort((a, b) => a.over - b.over);
+    overs.forEach(o => { r += o.runs; w += o.wkts; o.cumRuns = r; o.cumWk = w; o.bowler = Object.entries(o.bowlers).sort((a, b) => b[1] - a[1])[0]?.[0] || ""; o.complete = o.legal >= 6; });
+    return {...I, overs, rr: I.legal ? I.runs / I.legal * 6 : 0, oversText: `${Math.floor(I.legal / 6)}.${I.legal % 6}`};
+  });
+}
+function ballChip(b){
+  const cls = b.wicket ? "w" : b.six ? "b6" : b.four ? "b4" : b.extra ? "ex" : b.runs === 0 ? "dot" : "";
+  const lab = b.wicket ? "W" : b.extra ? (b.runs > 1 ? `${b.runs}${b.extra}` : b.extra) : b.runs === 0 ? "•" : String(b.runs);
+  return `<span class="bc ${cls}" title="${esc(b.label + " " + b.text)}">${esc(lab)}</span>`;
+}
+function inningsTitle(I){
+  const name = scInningsTeams[I.inn] || scInningsTeams[String(I.inn)] || "";
+  return `${name ? teamFlag({}, name) : ""}${esc(name || "Innings " + I.inn)}${name ? ` <span class="sc-stats" style="margin:0"> · innings ${I.inn}</span>` : ""}`;
+}
+function overChart(overs){
+  const n = Math.max(overs.length, 20), W = n * 14, H = 66, max = Math.max(10, ...overs.map(o => o.runs));
+  const bars = overs.map((o, i) => {
+    const h = Math.max(o.runs ? 2 : 0, Math.round(o.runs / max * (H - 16))), x = i * 14 + 2;
+    return `<g><title>Over ${o.over}: ${o.runs} run${o.runs === 1 ? "" : "s"}${o.wkts ? ", " + o.wkts + " wkt" : ""}</title><rect class="bar" x="${x}" y="${H - h}" width="10" height="${h}" rx="2"/>${o.wkts ? `<circle class="wk" cx="${x + 5}" cy="${H - h - 5}" r="3.2"/>` : ""}</g>`;
+  }).join("");
+  return `<svg class="sc-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMinYMax meet" role="img" aria-label="Runs per over; red dots mark wickets">${bars}<line class="base" x1="0" y1="${H}" x2="${W}" y2="${H}"/></svg>`;
+}
+function oversHTML(an){
+  return an.map(I => `<section class="sc-inn"><h4>${inningsTitle(I)}</h4>
+    <div class="sc-stats"><span><b>${I.runs}/${I.wkts}</b> after ${esc(I.oversText)} ov</span><span>Run rate <b>${I.rr.toFixed(2)}</b></span><span>4s <b>${I.fours}</b></span><span>6s <b>${I.sixes}</b></span><span>Dots <b>${I.dots}</b></span></div>
+    ${overChart(I.overs)}
+    <ol class="sc-overs">${I.overs.slice().reverse().map(o => `<li class="${o.complete ? "" : "partial"}"><span class="n">${o.over}</span>
+      <span class="b">${o.balls.map(ballChip).join("")}${o.bowler ? `<small>${esc(o.bowler)}</small>` : ""}</span>
+      <span class="r">${o.runs}</span><span class="c">${o.cumRuns}/${o.cumWk}</span></li>`).join("")}</ol></section>`).join("");
+}
+function commentaryHTML(an, limit){
+  let shown = 0, more = false, html = "";
+  outer: for (const I of an.slice().reverse()) {
+    html += `<li class="h">${inningsTitle(I)}</li>`;
+    for (const o of I.overs.slice().reverse()) {
+      if (o.complete) html += `<li class="eo"><b>End of over ${o.over}</b> · ${o.runs} run${o.runs === 1 ? "" : "s"}${o.wkts ? ` · ${o.wkts} wkt${o.wkts > 1 ? "s" : ""}` : ""} · ${o.cumRuns}/${o.cumWk}${o.bowler ? " · " + esc(o.bowler) : ""}</li>`;
+      for (const b of o.balls.slice().reverse()) {
+        if (shown >= limit) { more = true; break outer; }
+        shown++;
+        html += `<li class="sc-ball ${b.wicket ? "is-w" : b.six ? "is-6" : b.four ? "is-4" : ""}"><span class="o">${esc(b.label)}</span>${ballChip(b)}<span class="t">${esc(b.text || "—")}</span></li>`;
+      }
+    }
+  }
+  return `<ul class="sc-feed">${html}</ul>${more ? `<button type="button" class="scorecard-toggle sc-more" data-sc-more>Show earlier balls</button>` : ""}`;
+}
+async function fetchPlays(series, match){
+  const attempts = [];
+  let hint = "";
+  try {
+    const r = await fetch(`/api/scoreboard?sport=cricket&view=commentary&league=${encodeURIComponent(series)}&event=${encodeURIComponent(match)}`);
+    const j = await r.json().catch(() => null);
+    if (j && Array.isArray(j.attempts)) attempts.push(...j.attempts);
+    if (r.ok && j && Array.isArray(j.items) && j.attempts) return {items: j.items, partial: !!j.partial, attempts};
+    attempts.push({name: "Our API", status: r.status, note: (j && j.error) || (r.ok ? "the commentary route isn’t deployed — update api/scoreboard.js" : "")});
+  } catch (e) {
+    const local = location.protocol === "file:";
+    attempts.push({name: "Our API", status: 0, note: e.message + (local ? " — this page was opened as a local file" : " — /api/scoreboard can’t be reached")});
+    hint = local
+      ? "You opened this page as a local file, so its /api/scoreboard function doesn’t exist. Deploy the project to Vercel (or run `vercel dev`) and open it from there."
+      : "This page can’t reach its /api/scoreboard function. That happens when it’s hosted somewhere without serverless functions (for example GitHub Pages) or the api folder wasn’t deployed. Host it on Vercel with api/scoreboard.js.";
+  }
+  // The API isn't there: try Cricinfo straight from the browser (works only if Cricinfo allows it).
+  const direct = await fetchCricinfoDirect(series, match, attempts);
+  if (direct.length) return {items: direct, partial: true, attempts};
+  const err = new Error("Ball-by-ball data couldn’t be loaded");
+  err.attempts = attempts; err.hint = hint;
+  throw err;
+}
+function diagHTML(attempts){
+  if (!attempts || !attempts.length) return "";
+  return `<details class="sc-diag"><summary>Technical details</summary><ul>${attempts.slice(0, 14).map(a =>
+    `<li>${esc(a.name)} — ${a.status ? "HTTP " + esc(a.status) : "no response"}${a.note ? " · " + esc(a.note) : ""}${a.url ? ` · <a href="${esc(a.url)}" target="_blank" rel="noopener">open</a>` : ""}</li>`).join("")}</ul></details>`;
+}
+async function getPlays(force){
+  const key = `${scCur.series}/${scCur.match}`;
+  if (!force && scPlays.key === key && scPlays.items && Date.now() - scPlays.at < 15000) return scPlays.items;
+  const res = await fetchPlays(scCur.series, scCur.match);
+  scPlays = {key, at: Date.now(), items: res};
+  return res;
+}
+async function renderPlaysPane(tab, force){
+  const pane = $("sc-pane-" + tab); if (!pane) return;
+  const request = scorecardRequest;
+  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${tab === "overs" ? "over-by-over stats" : "commentary"}…</div>`;
+  try {
+    const res = await getPlays(force);
+    const an = analysePlays(res.items);
+    if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
+    pane.dataset.done = "1";
+    pane.innerHTML = !an.length
+      ? `<div class="scorecard-state">Ball-by-ball data isn’t available for this match from our data source. It is only published for some matches, and usually once play has started.${diagHTML(res.attempts)}</div>`
+      : (tab === "overs" ? oversHTML(an) : commentaryHTML(an, scLimit)) + (res.partial ? `<div class="scorecard-state" style="margin-top:10px">Showing the most recent overs of each innings.</div>` : "");
+  } catch (err) {
+    if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
+    if (pane.dataset.done) return;                                   // keep last good data on a failed background refresh
+    pane.innerHTML = `<div class="scorecard-state">${esc(err.message)}. <button type="button" class="scorecard-toggle" data-sc-retry>Retry</button>${err.hint ? `<p style="margin:10px 0 0">${esc(err.hint)}</p>` : ""}${diagHTML(err.attempts)}</div>`;
+  }
+}
+function showScTab(tab){
+  scTab = tab;
+  document.querySelectorAll("[data-sctab]").forEach(b => b.setAttribute("aria-pressed", b.dataset.sctab === tab));
+  ["scorecard", "overs", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
+  clearInterval(scPoll); scPoll = null;
+  if (tab !== "scorecard") {
+    renderPlaysPane(tab, false);
+    if (scLive) scPoll = setInterval(() => { if (!document.hidden && $("scorecard-overlay").classList.contains("open")) renderPlaysPane(scTab, true); }, 20000);
+  }
+}
+
 async function loadMatchScorecard(matchId, seriesId, buttonText){
   const request = ++scorecardRequest;
   const content = $("scorecard-content");
@@ -628,7 +893,16 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
     if (!res.ok) throw new Error(`Scorecard returned HTTP ${res.status}`);
     const data = await res.json();
     if (request !== scorecardRequest) return;
-    content.innerHTML = `${scorecardHTML(data)}<button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
+    scCur = {match: matchId, series: seriesId};
+    scInningsTeams = {};
+    for (const c of data.matchcards || []) if (c.inningsNumber && c.teamName) scInningsTeams[c.inningsNumber] = c.teamName;
+    scLive = (data.header?.competitions?.[0]?.status?.type?.state) === "in";
+    scPlays = {key: "", at: 0, items: null};
+    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["commentary", "Commentary"]];
+    content.innerHTML = `<div class="seg sc-tabs" role="group" aria-label="Match view">${tabs.map(([k, l]) => `<button type="button" data-sctab="${k}" aria-pressed="${k === scTab}">${l}</button>`).join("")}</div>
+      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
+      <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
+    showScTab(scTab);
   } catch (error) {
     if (request !== scorecardRequest) return;
     content.innerHTML = `<div class="scorecard-state">${esc(error.message)} <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">Retry</button></div>`;
@@ -636,6 +910,7 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
 }
 function openMatchScorecard(button){
   scorecardFocus = button;
+  scTab = "scorecard"; scLimit = 60;
   $("scorecard-title").textContent = button.dataset.matchName || "Live match";
   $("scorecard-league").textContent = button.dataset.league || "Cricket";
   $("scorecard-overlay").classList.add("open");
@@ -645,6 +920,7 @@ function openMatchScorecard(button){
 }
 function closeMatchScorecard(){
   ++scorecardRequest;
+  clearInterval(scPoll); scPoll = null;
   $("scorecard-overlay").classList.remove("open");
   $("scorecard-overlay").setAttribute("aria-hidden", "true");
   if (scorecardFocus?.isConnected) scorecardFocus.focus();
@@ -934,6 +1210,9 @@ document.addEventListener("click", e => {
   const r = e.target.closest("[data-refresh]"); if (r) loadLive(r.dataset.refresh, false);
   const scorecardOpen = e.target.closest("[data-scorecard-open]");
   if (scorecardOpen) openMatchScorecard(scorecardOpen);
+  const sct = e.target.closest("[data-sctab]"); if (sct) showScTab(sct.dataset.sctab);
+  if (e.target.closest("[data-sc-more]")) { scLimit += 60; renderPlaysPane("commentary", false); }
+  if (e.target.closest("[data-sc-retry]")) renderPlaysPane(scTab, true);
   const scorecardRefresh = e.target.closest("[data-scorecard-refresh]");
   if (scorecardRefresh) loadMatchScorecard(scorecardRefresh.dataset.scorecard, scorecardRefresh.dataset.series, "Refresh scorecard");
   if (e.target.closest("[data-scorecard-close]") || e.target === $("scorecard-overlay")) closeMatchScorecard();
