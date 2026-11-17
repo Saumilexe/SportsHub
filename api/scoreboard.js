@@ -2,6 +2,8 @@
 // GET /api/scoreboard?sport=cricket   -> live/upcoming INTERNATIONAL cricket matches
 // GET /api/scoreboard?sport=football  -> live/today's football matches across top leagues
 // GET /api/scoreboard?sport=f1        -> current F1 race weekend (sessions + live running order)
+// GET /api/scoreboard?sport=cricket&view=recent -> finished international matches from the last 7 days
+// GET /api/scoreboard?sport=f1&view=header -> ESPN's F1 header feed (second source for live positions)
 // GET /api/scoreboard?sport=cricket&view=commentary&league=<seriesId>&event=<matchId> -> recent ball-by-ball plays
 
 const FOOTBALL_LEAGUES = {
@@ -91,6 +93,31 @@ async function cricket() {
   }).filter(e => !e._skip);
 }
 
+
+// Finished international matches from the last few days (used by the My Sports "last match" cards).
+async function cricketRecent(days = 7) {
+  const ids = (await discoverCricketSeries()).slice(0, 8);
+  const dates = Array.from({ length: days }, (_, i) => {
+    const d = new Date(); d.setUTCDate(d.getUTCDate() - i);
+    return d.toISOString().slice(0, 10).replaceAll("-", "");
+  });
+  const deadline = new Promise(resolve => setTimeout(() => resolve(null), 7500));
+  const jobs = ids.flatMap(id => dates.map(date => ({ id, date })));
+  const settled = await Promise.all(jobs.map(job => Promise.race([
+    fetchJson(`https://site.api.espn.com/apis/site/v2/sports/cricket/${job.id}/scoreboard?dates=${job.date}&limit=100`)
+      .then(data => ({ key: job.id, data })).catch(() => null),
+    deadline
+  ])));
+  const results = settled.filter(Boolean).map(value => ({ status: "fulfilled", value }));
+  if (!results.length) throw new Error("Score provider unavailable");
+  return collect(results, (key, data) => {
+    const league = data.leagues?.[0]?.name;
+    if (!isInternational(league)) return null;
+    return event => isInternational(event.name, event.shortName, event.competitions?.[0]?.series?.summary)
+      ? { _league: league || "International cricket" } : { _skip: true };
+  }).filter(e => !e._skip && e.competitions?.[0]?.status?.type?.state === "post");
+}
+
 async function football() {
   const slugs = Object.keys(FOOTBALL_LEAGUES);
   const results = await Promise.allSettled(slugs.map(async slug => ({
@@ -124,14 +151,14 @@ async function getJson(url, headers = {}, timeoutMs = 6000) {
 async function espnInningsPlays(league, event, inn, attempts) {
   const loadPage = async page => {
     const url = `https://site.api.espn.com/apis/site/v2/sports/cricket/${league}/playbyplay?event=${event}&period=${inn}&limit=100&page=${page}`;
+    const name = `ESPN play-by-play, innings ${inn}${page > 1 ? ` (page ${page})` : ""}`;
     try {
       const response = await getJson(url, {}, 4500);
-      attempts.push({ name: `ESPN play-by-play, innings ${inn}${page > 1 ? " (latest page)" : ""}`, url, status: response.status });
+      attempts.push({ name, url, status: response.status });
       if (!response.ok) return null;
       return response.json?.commentary || {};
     } catch (error) {
-      attempts.push({ name: `ESPN play-by-play, innings ${inn}${page > 1 ? " (latest page)" : ""}`, url, status: 0,
-        note: error.name === "AbortError" ? "timed out" : error.message });
+      attempts.push({ name, url, status: 0, note: error.name === "AbortError" ? "timed out" : error.message });
       return null;
     }
   };
@@ -141,12 +168,14 @@ async function espnInningsPlays(league, event, inn, attempts) {
   const pageCount = Number(first.pageCount) || 1;
   if (pageCount <= 1) return { items: first.items || [], reachable: true, partial: false };
 
-  const latest = await loadPage(pageCount);
-  return {
-    items: latest?.items || first.items || [],
-    reachable: true,
-    partial: true
-  };
+  // Pages are oldest-first. Take the whole innings when it is short enough, otherwise the newest 8 pages.
+  const MAX_PAGES = 8;
+  const fromPage = pageCount <= MAX_PAGES ? 2 : pageCount - MAX_PAGES + 1;
+  const wanted = [];
+  for (let page = fromPage; page <= pageCount; page++) wanted.push(page);
+  const pages = await Promise.all(wanted.map(loadPage));
+  const items = (pageCount <= MAX_PAGES ? (first.items || []) : []).concat(...pages.map(pg => (pg && pg.items) || []));
+  return { items, reachable: true, partial: pageCount > MAX_PAGES || pages.some(pg => !pg) };
 }
 
 async function cricketPlays(league, event) {
@@ -175,6 +204,25 @@ module.exports = async function handler(req, res) {
   const { sport, view, league, event } = req.query;
   if (sport !== "cricket" && sport !== "football" && sport !== "f1") {
     return res.status(400).json({ error: "Unsupported sport" });
+  }
+  if (sport === "cricket" && view === "recent") {
+    try {
+      const events = await cricketRecent();
+      res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=1200");
+      return res.status(200).json({ events });
+    } catch (error) {
+      return res.status(502).json({ error: error.message || "Unable to reach the score provider" });
+    }
+  }
+  if (sport === "f1" && view === "header") {
+    // ESPN's "header" feed is a second place F1 live positions can show up.
+    try {
+      const data = await fetchJson("https://site.web.api.espn.com/apis/personalized/v2/scoreboard/header?sport=racing&league=f1");
+      res.setHeader("Cache-Control", "public, s-maxage=15, stale-while-revalidate=30");
+      return res.status(200).json(data);
+    } catch (error) {
+      return res.status(502).json({ error: error.message || "Unable to reach the score provider" });
+    }
   }
   if (view === "commentary") {
     if (sport !== "cricket" || !/^[A-Za-z0-9._-]+$/.test(league || "") || !/^\d+$/.test(event || "")) {

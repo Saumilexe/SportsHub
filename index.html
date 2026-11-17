@@ -478,6 +478,173 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
 .sc-diag ul{margin:6px 0 0;padding-left:18px;color:var(--mute)}
 .sc-diag a{color:var(--accent)}
 @media(max-width:640px){.sc-overs li{grid-template-columns:28px minmax(0,1fr) 30px 50px;gap:6px}.sc-ball{grid-template-columns:36px 28px minmax(0,1fr);gap:6px}}
+/* ---- My Sports tab + 5-tab bar ---- */
+.tabs{grid-template-columns:repeat(5,1fr)}
+.pill{width:calc((100% - 8px)/5)}
+.tabs[data-i="4"] .pill{transform:translateX(400%)}
+@media(max-width:640px){.tabs button{font-size:13.5px;line-height:1.05;padding:9px 2px;white-space:normal}}
+body[data-tab=mysports]{--accent:#6d5bd0;--glow-a:rgba(109,91,208,.28);--glow-b:rgba(228,184,75,.10)}
+.ms-sec{margin:0 0 22px}
+.ms-sec>h3{margin:0 0 10px;font:700 21px "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.ms-live{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 14px;padding:10px 14px;background:color-mix(in srgb,var(--green) 12%,var(--panel));border:1px solid #2a6b4f;border-radius:12px;font-size:14px}
+.ms-live b{font-weight:700}
+.ms-next{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;align-items:center;padding:16px 18px;background:linear-gradient(100deg,color-mix(in srgb,var(--accent) 18%,var(--panel)),var(--panel) 70%);border:1px solid var(--accent);border-radius:14px;margin:0 0 22px}
+.ms-next .k{font:700 12px "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#ffd666}
+.ms-next h3{margin:2px 0 0;font:italic 800 clamp(26px,5vw,36px)/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.ms-next .s{color:var(--mute);font-size:14px;margin-top:4px}
+.ms-next .cd{font:800 34px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums;text-align:right}
+.ms-next .cd small{display:block;margin-top:4px;font:500 12px Barlow,sans-serif;color:var(--mute)}
+.ms-row{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:12px 14px;margin-bottom:8px;background:var(--panel);border:1px solid var(--line);border-left:5px solid var(--tc,#8a919e);border-radius:12px}
+.ms-row .p{font:800 26px "Barlow Condensed",sans-serif;text-align:center;color:var(--mute)}
+.ms-row .n{min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-row .n small{display:block;color:var(--mute);font-weight:400;font-size:12px}
+.ms-row .g{color:var(--mute);font-size:13px;text-align:right}
+.ms-row .pts{font:800 26px "Barlow Condensed",sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+.ms-team{margin:0 0 18px}
+.ms-team>h4{display:flex;align-items:center;gap:10px;margin:0 0 8px;font:700 20px "Barlow Condensed",sans-serif;text-transform:uppercase}
+.ms-team>h4 .flag{width:26px;height:26px}
+.ms-players{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.ms-player{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:12px}
+.ms-player .flag{grid-row:1/span 2;width:40px;height:40px}
+.ms-player b{font:italic 800 22px/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.ms-player .s{color:var(--mute);font-size:13px}
+.ms-player .x{grid-column:1/-1;font-size:13px;color:var(--mute)}
+.ms-player .recs{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px}
+.ms-player .recs span{font:600 12px Barlow,sans-serif;padding:3px 9px;border-radius:99px;background:var(--panel2);border:1px solid var(--line)}
+.ms-player button.more{grid-column:1/-1;justify-self:start}
+.ms-empty{padding:34px 22px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:14px;color:var(--mute)}
+.ms-empty b{display:block;margin-bottom:6px;font:800 28px "Barlow Condensed",sans-serif;color:var(--ink);text-transform:uppercase}
+.ms-empty .tips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.ms-note{color:var(--mute);font-size:13px;padding:6px 0}
+@media(max-width:640px){.ms-next{grid-template-columns:1fr}.ms-next .cd{text-align:left}.ms-row{grid-template-columns:36px minmax(0,1fr) auto;}.ms-row .g{display:none}}
+/* ---- player favourites ---- */
+.stat-card li.has-fav{grid-template-columns:22px minmax(0,1fr) auto 30px}
+.stat-card li .favorite-toggle{width:28px;height:28px;font-size:16px}
+.stat-card li.is-fav{background:color-mix(in srgb,#e4b84b 10%,transparent)}
+.pcard .favorite-toggle{position:absolute;right:52px;top:12px}
+.fav-players{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.fav-players button{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 6px;border-radius:99px;border:1px solid #8a6d1b;background:color-mix(in srgb,#e4b84b 10%,var(--panel));color:var(--ink);font:600 14px Barlow,sans-serif;cursor:pointer}
+.fav-players .flag{width:22px;height:22px}
+.fav-players .lbl{align-self:center;color:var(--mute);font-size:13px}
+/* ---- worm chart + wickets & partnerships ---- */
+.worm{display:block;width:100%;height:auto;touch-action:pan-y;cursor:crosshair}
+.worm .grid{stroke:var(--line);stroke-width:1}
+.worm .ax{fill:var(--mute);font:11px Barlow,sans-serif}
+.worm .ln{fill:none;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.worm .ln.partial{stroke-dasharray:6 5}
+.worm .wk{fill:#ff5a4f;stroke:var(--bg);stroke-width:1.5}
+.worm .cross{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3}
+.worm-legend,.worm-read{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--mute);margin:8px 0 0}
+.worm-legend span{display:inline-flex;align-items:center;gap:7px}
+.worm-legend i{display:inline-block;width:18px;height:4px;border-radius:2px}
+.worm-legend b,.worm-read b{color:var(--ink)}
+.worm-read{min-height:20px}
+.fow{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.fow li{padding:4px 10px;border-radius:99px;background:var(--bg);border:1px solid var(--line);font-size:13px}
+.fow li b{font-weight:700;margin-right:5px}
+.fow li small{color:var(--mute);margin-left:4px}
+.fow-track{display:block;width:100%;height:auto;margin:0 0 12px}
+.fow-track .base{stroke:var(--line);stroke-width:2}
+.fow-track .w{fill:#ff5a4f;stroke:var(--bg);stroke-width:1.5}
+.fow-track text{fill:var(--mute);font:11px Barlow,sans-serif;text-anchor:middle}
+.pship{list-style:none;margin:0;padding:0}
+.pship li{display:grid;grid-template-columns:46px minmax(0,1fr) 78px;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.pship .w{font:800 16px "Barlow Condensed",sans-serif;color:var(--mute);text-transform:uppercase}
+.pship .pair{min-width:0;font-weight:600;font-size:14px}
+.pship .pair small{display:block;color:var(--mute);font-weight:400;font-size:12px;margin-top:1px}
+.pship .bar{display:block;height:6px;margin-top:6px;background:var(--bg);border-radius:99px;overflow:hidden}
+.pship .bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.pship .r{text-align:right;font:800 20px "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.pship .r small{display:block;font:500 12px Barlow,sans-serif;color:var(--mute)}
+.pship li.top .bar i{background:#ffd666}
+.pship li.top .r{color:#ffd666}
+.pship li.live .w::after{content:"*";color:var(--accent)}
+/* ---- F1 points progression ---- */
+.f1p-controls{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin:0 0 12px}
+.f1p-controls .seg{margin:0}
+.f1p-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 14px 10px;margin-bottom:12px}
+.f1p-wrap{position:relative}
+.f1p-chart{display:block;width:100%;height:auto;touch-action:pan-y;cursor:crosshair}
+.f1p-chart .grid{stroke:var(--line);stroke-width:1}
+.f1p-chart .ax{fill:var(--mute);font:11px Barlow,sans-serif}
+.f1p-chart .ln{fill:none;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.f1p-chart .end{font:700 12px Barlow,sans-serif}
+.f1p-chart .cross{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3}
+.f1p-tip{position:absolute;top:8px;left:50px;min-width:170px;max-width:240px;padding:9px 11px;background:#0d0e12ee;border:1px solid var(--line);border-radius:10px;font-size:12.5px;pointer-events:none;display:none;z-index:2}
+.f1p-tip b{font-weight:700}
+.f1p-tip .h{margin-bottom:5px;font:700 14px "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--mute)}
+.f1p-tip div.r{display:flex;justify-content:space-between;gap:14px;line-height:1.55}
+.f1p-tip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.f1p-legend{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+.f1p-legend button{display:inline-flex;align-items:center;gap:7px;padding:4px 11px 4px 8px;border-radius:99px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);font:600 13px Barlow,sans-serif;cursor:pointer}
+.f1p-legend button i{width:14px;height:4px;border-radius:2px;display:inline-block}
+.f1p-legend button[aria-pressed=false]{opacity:.4}
+.f1p-title h3{margin:0 0 8px;font:italic 800 26px/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.f1p-title ul{margin:0;padding-left:18px;color:var(--mute);font-size:14px;display:grid;gap:4px}
+.f1p-title li b{color:var(--ink)}
+.f1p-note{color:var(--mute);font-size:12px;margin:8px 0 0}
+/* ---- My Sports: last race / last match ---- */
+.ms-lbl{margin:12px 0 6px;font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.ms-lbl.live{color:var(--green)}
+.ms-lbl .saved{letter-spacing:0;text-transform:none;font:500 12px Barlow,sans-serif}
+.ms-last{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:4px 0 12px}
+.ms-last .k{font:700 12px "Barlow Condensed",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#ffd666}
+.ms-last h4{margin:2px 0 0;font:italic 800 26px/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.ms-last .s{color:var(--mute);font-size:13px;margin-top:3px}
+.ms-podium{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.ms-podium span{padding:4px 11px;border-radius:99px;background:var(--panel2);border:1px solid var(--line);font-size:13px;font-weight:600}
+.ms-res{list-style:none;margin:0;padding:0}
+.ms-res li{display:grid;grid-template-columns:46px minmax(0,1fr) auto 54px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.ms-res .p{font:800 24px "Barlow Condensed",sans-serif;text-align:center}
+.ms-res .p.dnf{font-size:16px;color:#ff8a80}
+.ms-res .n{min-width:0;font-weight:600}
+.ms-res .n small{display:block;color:var(--mute);font-weight:400;font-size:12px}
+.ms-res .t{color:var(--mute);font-size:13px;text-align:right}
+.ms-res .pt{font:800 22px "Barlow Condensed",sans-serif;text-align:right}
+.ms-res .pt.zero{color:var(--mute)}
+.ms-res .up{color:var(--green)}.ms-res .down{color:#ff8a80}
+.ms-tot{margin:8px 0 0;font-size:13px;color:var(--mute)}.ms-tot b{color:var(--ink)}
+@media(max-width:640px){.ms-res li{grid-template-columns:38px minmax(0,1fr) 46px}.ms-res .t{display:none}}
+/* ---- F1 race replay ---- */
+.f1r-top{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin:0 0 12px}
+.f1r-top label{display:flex;align-items:center;gap:8px;color:var(--mute);font-size:14px}
+.f1r-top select,.f1r-controls select{font:500 14px Barlow,sans-serif;padding:8px 10px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:8px}
+.f1r-title{color:var(--mute);font-size:14px}
+.f1r-main{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:12px;align-items:start}
+.f1r-stage{position:relative;background:radial-gradient(120% 120% at 30% 20%,#1c1f27,#101217);border:1px solid var(--line);border-radius:14px;padding:6px;min-height:240px}
+.f1r-svg{display:block;width:100%;height:auto;max-height:560px}
+.f1r-hud{position:absolute;left:14px;top:12px;display:grid;gap:2px;pointer-events:none}
+.f1r-hud b{font:800 30px/1 "Barlow Condensed",sans-serif;text-transform:uppercase}
+.f1r-hud span{color:var(--mute);font-size:13px;font-variant-numeric:tabular-nums}
+.f1r-name{position:absolute;right:14px;bottom:10px;text-align:right;color:var(--mute);font-size:12px;pointer-events:none;max-width:60%}
+.f1r-car text{font:700 21px Barlow,sans-serif;fill:#fff;paint-order:stroke;stroke:#0a0b0e;stroke-width:5px;text-anchor:middle;pointer-events:none}
+.f1r-car{cursor:pointer}
+.f1r-car.sel circle.ring{stroke:#fff;stroke-width:3;fill:none}
+.f1r-board{list-style:none;margin:0;padding:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;max-height:560px;overflow:auto}
+.f1r-board li{display:grid;grid-template-columns:26px 6px minmax(0,1fr) 40px auto;gap:8px;align-items:center;padding:5px 6px;border-radius:8px;cursor:pointer;font-size:14px}
+.f1r-board li:hover{background:var(--panel2)}
+.f1r-board li.sel{background:color-mix(in srgb,var(--accent) 20%,transparent)}
+.f1r-board li.out{opacity:.45}
+.f1r-board .p{font:800 17px "Barlow Condensed",sans-serif;text-align:center;color:var(--mute)}
+.f1r-board .c{height:20px;border-radius:3px}
+.f1r-board .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.f1r-board .n small{color:var(--mute);font-weight:400;margin-left:6px}
+.f1r-board .g{color:var(--mute);font-size:12.5px;font-variant-numeric:tabular-nums;min-width:52px;text-align:right}
+.f1r-board .d{text-align:right;font:700 13px Barlow,sans-serif;color:var(--mute);font-variant-numeric:tabular-nums}
+.f1r-board .d.up,.f1r-movers .up{color:var(--green)}
+.f1r-board .d.down,.f1r-movers .down{color:#ff8a80}
+.f1r-board .d.dnf{color:#ff8a80;font-size:11px;letter-spacing:.05em}
+.f1r-movers{display:grid;gap:4px;margin:8px 2px 0;font-size:12.5px;color:var(--mute)}
+.f1r-movers b{color:var(--ink);font-weight:600}
+.f1r-controls{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin:12px 0 0;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:14px}
+.f1r-controls button{font:600 14px Barlow,sans-serif;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel2);color:var(--ink);cursor:pointer}
+.f1r-controls button:hover{border-color:var(--accent)}
+.f1r-controls button.primary{background:var(--accent);border-color:var(--accent);color:#fff;min-width:92px}
+.f1r-controls label{display:flex;align-items:center;gap:6px;color:var(--mute);font-size:13px}
+.f1r-controls input[type=range]{flex:1 1 220px;min-width:160px;accent-color:var(--accent)}
+.f1r-note{color:var(--mute);font-size:12px;margin:8px 2px 0}
+.f1r-msg{padding:40px 16px;text-align:center;color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:14px}
+@media(max-width:820px){.f1r-main{grid-template-columns:1fr}.f1r-board{max-height:340px}}
 @media(prefers-reduced-motion:reduce){.scene *{animation:none!important}.sixtxt,.goaltxt,.gotxt{opacity:0}.fcar{opacity:1}.fc1{transform:translate(400px,0)}.fc2{transform:translate(150px,0)}.fc3,.fc4{display:none}}
 </style>
 </head>
@@ -494,11 +661,20 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
 
   <div class="tabs" id="tabs" data-i="0" role="tablist" aria-label="Sections">
     <span class="pill" aria-hidden="true"></span>
+    <button role="tab" id="t-mysports" aria-controls="p-mysports" aria-selected="false" data-tab="mysports" tabindex="-1">My Sports</button>
     <button role="tab" id="t-f1" aria-controls="p-f1" aria-selected="true" data-tab="f1">Formula 1</button>
     <button role="tab" id="t-cricket" aria-controls="p-cricket" aria-selected="false" data-tab="cricket" tabindex="-1">Cricket Live</button>
     <button role="tab" id="t-football" aria-controls="p-football" aria-selected="false" data-tab="football" tabindex="-1">Football Live</button>
     <button role="tab" id="t-stats" aria-controls="p-stats" aria-selected="false" data-tab="stats" tabindex="-1">Cricket Stats</button>
   </div>
+
+  <section id="p-mysports" role="tabpanel" aria-labelledby="t-mysports" hidden>
+    <div class="section-head">
+      <div><h2>My Sports</h2><p>Your favorite teams, drivers and players in one place</p></div>
+      <button class="refresh" type="button" data-ms-refresh>Refresh</button>
+    </div>
+    <div id="mysports-body" aria-live="off"></div>
+  </section>
 
   <section id="p-cricket" role="tabpanel" aria-labelledby="t-cricket" hidden>
     <div class="scene" data-scene="cricket" aria-hidden="true"></div>
@@ -534,7 +710,8 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
     <div class="section-head">
       <div><h2>Cricket Records</h2><p>All-time men's international records</p></div>
     </div>
-    <p class="hint">Tap a player to see basic info.</p>
+    <div id="fav-players" class="fav-players"></div>
+    <p class="hint">Tap a player to see basic info, or ☆ to add them to My Sports.</p>
     <div class="seg" id="format-seg" role="group" aria-label="Format"></div>
     <div class="stat-grid" id="stat-grid"></div>
     <p class="footnote"><span class="act">•</span> Active player: totals keep changing, so numbers marked “+” are minimums. These are reference records, not a live feed, and may not include the most recent matches.</p>
@@ -547,9 +724,13 @@ body[data-tab=football]{--accent:#2f6fe0;--glow-a:rgba(47,111,224,.26);--glow-b:
     <div class="seg" id="f1-seg" role="group" aria-label="Formula 1 view">
       <button type="button" data-f1view="standings" aria-pressed="true">Standings</button>
       <button type="button" data-f1view="calendar" aria-pressed="false">Calendar</button>
+      <button type="button" data-f1view="progression" aria-pressed="false">Points progression</button>
+      <button type="button" data-f1view="replay" aria-pressed="false">Race replay</button>
     </div>
     <div id="f1-host"></div>
     <div id="f1-cal" hidden></div>
+    <div id="f1-prog" hidden></div>
+    <div id="f1-replay" hidden></div>
   </section>
 
   <p class="footnote">Live scores provided by <a href="https://www.espn.com/" rel="noopener">ESPN</a>. Only matches ESPN is currently tracking will appear.</p>
@@ -686,7 +867,7 @@ header{justify-content:space-between}
 <script>
 const $ = id => document.getElementById(id);
 const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const TABS = ["f1", "cricket", "football", "stats"];
+const TABS = ["mysports", "f1", "cricket", "football", "stats"];
 const LIVE = ["cricket", "football"];
 const REFRESH_MS = 60000;
 let current = "f1";
@@ -1222,15 +1403,17 @@ async function getPlays(force){
 async function renderPlaysPane(tab, force){
   const pane = $("sc-pane-" + tab); if (!pane) return;
   const request = scorecardRequest;
-  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${tab === "overs" ? "over-by-over stats" : "commentary"}…</div>`;
+  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${({overs: "over-by-over stats", worm: "the worm chart", partnerships: "wickets and partnerships", commentary: "commentary"})[tab] || "data"}…</div>`;
   try {
     const res = await getPlays(force);
     const an = analysePlays(res.items);
     if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
     pane.dataset.done = "1";
+    pane.__an = an;
     pane.innerHTML = !an.length
       ? `<div class="scorecard-state">Ball-by-ball data isn’t available for this match from our data source. It is only published for some matches, and usually once play has started.${diagHTML(res.attempts)}</div>`
-      : (tab === "overs" ? oversHTML(an) : commentaryHTML(an, scLimit)) + (res.partial ? `<div class="scorecard-state" style="margin-top:10px">Showing a limited selection of deliveries for long innings.</div>` : "");
+      : playsPaneHTML(tab, an) + (res.partial ? `<div class="scorecard-state" style="margin-top:10px">Showing a limited selection of deliveries for long innings.</div>` : "");
+    if (an.length) bindPlaysPane(pane, tab, an);
   } catch (err) {
     if (request !== scorecardRequest || !$("sc-pane-" + tab)) return;
     if (pane.dataset.done) return;                                   // keep last good data on a failed background refresh
@@ -1240,7 +1423,7 @@ async function renderPlaysPane(tab, force){
 function showScTab(tab){
   scTab = tab;
   document.querySelectorAll("[data-sctab]").forEach(b => b.setAttribute("aria-pressed", b.dataset.sctab === tab));
-  ["scorecard", "overs", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
+  ["scorecard", "overs", "worm", "partnerships", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
   clearInterval(scPoll); scPoll = null;
   if (tab !== "scorecard") {
     renderPlaysPane(tab, false);
@@ -1262,9 +1445,9 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
     for (const c of data.matchcards || []) if (c.inningsNumber && c.teamName) scInningsTeams[c.inningsNumber] = c.teamName;
     scLive = (data.header?.competitions?.[0]?.status?.type?.state) === "in";
     scPlays = {key: "", at: 0, items: null};
-    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["commentary", "Commentary"]];
+    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["worm", "Worm"], ["partnerships", "Wickets & partnerships"], ["commentary", "Commentary"]];
     content.innerHTML = `<div class="seg sc-tabs" role="group" aria-label="Match view">${tabs.map(([k, l]) => `<button type="button" data-sctab="${k}" aria-pressed="${k === scTab}">${l}</button>`).join("")}</div>
-      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
+      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-worm" aria-live="off" hidden></div><div id="sc-pane-partnerships" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
       <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
     showScTab(scTab);
   } catch (error) {
@@ -1519,7 +1702,9 @@ function renderStats(){
     const name = a, sub = isTeam ? b : [isWorldCup ? (cat.t === "World Cups won" ? `${b} World Cup` : b) : b, d].filter(Boolean).join(" · ");
     const clickable = !isTeam && PLAYERS[a];
     const flag = flagChip((isTeam || isWorldCup) ? flagCodeOf(a) : flagCodeOf(b));
-    return `<li${clickable ? ` class="pl" role="button" tabindex="0" data-player="${esc(a)}"` : ""}><span class="rank">${isWorldCup ? "" : i+1}</span><span class="who${flag ? " hasflag" : ""}">${flag}<span class="nm">${esc(name)}${act ? ' <span class="act" title="Active player">•</span>' : ""}</span><small>${esc(sub)}</small></span><span class="val">${esc(c)}</span></li>`;
+    const isFavPlayer = !!clickable && window.isSportsFavorite("cricket-player", a);
+    const liClass = [clickable ? "pl has-fav" : "", isFavPlayer ? "is-fav" : ""].filter(Boolean).join(" ");
+    return `<li${liClass ? ` class="${liClass}"` : ""}${clickable ? ` role="button" tabindex="0" data-player="${esc(a)}"` : ""}><span class="rank">${isWorldCup ? "" : i+1}</span><span class="who${flag ? " hasflag" : ""}">${flag}<span class="nm">${esc(name)}${act ? ' <span class="act" title="Active player">•</span>' : ""}</span><small>${esc(sub)}</small></span><span class="val">${esc(c)}</span>${clickable ? favoriteButton("cricket-player", a, a) : ""}</li>`;
   }).join("")}</ol></div>`).join("");
 }
 
@@ -1533,7 +1718,7 @@ function openPlayer(name, from){
   for (const [fmt, cats] of Object.entries(STATS))
     for (const c of cats) c.r.forEach((r, i) => { if (r[0] === name) recs.push(`<li><span>${esc(fmt)} · ${esc(c.t)}</span><b>#${i+1} · ${esc(r[2])}</b></li>`); });
   const row = (k, v) => v ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : "";
-  $("pcard").innerHTML = `<button class="pclose" type="button" aria-label="Close" data-close>×</button>
+  $("pcard").innerHTML = `<button class="pclose" type="button" aria-label="Close" data-close>×</button>${favoriteButton("cricket-player", name, name)}
     <div class="code">${flagChip(flagCodeOf(country))}<span>${esc(COUNTRY[country] || country || "")}</span></div>
     <h3 id="pname">${esc(name)}</h3>
     <dl>${row("Born", p.born)}${row("Role", p.role)}${row("Career", p.span)}${row("Status", p.status)}</dl>
@@ -1546,8 +1731,8 @@ function openPlayer(name, from){
 function closePlayer(){ $("pov").classList.remove("open"); if (lastFocus) lastFocus.focus(); }
 $("pov").addEventListener("click", e => { if (e.target === $("pov") || e.target.closest("[data-close]")) closePlayer(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("pov").classList.contains("open")) closePlayer(); });
-$("stat-grid").addEventListener("click", e => { const li = e.target.closest("[data-player]"); if (li) openPlayer(li.dataset.player, li); });
-$("stat-grid").addEventListener("keydown", e => { const li = e.target.closest("[data-player]"); if (li && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openPlayer(li.dataset.player, li); } });
+$("stat-grid").addEventListener("click", e => { if (e.target.closest("[data-favorite]")) return; const li = e.target.closest("[data-player]"); if (li) openPlayer(li.dataset.player, li); });
+$("stat-grid").addEventListener("keydown", e => { if (e.target.closest("[data-favorite]")) return; const li = e.target.closest("[data-player]"); if (li && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openPlayer(li.dataset.player, li); } });
 
 
 /* ---------- Animated sport scenes ---------- */
@@ -1623,6 +1808,7 @@ function show(tab, push){
   if (push) history.replaceState(null, "", `#${tab}`);
   syncCricketBallPolling();
   if (LIVE.includes(tab)) loadLive(tab, loaded[tab]);
+  document.dispatchEvent(new CustomEvent("tabshown", {detail: {tab}}));
 }
 $("tabs").addEventListener("click", e => { const b = e.target.closest("[data-tab]"); if (b) show(b.dataset.tab, true); });
 $("tabs").addEventListener("keydown", e => {
@@ -1665,7 +1851,7 @@ document.addEventListener("visibilitychange", () => syncCricketBallPolling());
 window.addEventListener("hashchange", () => show(location.hash.slice(1), false));
 
 renderStats();
-show(location.hash.slice(1) || "f1", false);
+show(location.hash.slice(1) || (sportsFavorites.size ? "mysports" : "f1"), false);
 // Fill the other live tab's badge in the background.
 setTimeout(() => LIVE.filter(s => s !== current).forEach(s => loadLive(s, true)), 600);
 </script>
@@ -1929,6 +2115,8 @@ load();
   const tz = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone; } catch { return ""; } })();
 
   let races = [], winners = {}, nextRace = null, liveInfo = null, liveKey = "", loadedAt = 0, failed = false;
+  let espnLive = null, liveReq = 0, lastEspn = null, lastLiveCheck = 0;
+  const publishState = () => { window.F1State = {live: liveInfo, next: nextRace, races, espn: lastEspn}; window.dispatchEvent(new CustomEvent("f1state")); };
 
   const toDate = o => o && o.date ? new Date(o.date + "T" + (o.time || "12:00:00Z")) : null;
   function sessionsOf(r){
@@ -1957,17 +2145,20 @@ load();
     }catch(err){ failed = true; }
     classify(true);
     renderCalendar();
+    publishState();
   }
 
-  function classify(force){
+  function classify(force, noLoad){
     const now = Date.now();
     nextRace = races.find(r => r._s.length && r._s[r._s.length - 1].end > now) || null;
     let found = null;
     for (const r of races) for (const s of r._s) if (s.start <= now && now < s.end) found = {race: r, session: s};
-    const key = found ? found.race.round + found.session.label : "";
+    if (!found && espnLive && now - espnLive.at < 90000) found = espnLive.info;     // ESPN says a session is running
+    const key = found ? (found.race.round || "") + found.session.label : "";
     const changed = key !== liveKey;
     liveInfo = found; liveKey = key;
-    if (force || changed) { renderNext(); loadLive(); renderCalendar(); }
+    if (force || changed) { renderNext(); if (!noLoad) loadLive(); renderCalendar(); }
+    if (force || changed) publishState();
   }
 
   function untilText(ms){
@@ -2023,29 +2214,74 @@ load();
     const b = $("t-f1"); if (!b) return;
     b.innerHTML = (on ? '<span class="dot" aria-hidden="true"></span>' : "") + "Formula 1";
   }
+  const compLabel = (ev, c) => String((c.type && (c.type.text || c.type.abbreviation)) || c.description || c.name || ev.shortName || "Session");
+  const stateOfComp = c => ((c && c.status && c.status.type) || {}).state;
   function pickLive(data){
     for (const ev of (data && data.events) || []) for (const c of ev.competitions || [])
-      if (((c.status || {}).type || {}).state === "in") return {ev, c};
+      if (stateOfComp(c) === "in") return {ev, c};
     return null;
   }
-  async function fetchLive(){
-    try { const r = await fetch("/api/scoreboard?sport=f1"); if (r.ok) return {events: (await r.json()).events}; } catch {}
-    try { const r = await fetch("https://site.api.espn.com/apis/site/v2/sports/racing/f1/scoreboard"); if (r.ok) return await r.json(); } catch {}
+  // ESPN's "header" feed lists drivers a little differently; turn it into the same shape.
+  function pickHeaderLive(h){
+    try {
+      for (const sp of (h && h.sports) || []) for (const lg of sp.leagues || []) for (const ev of lg.events || []) {
+        const ft = (ev.fullStatus && ev.fullStatus.type) || {};
+        const state = ft.state || ev.status || "";
+        if (state !== "in") continue;
+        const comps = (ev.competitors || []).map((c, i) => ({order: c.order ?? i + 1,
+          athlete: {displayName: c.displayName || c.name || c.shortDisplayName || (c.athlete && c.athlete.displayName) || ""},
+          team: {displayName: (c.team && (c.team.displayName || c.team.name)) || c.teamName || ""}}));
+        return {ev: {shortName: ev.name || ev.shortName || ""}, c: {status: {type: {state: "in", detail: ft.detail || ft.description || ev.summary || ""}}, type: {text: ev.summary || ev.name || "Session"}, competitors: comps}};
+      }
+    } catch (e) { /* unknown shape */ }
     return null;
+  }
+  const espnSummary = data => ((data && data.events) || []).flatMap(ev => (ev.competitions || []).map(c =>
+    `${compLabel(ev, c)}: ${stateOfComp(c) || "?"}${(c.competitors || []).length ? ` (${c.competitors.length} drivers)` : ""}`)).slice(0, 10);
+  async function fetchLive(){
+    const attempts = [];
+    const getJ = async (name, url) => {
+      try { const r = await fetch(url); attempts.push({name, url, status: r.status}); return r.ok ? await r.json() : null; }
+      catch (e) { attempts.push({name, url, status: 0, note: "blocked or offline"}); return null; }
+    };
+    let data = await getJ("Our API (F1)", "/api/scoreboard?sport=f1");
+    if (data) data = {events: data.events || []};
+    else data = await getJ("ESPN F1 scoreboard (direct)", "https://site.api.espn.com/apis/site/v2/sports/racing/f1/scoreboard");
+    let hit = pickLive(data);
+    if (!hit) {
+      const hdr = (await getJ("Our API (F1 header)", "/api/scoreboard?sport=f1&view=header")) || (await getJ("ESPN header (direct)", "https://site.web.api.espn.com/apis/personalized/v2/scoreboard/header?sport=racing&league=f1"));
+      hit = pickHeaderLive(hdr);
+    }
+    return {data, hit, attempts, summary: espnSummary(data), at: Date.now()};
   }
   async function loadLive(){
     const el = $("f1-live");
+    const req = ++liveReq;
+    lastLiveCheck = Date.now();
+    const res = await fetchLive();
+    if (req !== liveReq) return;
+    lastEspn = res;
+    const now = Date.now();
+    if (res.hit) {                                                // ESPN says something is running right now
+      const label = compLabel(res.hit.ev, res.hit.c);
+      const race = (liveInfo && liveInfo.race) || nextRace || races[0] || {round: "", raceName: res.hit.ev.shortName || "Grand Prix", Circuit: {circuitName: "", Location: {locality: "", country: ""}}, _s: []};
+      if (!espnLive || espnLive.info.session.label !== label) espnLive = {at: now, info: {race, session: {label, start: new Date(now), end: new Date(now + 36e5)}}};
+      espnLive.at = now;
+    } else espnLive = null;
+    classify(false, true);
     setDot(!!liveInfo);
+    publishState();
     if (!liveInfo) { el.innerHTML = ""; return; }
     const {race, session} = liveInfo;
-    const head = `<h3><span class="dot" aria-hidden="true"></span>${esc(session.label)} · live</h3><div class="f1x-sub">${esc(race.raceName)}</div>`;
-    if (!el.innerHTML) el.innerHTML = `<div class="f1x-card f1x-live">${head}<div class="f1x-sub">Loading live order…</div></div>`;
-    const data = await fetchLive();
-    if (!liveInfo || liveInfo.session !== session) return;
-    const hit = pickLive(data);
+    const headLabel = res.hit ? compLabel(res.hit.ev, res.hit.c) : session.label;
+    const head = `<h3><span class="dot" aria-hidden="true"></span>${esc(headLabel)} · live</h3><div class="f1x-sub">${esc(race.raceName || "")}</div>`;
+    const diag = typeof diagHTML === "function" ? diagHTML(res.attempts) : "";
+    const hit = res.hit;
     const comps = hit ? (hit.c.competitors || []).slice().sort((a, b) => (a.order ?? 999) - (b.order ?? 999)) : [];
     if (!comps.length) {
-      el.innerHTML = `<div class="f1x-card f1x-live">${head}<div class="f1x-sub">The session is on, but our live data source hasn’t published the running order yet. It will appear here automatically.</div></div>`;
+      const why = hit ? "ESPN reports this session as live but hasn’t published driver positions yet." : "Our schedule says this session should be running, but ESPN isn’t reporting a live session yet.";
+      el.innerHTML = `<div class="f1x-card f1x-live">${head}<div class="f1x-sub">${why} It will appear here automatically.</div>
+        <div class="f1x-sub">ESPN currently lists: ${res.summary.length ? esc(res.summary.join(" · ")) : "no sessions"}</div>${diag}</div>`;
       return;
     }
     const detail = (hit.c.status && hit.c.status.type && (hit.c.status.type.detail || hit.c.status.type.shortDetail)) || "";
@@ -2055,7 +2291,7 @@ load();
         const a = c.athlete || {}, t = c.team || {}, v = c.vehicle || {};
         const gap = ((c.statistics || []).find(s => /behind|gap|interval/i.test(s.name || "")) || {}).displayValue || "";
         return `<li><span class="p">${esc(c.order ?? i + 1)}</span><span class="n">${esc(a.displayName || a.shortName || a.fullName || t.displayName || "Driver")}<small>${esc(t.displayName || v.manufacturer || "")}</small></span><span class="g">${esc(gap)}</span></li>`;
-      }).join("")}</ol></div>`;
+      }).join("")}</ol>${diag}</div>`;
   }
 
   /* ----- calendar ----- */
@@ -2156,9 +2392,10 @@ load();
     }
     const v = e.target.closest("[data-f1view]");
     if (v) {
-      const cal = v.dataset.f1view === "calendar";
-      $("f1-host").hidden = cal; $("f1-cal").hidden = !cal;
+      const view = v.dataset.f1view;
+      $("f1-host").hidden = view !== "standings"; $("f1-cal").hidden = view !== "calendar"; $("f1-prog").hidden = view !== "progression"; $("f1-replay").hidden = view !== "replay";
       document.querySelectorAll("[data-f1view]").forEach(b => b.setAttribute("aria-pressed", b === v));
+      document.dispatchEvent(new CustomEvent("f1view", {detail: {view}}));
     }
     const f = e.target.closest("[data-f1filter]");
     if (f) { calFilter = f.dataset.f1filter; renderCalendar(); }
@@ -2168,12 +2405,782 @@ load();
     const details = e.target;
     if (details.matches && details.matches(".f1x-race") && details.open) loadRaceResults(details);
   }, true);
-  const visible = () => !$("p-f1").hidden && !document.hidden;
+  const visible = () => !document.hidden && (!$("p-f1").hidden || ($("p-mysports") && !$("p-mysports").hidden));
   setInterval(() => { if (visible()) tick(); }, 1000);
-  setInterval(() => { if (liveInfo && visible()) loadLive(); }, 20000);
+  setInterval(() => { if (visible() && (liveInfo || Date.now() - lastLiveCheck > 55000)) loadLive(); }, 20000);
   setInterval(() => { if (Date.now() - loadedAt > 30 * 60000) loadSchedule(); }, 60000);
   document.addEventListener("visibilitychange", () => { if (visible()) { classify(true); } });
   loadSchedule();
+})();
+</script>
+<script>
+/* ---------- My Sports dashboard + cricket player favorites ---------- */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const API = "https://api.jolpi.ca/ergast/f1";
+  const TEAM_COLORS = {red_bull:"#3671c6",ferrari:"#e8002d",mercedes:"#27f4d2",mclaren:"#ff8000",aston_martin:"#229971",alpine:"#ff87bc",williams:"#64c4ff",rb:"#6692ff",racing_bulls:"#6692ff",alphatauri:"#5e8faa",sauber:"#52e252",kick_sauber:"#52e252",haas:"#b6babd",alfa:"#c92d4b",renault:"#ffd800",audi:"#bb0a30",cadillac:"#9aa0a6"};
+  const NAMES_KEY = "gridline-favorite-names";
+  let names = {}; try { names = JSON.parse(localStorage.getItem(NAMES_KEY) || "{}") || {}; } catch {}
+  const saveNames = () => { try { localStorage.setItem(NAMES_KEY, JSON.stringify(names)); } catch {} };
+  const favs = type => { try { return [...sportsFavorites].filter(k => k.startsWith(type + ":")).map(k => k.slice(type.length + 1)); } catch { return []; } };
+  const j = async u => { const r = await fetch(u); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); };
+  const untilText = ms => {
+    if (ms <= 0) return "now";
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4), s = Math.floor(ms % 6e4 / 1e3);
+    return d ? `${d}d ${h}h ${m}m` : h ? `${h}h ${String(m).padStart(2, "0")}m ${String(s).padStart(2, "0")}s` : `${m}m ${String(s).padStart(2, "0")}s`;
+  };
+  const fmtWhen = new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit"});
+
+  /* ----- F1 standings for favorites ----- */
+  let st = {drivers: null, teams: null, at: 0, error: "", loading: false};
+  async function loadStandings(force){
+    if (st.loading || (!force && st.at && Date.now() - st.at < 5 * 60000)) return;
+    st.loading = true;
+    try {
+      const [d, c] = await Promise.all([j(`${API}/current/driverstandings.json?limit=100`), j(`${API}/current/constructorstandings.json?limit=100`)]);
+      const dl = d.MRData.StandingsTable.StandingsLists[0] || {}, cl = c.MRData.StandingsTable.StandingsLists[0] || {};
+      st = {drivers: dl.DriverStandings || [], teams: cl.ConstructorStandings || [], season: dl.season || cl.season, round: dl.round || cl.round, at: Date.now(), error: "", loading: false};
+      st.drivers.forEach(r => { const k = `f1-driver:${r.Driver.driverId}`; if (sportsFavorites.has(k)) names[k] = `${r.Driver.givenName} ${r.Driver.familyName}`; });
+      st.teams.forEach(r => { const k = `f1-team:${r.Constructor.constructorId}`; if (sportsFavorites.has(k)) names[k] = r.Constructor.name; });
+      saveNames();
+    } catch (e) { st = {...st, error: e.message, at: Date.now() - 4 * 60000, loading: false}; }
+  }
+
+  /* ----- helpers for cricket ----- */
+  const events = () => (typeof liveEvents !== "undefined" && liveEvents.cricket) || null;
+  const compsOf = e => (e.competitions && e.competitions[0] && e.competitions[0].competitors) || [];
+  const evState = e => ((e.competitions && e.competitions[0] && e.competitions[0].status) || e.status || {}).type?.state || "";
+  const playerCountry = name => (Object.values(STATS).flat().flatMap(c => c.r).find(r => r[0] === name) || [])[1] || "";
+  /* recent finished matches (server route) and a small memory of each team's last result */
+  let recent = {at: 0, events: [], loading: false};
+  async function loadRecent(force){
+    if (recent.loading || (!force && recent.at && Date.now() - recent.at < 10 * 60000)) return;
+    recent.loading = true;
+    try { const r = await fetch("/api/scoreboard?sport=cricket&view=recent"); if (r.ok) recent.events = (await r.json()).events || []; } catch (e) { /* keep whatever we had */ }
+    recent.at = Date.now(); recent.loading = false;
+  }
+  const LAST_KEY = "gridline-last-results";
+  let lastSeen = {}; try { lastSeen = JSON.parse(localStorage.getItem(LAST_KEY) || "{}") || {}; } catch {}
+  const remember = (id, e) => { if (lastSeen[id] && lastSeen[id].id === e.id) return; try { lastSeen[id] = e; localStorage.setItem(LAST_KEY, JSON.stringify(lastSeen)); } catch {} };
+  const allCricket = () => { const m = new Map(); [...(events() || []), ...recent.events].forEach(e => { if (e && e.id && (!m.has(e.id) || evState(e) !== "post")) m.set(e.id, e); }); return [...m.values()]; };
+  const teamEvents = (matchFn) => {
+    const evs = allCricket().filter(e => compsOf(e).some(matchFn));
+    const rank = e => ({in: 0, pre: 1, post: 2}[evState(e)] ?? 3);
+    return evs.sort((a, b) => rank(a) - rank(b) || (evState(a) === "post" ? new Date(b.date) - new Date(a.date) : new Date(a.date) - new Date(b.date)));
+  };
+
+  /* ----- render ----- */
+  let lastRace = {race: null, at: 0, error: "", loading: false};
+  async function loadLastRace(force){
+    if (lastRace.loading || (!force && lastRace.at && Date.now() - lastRace.at < 30 * 60000)) return;
+    lastRace.loading = true;
+    try {
+      const d = await j(`${API}/current/last/results.json?limit=30`);
+      lastRace = {race: (d.MRData.RaceTable.Races || [])[0] || null, at: Date.now(), error: "", loading: false};
+    } catch (e) { lastRace = {...lastRace, error: e.message, at: Date.now() - 25 * 60000, loading: false}; }
+  }
+  function lastRaceHTML(){
+    const drivers = favs("f1-driver"), cons = favs("f1-team");
+    const R = lastRace.race;
+    if (!R) return lastRace.error ? `<div class="ms-note">Couldn’t load the last race (${esc(lastRace.error)}).</div>` : `<div class="ms-note">Loading the last race…</div>`;
+    const results = R.Results || [];
+    const nm = r => `${r.Driver.givenName} ${r.Driver.familyName}`;
+    const finish = r => /^\d+$/.test(r.positionText) ? "P" + r.positionText : "DNF";
+    const rowFor = r => {
+      const grid = +r.grid, pos = +r.position, mv = grid > 0 && /^\d+$/.test(r.positionText) ? (grid - pos > 0 ? `<span class="up">▲${grid - pos}</span>` : grid - pos < 0 ? `<span class="down">▼${pos - grid}</span>` : "") : "";
+      const lapsDown = /^\+\d+ Laps?$/.test(r.status || ""), out = r.status && r.status !== "Finished" && !lapsDown;
+      const time = r.Time ? (pos === 1 ? r.Time.time : r.Time.time) : (r.status || "");
+      const fl = r.FastestLap && r.FastestLap.rank === "1" ? " · fastest lap" : "";
+      const pts = +r.points;
+      return `<li style="border-left:4px solid ${TEAM_COLORS[r.Constructor.constructorId] || "#8a919e"};padding-left:8px"><span class="p${/^\d+$/.test(r.positionText) ? "" : " dnf"}">${finish(r)}</span><span class="n">${esc(nm(r))}<small>${esc(r.Constructor.name)} · ${grid > 0 ? "Grid " + grid : "Pit lane"} ${mv}${esc(fl)}</small></span><span class="t" style="${out ? "color:#ff8a80" : ""}">${esc(time)}</span><span class="pt${pts ? "" : " zero"}">${pts ? "+" + pts : "0"}</span></li>`;
+    };
+    const mine = [];
+    drivers.forEach(id => { const r = results.find(x => x.Driver.driverId === id); mine.push(r ? rowFor(r) : `<li><span class="p dnf">–</span><span class="n">${esc(names["f1-driver:" + id] || id)}<small>Didn’t take part</small></span><span></span><span></span></li>`); });
+    const teamTotals = cons.map(id => {
+      const rs = results.filter(x => x.Constructor.constructorId === id);
+      const total = rs.reduce((t, x) => t + (+x.points || 0), 0);
+      rs.forEach(r => { if (!drivers.includes(r.Driver.driverId)) mine.push(rowFor(r)); });
+      return `<div class="ms-tot"><b>${esc(names["f1-team:" + id] || (rs[0] && rs[0].Constructor.name) || id)}</b> scored <b>${total}</b> point${total === 1 ? "" : "s"} in this race${rs.length ? "" : " (no cars classified)"}.</div>`;
+    }).join("");
+    const pod = results.slice(0, 3).map((r, i) => `<span>${["🥇", "🥈", "🥉"][i]} ${esc(r.Driver.familyName)}</span>`).join("");
+    const pole = results.find(x => +x.grid === 1), fl = results.find(x => x.FastestLap && x.FastestLap.rank === "1");
+    const when = R.date ? fmtWhen.format(new Date(R.date + "T" + (R.time || "12:00:00Z"))).replace(/, \d\d:\d\d.*$/, "") : "";
+    return `<div class="ms-last"><div class="k">Last race</div><h4>${esc(R.raceName)}</h4>
+      <div class="s">${esc(R.Circuit.circuitName)} · ${esc(R.date || "")}${pole ? ` · Pole: ${esc(pole.Driver.familyName)}` : ""}${fl ? ` · Fastest lap: ${esc(fl.Driver.familyName)}${fl.FastestLap.Time ? " " + esc(fl.FastestLap.Time.time) : ""}` : ""}</div>
+      <div class="ms-podium">${pod}</div><ol class="ms-res">${mine.join("")}</ol>${teamTotals}<button type="button" class="refresh" style="margin-top:10px" data-ms-replay="${esc(R.round)}">▶ Watch the race replay</button></div>`;
+  }
+  function f1Rows(){
+    const drivers = favs("f1-driver"), cons = favs("f1-team");
+    if (!drivers.length && !cons.length) return "";
+    let body = "";
+    if (st.error && !st.drivers) body = `<div class="ms-note">Couldn’t load the standings (${esc(st.error)}). <button class="refresh" type="button" data-ms-refresh>Retry</button></div>`;
+    else if (!st.drivers) body = `<div class="ms-note">Loading standings…</div>`;
+    else {
+      const dLead = st.drivers[0] ? +st.drivers[0].points : 0, cLead = st.teams[0] ? +st.teams[0].points : 0;
+      const row = (pos, name, sub, pts, wins, lead, color) => `<div class="ms-row" style="--tc:${color}"><span class="p">${pos === 1 ? "🏆" : "P" + esc(pos)}</span><span class="n">${esc(name)}<small>${esc(sub)}</small></span><span class="g">${pos === 1 ? "Leading" : "−" + (lead - pts) + " to leader"}${wins > 0 ? ` · ${wins} win${wins == 1 ? "" : "s"}` : ""}</span><span class="pts">${esc(pts)}<small style="font:500 12px Barlow;color:var(--mute)"> pts</small></span></div>`;
+      body += drivers.map(id => {
+        const r = st.drivers.find(x => x.Driver.driverId === id);
+        if (!r) return `<div class="ms-note">${esc(names["f1-driver:" + id] || id)} isn’t in the current standings.</div>`;
+        const t = (r.Constructors || []).slice(-1)[0] || {};
+        return row(+r.positionText, `${r.Driver.givenName} ${r.Driver.familyName}`, t.name || "", +r.points, +r.wins, dLead, TEAM_COLORS[t.constructorId] || "#8a919e");
+      }).join("");
+      body += cons.map(id => {
+        const r = st.teams.find(x => x.Constructor.constructorId === id);
+        if (!r) return `<div class="ms-note">${esc(names["f1-team:" + id] || id)} isn’t in the current standings.</div>`;
+        return row(+r.positionText, r.Constructor.name, "Constructors’ championship", +r.points, +r.wins, cLead, TEAM_COLORS[id] || "#8a919e");
+      }).join("");
+    }
+    return `<section class="ms-sec"><h3>Formula 1${st.season ? " · " + esc(st.season) + " standings" : ""}</h3>${body}${lastRaceHTML()}</section>`;
+  }
+  function nextRaceCard(){
+    if (!favs("f1-driver").length && !favs("f1-team").length) return "";
+    const F = window.F1State; if (!F || !F.next) return "";
+    const r = F.next, now = Date.now(), sess = r._s || [], race = sess[sess.length - 1];
+    if (!race) return "";
+    const live = F.live, nxt = sess.find(x => x.start > now);
+    return `<div class="ms-next"><div><div class="k">${live ? "● " + esc(live.session.label) + " is live" : sess[0] && sess[0].start <= now ? "Race weekend in progress" : "Next race"}</div><h3>${esc(r.raceName)}</h3>
+      <div class="s">${esc(r.Circuit.Location.locality)}, ${esc(r.Circuit.Location.country)}${nxt && nxt !== race ? ` · Next session: ${esc(nxt.label)} ${esc(fmtWhen.format(nxt.start))}` : ` · Race ${esc(fmtWhen.format(race.start))}`}</div></div>
+      <div class="cd"><span id="ms-cd">${esc(untilText(race.start - now))}</span><small>until lights out</small></div></div>`;
+  }
+  function cricketBlock(){
+    const teams = favs("cricket-team"), players = favs("cricket-player");
+    if (!teams.length && !players.length) return "";
+    const evs = events();
+    let html = "";
+    if (teams.length) {
+      html += teams.map(id => {
+        const isTeam = c => (typeof cricketTeamId === "function" ? cricketTeamId(c) : "") === id;
+        const mine = teamEvents(isTeam);
+        const comp = mine.length ? compsOf(mine[0]).find(isTeam) : null;
+        const team = (comp && comp.team) || (lastSeen[id] ? (compsOf(lastSeen[id]).find(isTeam) || {}).team : null) || {};
+        const name = team.displayName || team.name || names["cricket-team:" + id] || "Your team";
+        if (team.displayName) { names["cricket-team:" + id] = team.displayName; saveNames(); }
+        const live = mine.filter(e => evState(e) === "in");
+        const next = mine.filter(e => evState(e) === "pre").sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+        let last = mine.filter(e => evState(e) === "post").sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+        let saved = false;
+        if (last) remember(id, last); else if (lastSeen[id]) { last = lastSeen[id]; saved = true; }
+        const sec = (label, cls, list, note) => list.length ? `<div class="ms-lbl ${cls}">${label}${note ? ` <span class="saved">${note}</span>` : ""}</div><div class="score-grid">${list.map(e => card(e, "cricket")).join("")}</div>` : "";
+        let body = sec("● Live now", "live", live) + sec("Next match", "", next ? [next] : []) + sec("Last match", "", last ? [last] : [], saved ? "· saved from earlier" : "");
+        if (!body) body = !evs ? `<div class="ms-note">Loading matches…</div>` : `<div class="ms-note">No ${esc(name)} match was found in the live feed or the last week’s results.</div>`;
+        return `<div class="ms-team"><h4>${teamFlag(team, name)}${esc(name)}</h4>${body}</div>`;
+      }).join("");
+    }
+    if (players.length) {
+      html += `<div class="ms-players">${players.filter(n => PLAYERS[n]).map(n => {
+        const p = PLAYERS[n], code = playerCountry(n), country = COUNTRY[code] || "";
+        const recs = Object.entries(STATS).flatMap(([fmt, cats]) => cats.flatMap(cat => cat.r.map((r, i) => r[0] === n ? `<span>${esc(fmt)} · ${esc(cat.t)} #${i + 1}</span>` : null).filter(Boolean))).slice(0, 4);
+        const nm = allCricket().filter(e => compsOf(e).some(c => ((c.team && (c.team.displayName || c.team.name)) || "").toLowerCase().replace(/\s+(women|w|a|u19)$/i, "") === country.toLowerCase()));
+        const nx = nm.find(e => evState(e) === "in") || nm.filter(e => evState(e) === "pre").sort((a, b) => new Date(a.date) - new Date(b.date))[0];
+        const matchLine = nx ? `${evState(nx) === "in" ? "● Live: " : "Next: "}${esc(nx.name || nx.shortName || "")}${evState(nx) === "pre" ? " · " + esc(fmtWhen.format(new Date(nx.date))) : ""}` : "";
+        return `<article class="ms-player">${flagChip(flagCodeOf(code))}<b>${esc(n)}</b><span class="s">${esc(country)} · ${esc(p.status || "")}</span>
+          ${matchLine ? `<div class="x">${matchLine}</div>` : ""}<div class="recs">${recs.join("")}</div>
+          <button type="button" class="refresh more" data-ms-player="${esc(n)}">Player details</button></article>`;
+      }).join("")}</div>`;
+    }
+    return `<section class="ms-sec"><h3>Cricket</h3>${html}</section>`;
+  }
+  function liveStrip(){
+    const bits = [];
+    const F = window.F1State;
+    if (F && F.live && (favs("f1-driver").length || favs("f1-team").length)) bits.push(`<b>F1:</b> ${esc(F.live.session.label)}${F.live.race && F.live.race.raceName ? " · " + esc(F.live.race.raceName) : ""}`);
+    const ids = new Set(favs("cricket-team"));
+    const evs = (events() || []).filter(e => evState(e) === "in" && compsOf(e).some(c => ids.has(cricketTeamId(c))));
+    evs.forEach(e => bits.push(`<b>Cricket:</b> ${esc(e.name || e.shortName || "match")}`));
+    return bits.length ? `<div class="ms-live"><span class="dot" aria-hidden="true"></span><span>Live now:</span> ${bits.join(" &nbsp;·&nbsp; ")}</div>` : "";
+  }
+  function render(){
+    const body = $("mysports-body"); if (!body) return;
+    const total = favs("cricket-team").length + favs("cricket-player").length + favs("f1-driver").length + favs("f1-team").length;
+    if (!total) {
+      body.innerHTML = `<div class="ms-empty"><b>Nothing pinned yet</b>Tap the ☆ next to something you follow and it shows up here.
+        <div class="tips"><button class="refresh" data-tab-go="f1">F1 drivers &amp; teams</button><button class="refresh" data-tab-go="cricket">Cricket teams</button><button class="refresh" data-tab-go="stats">Cricket players</button></div></div>`;
+      return;
+    }
+    body.innerHTML = liveStrip() + nextRaceCard() + f1Rows() + cricketBlock();
+  }
+
+  /* ----- cricket player favorites: strip on the stats tab + pop-up star ----- */
+  function renderFavPlayers(){
+    const el = $("fav-players"); if (!el) return;
+    const list = favs("cricket-player").filter(n => PLAYERS[n]);
+    el.innerHTML = list.length ? `<span class="lbl">★ My players</span>` + list.map(n => `<button type="button" data-ms-player="${esc(n)}">${flagChip(flagCodeOf(playerCountry(n)))}${esc(n)}</button>`).join("") : "";
+  }
+  function syncPopupStar(){
+    const card = $("pcard"), old = card && card.querySelector(".favorite-toggle[data-favorite-type='cricket-player']");
+    if (old) old.outerHTML = favoriteButton("cricket-player", old.dataset.favoriteId, old.dataset.favoriteName);
+  }
+
+  /* ----- wiring ----- */
+  let visibleNow = false, pollTimer = null;
+  const isActive = () => !document.hidden && !$("p-mysports").hidden;
+  async function refresh(force){
+    if (!isActive() && !force) return;
+    render();
+    await Promise.all([loadStandings(force), loadLastRace(force), favs("cricket-team").length || favs("cricket-player").length ? loadRecent(force) : null, typeof loadLive === "function" ? loadLive("cricket", true) : null]);
+    render();
+  }
+  document.addEventListener("tabshown", e => { if (e.detail.tab === "mysports") refresh(false); });
+  window.addEventListener("sportsfavoriteschange", e => {
+    const d = e.detail || {};
+    if (d.type && d.id && d.name) { names[`${d.type}:${d.id}`] = d.name; saveNames(); }
+    if (d.type === "cricket-player") { renderStats(); renderFavPlayers(); syncPopupStar(); }
+    render();
+    if (!$("p-mysports").hidden && (d.type === "f1-driver" || d.type === "f1-team")) Promise.all([loadStandings(true), loadLastRace(false)]).then(render);
+    if (!$("p-mysports").hidden && (d.type === "cricket-team" || d.type === "cricket-player")) loadRecent(false).then(render);
+  });
+  window.addEventListener("f1state", () => { if (!$("p-mysports").hidden) render(); });
+  document.addEventListener("click", e => {
+    const go = e.target.closest("[data-tab-go]"); if (go) { show(go.dataset.tabGo, true); return; }
+    if (e.target.closest("[data-ms-refresh]")) { refresh(true); return; }
+    const pl = e.target.closest("[data-ms-player]"); if (pl) openPlayer(pl.dataset.msPlayer, pl);
+    const rp = e.target.closest("[data-ms-replay]"); if (rp && window.F1Replay) window.F1Replay.open(rp.dataset.msReplay);
+  });
+  setInterval(() => { if (isActive()) { const F = window.F1State, el = $("ms-cd"); if (el && F && F.next) { const sess = F.next._s || [], race = sess[sess.length - 1]; if (race) el.textContent = untilText(race.start - Date.now()); } } }, 1000);
+  setInterval(() => { if (isActive()) refresh(false); }, 30000);
+  renderFavPlayers();
+  render();
+  if (!$("p-mysports").hidden) refresh(false);
+})();
+</script>
+<script>
+/* ---------- Worm chart + fall of wickets & partnerships (from the ball-by-ball data) ---------- */
+function playsPaneHTML(tab, an){
+  if (tab === "worm") return wormHTML(an);
+  if (tab === "partnerships") return partnershipsHTML(an);
+  return tab === "overs" ? oversHTML(an) : commentaryHTML(an, scLimit);
+}
+const WORM_COLORS = ["var(--accent)", "#ffd666", "#6aa8ff", "#ff7a70"];
+function niceCeil(v){
+  const steps = [10, 20, 25, 40, 50, 80, 100, 150, 200, 250, 300, 400, 500, 600, 800, 1000, 1500, 2000];
+  return steps.find(s => s >= v) || Math.ceil(v / 500) * 500;
+}
+function inningsName(I){ return scInningsTeams[I.inn] || scInningsTeams[String(I.inn)] || `Innings ${I.inn}`; }
+
+function wormData(an){
+  return an.map((I, idx) => {
+    const firstOver = I.overs.length ? I.overs[0].over : 1;
+    let runs = 0, wk = 0;
+    const pts = [{x: firstOver - 1, y: 0}], wkts = [];
+    for (const o of I.overs) {
+      let legal = 0;
+      for (const b of o.balls) {
+        runs += b.runs;
+        if (b.extra !== "wd" && b.extra !== "nb") legal++;
+        if (b.wicket) { wk++; wkts.push({x: o.over - 1 + Math.min(legal, 6) / 6, y: runs, b}); }
+      }
+      pts.push({x: o.over - 1 + Math.min(o.legal, 6) / 6, y: runs, wk});
+    }
+    return {I, idx, pts, wkts, total: runs, wk, firstOver, incomplete: firstOver > 1, color: WORM_COLORS[idx % WORM_COLORS.length]};
+  }).filter(d => d.pts.length > 1);
+}
+function wormGeom(data){
+  const W = 720, H = 320, L = 46, R = 14, T = 14, B = 30;
+  const lastX = Math.max(...data.map(d => d.pts[d.pts.length - 1].x));
+  const maxX = Math.max(5, Math.ceil(lastX / 5) * 5), maxY = niceCeil(Math.max(...data.map(d => d.total)) * 1.05);
+  return {W, H, L, R, T, B, maxX, maxY, X: x => L + x / maxX * (W - L - R), Y: y => T + (1 - y / maxY) * (H - T - B)};
+}
+function wormHTML(an){
+  const data = wormData(an);
+  if (!data.length) return `<div class="scorecard-state">There aren’t enough deliveries yet to draw a worm.</div>`;
+  const g = wormGeom(data);
+  const xStep = g.maxX > 60 ? 10 : 5, yStep = g.maxY / 5;
+  let grid = "";
+  for (let x = 0; x <= g.maxX; x += xStep) grid += `<line class="grid" x1="${g.X(x)}" x2="${g.X(x)}" y1="${g.T}" y2="${g.H - g.B}"/><text class="ax" x="${g.X(x)}" y="${g.H - 10}" text-anchor="middle">${x}</text>`;
+  for (let i = 0; i <= 5; i++) { const y = yStep * i; grid += `<line class="grid" x1="${g.L}" x2="${g.W - g.R}" y1="${g.Y(y)}" y2="${g.Y(y)}"/><text class="ax" x="${g.L - 8}" y="${g.Y(y) + 4}" text-anchor="end">${Math.round(y)}</text>`; }
+  const lines = data.map(d => `<path class="ln${d.incomplete ? " partial" : ""}" stroke="${d.color}" d="${d.pts.map((p, i) => `${i ? "L" : "M"}${g.X(p.x).toFixed(1)} ${g.Y(p.y).toFixed(1)}`).join("")}"/>`
+    + d.wkts.map(w => `<circle class="wk" cx="${g.X(w.x).toFixed(1)}" cy="${g.Y(w.y).toFixed(1)}" r="4.5"><title>Wicket at ${w.b.label} · ${w.y} runs</title></circle>`).join("")).join("");
+  const legend = data.map(d => `<span><i style="background:${d.color}"></i><b>${esc(inningsName(d.I))}</b> ${d.total}/${d.wk}${d.incomplete ? ` · since over ${d.firstOver}` : ""}</span>`).join("");
+  const partialNote = data.some(d => d.incomplete) ? `<div class="scorecard-state" style="margin-top:8px">Dashed lines start part-way through an innings: ESPN only provided deliveries from that over, so those runs are counted from there.</div>` : "";
+  return `<div class="sc-inn"><h4>Worm · runs by over</h4>
+    <svg class="worm" viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="Cumulative runs by over for each innings; red dots mark wickets">${grid}${lines}<line class="cross" id="worm-cross" x1="0" x2="0" y1="${g.T}" y2="${g.H - g.B}" style="display:none"/></svg>
+    <div class="worm-legend">${legend}<span>● wicket</span></div>
+    <div class="worm-read" id="worm-read" aria-live="off">Move over the chart to compare the innings at any over.</div>${partialNote}</div>`;
+}
+function bindWorm(pane, an){
+  const svg = pane.querySelector(".worm"); if (!svg) return;
+  const data = wormData(an), g = wormGeom(data), read = pane.querySelector("#worm-read"), cross = pane.querySelector("#worm-cross");
+  const at = (d, over) => { let y = null; for (const p of d.pts) if (p.x <= over + 1e-6) y = p; return y && over <= d.pts[d.pts.length - 1].x + 1e-6 ? y : null; };
+  const move = e => {
+    const r = svg.getBoundingClientRect(); if (!r.width) return;
+    const vx = (e.clientX - r.left) / r.width * g.W;
+    const over = Math.max(0, Math.min(g.maxX, Math.round((vx - g.L) / (g.W - g.L - g.R) * g.maxX)));
+    cross.style.display = ""; cross.setAttribute("x1", g.X(over)); cross.setAttribute("x2", g.X(over));
+    const parts = data.map(d => { const p = at(d, over); if (!p) return null; const w = d.wkts.filter(k => k.x <= over + 1e-6).length; return `<span style="color:${d.color}">●</span> <b>${esc(inningsName(d.I))}</b> ${p.y}/${w}`; }).filter(Boolean);
+    read.innerHTML = `<b>After over ${over}</b> ${parts.length ? "· " + parts.join(" &nbsp; ") : "· no deliveries yet"}`;
+  };
+  svg.addEventListener("pointermove", move); svg.addEventListener("pointerdown", move);
+  svg.addEventListener("pointerleave", () => { cross.style.display = "none"; });
+}
+
+function fowData(I){
+  const balls = I.overs.flatMap(o => o.balls);
+  const firstOver = I.overs.length ? I.overs[0].over : 1;
+  let runs = 0, wk = 0, startRuns = 0, faced = 0, batters = [];
+  const fall = [], parts = [];
+  for (const b of balls) {
+    runs += b.runs;
+    if (b.extra !== "wd") faced++;
+    if (b.batter && !batters.includes(b.batter) && batters.length < 3) batters.push(b.batter);
+    if (b.wicket) {
+      wk++;
+      const runOut = /run out/i.test(b.text), out = runOut ? "" : (b.batter || "");
+      fall.push({n: wk, score: runs, over: b.label, out, runOut, text: b.text});
+      parts.push({n: wk, runs: runs - startRuns, balls: faced, batters: batters.slice(0, 2), out, runOut});
+      startRuns = runs; faced = 0; batters = [];
+    }
+  }
+  if (balls.length && (runs - startRuns > 0 || faced > 0)) parts.push({n: wk + 1, runs: runs - startRuns, balls: faced, batters: batters.slice(0, 2), live: true});
+  return {I, fall, parts, total: runs, wk, firstOver, incomplete: firstOver > 1, lastX: balls.length ? balls[balls.length - 1].over : 0};
+}
+const ordinal = n => { const s = ["th", "st", "nd", "rd"], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); };
+function partnershipsHTML(an){
+  return an.map(I => {
+    const D = fowData(I);
+    if (!D.fall.length && !D.parts.length) return `<section class="sc-inn"><h4>${inningsTitle(I)}</h4><div class="scorecard-state">No wickets or partnerships to show yet.</div></section>`;
+    const best = D.parts.reduce((m, p) => p.runs > (m ? m.runs : -1) ? p : m, null);
+    const maxRuns = Math.max(10, ...D.parts.map(p => p.runs));
+    const maxX = Math.max(5, Math.ceil(D.lastX / 5) * 5), TW = 720, tx = x => 20 + x / maxX * (TW - 40);
+    const ticks = []; for (let x = 0; x <= maxX; x += maxX > 60 ? 10 : 5) ticks.push(`<text x="${tx(x)}" y="46">${x}</text>`);
+    const track = `<svg class="fow-track" viewBox="0 0 ${TW} 54" role="img" aria-label="Overs at which wickets fell"><line class="base" x1="20" x2="${TW - 20}" y1="20" y2="20"/>${ticks.join("")}${D.fall.map(f => { const o = f.over.split("."); const x = (+o[0]) + (+o[1] || 0) / 6; return `<circle class="w" cx="${tx(x)}" cy="20" r="7"><title>${f.n}-${f.score} · ${esc(f.out || "run out")} · ${esc(f.over)} ov</title></circle><text x="${tx(x)}" y="8" style="fill:var(--ink)">${f.n}</text>`; }).join("")}</svg>`;
+    const fow = D.fall.length ? `<ol class="fow">${D.fall.map(f => `<li title="${esc(f.text)}"><b>${f.n}-${f.score}</b>${esc(f.out || "run out")}<small>${esc(f.over)} ov</small></li>`).join("")}</ol>` : `<div class="scorecard-state" style="margin:0 0 10px">No wickets yet.</div>`;
+    const pship = `<ol class="pship">${D.parts.map(p => {
+      const pair = p.batters.length >= 2 ? p.batters.join(" & ") : p.batters.length ? `${p.batters[0]} & partner` : "Batting pair";
+      return `<li class="${p === best && p.runs > 0 ? "top" : ""}${p.live ? " live" : ""}"><span class="w">${ordinal(p.n)}</span><span class="pair">${esc(pair)}<small>${p.live ? "Unbroken so far" : `Ended when ${esc(p.out || "a batter run out")} was dismissed`}</small><span class="bar"><i style="width:${Math.max(2, Math.round(p.runs / maxRuns * 100))}%"></i></span></span><span class="r">${p.runs}<small>${p.balls} ball${p.balls === 1 ? "" : "s"}</small></span></li>`;
+    }).join("")}</ol>`;
+    const note = D.incomplete ? `<div class="scorecard-state" style="margin:0 0 10px">ESPN only provided deliveries from over ${D.firstOver} of this innings, so scores at the fall of wickets and the early partnerships are counted from there.</div>` : "";
+    return `<section class="sc-inn"><h4>${inningsTitle(I)}</h4>
+      <div class="sc-stats"><span><b>${D.total}/${D.wk}</b></span>${best && best.runs ? `<span>Best partnership <b>${best.runs}</b> for the ${ordinal(best.n)} wicket</span>` : ""}</div>
+      ${note}<h4 style="font-size:14px;color:var(--mute);margin-top:6px">Fall of wickets</h4>${fow}${track}
+      <h4 style="font-size:14px;color:var(--mute)">Partnerships</h4>${pship}
+      <div class="scorecard-state" style="margin-top:8px">Batting pairs are the batters who faced balls during each partnership, so a non-striker who hasn’t faced a ball yet may not be named.</div></section>`;
+  }).join("");
+}
+function bindPlaysPane(pane, tab, an){ if (tab === "worm") bindWorm(pane, an); }
+</script>
+<script>
+/* ---------- F1 points progression ---------- */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const API = "https://api.jolpi.ca/ergast/f1";
+  const TEAM_COLORS = {red_bull:"#3671c6",ferrari:"#e8002d",mercedes:"#27f4d2",mclaren:"#ff8000",aston_martin:"#229971",alpine:"#ff87bc",williams:"#64c4ff",rb:"#6692ff",racing_bulls:"#6692ff",alphatauri:"#5e8faa",sauber:"#52e252",kick_sauber:"#52e252",haas:"#b6babd",alfa:"#c92d4b",renault:"#ffd800",audi:"#bb0a30",cadillac:"#9aa0a6"};
+  const FALLBACK = ["#e4b84b","#6aa8ff","#ff7a70","#7fd08a","#c3a4ff","#ffa94d","#4dd0e1","#f48fb1"];
+  const j = async u => { const r = await fetch(u); if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); };
+  const state = {kind: "drivers", filter: "top5", hidden: null, shown: null, data: {}, loading: false, error: "", progress: "", sched: null};
+
+  async function pool(items, n, fn){
+    const out = []; let i = 0;
+    await Promise.all(Array.from({length: n}, async () => { while (i < items.length) { const k = i++; out[k] = await fn(items[k], k).catch(() => null); } }));
+    return out;
+  }
+  async function load(kind){
+    if (state.data[kind] || state.loading) return;
+    state.loading = true; state.error = ""; draw();
+    const file = kind === "drivers" ? "driverstandings" : "constructorstandings";
+    try {
+      const cur = await j(`${API}/current/${file}.json?limit=100`);
+      const sl = (cur.MRData.StandingsTable.StandingsLists || [])[0];
+      if (!sl) throw new Error("No standings yet this season");
+      const season = sl.season, last = +sl.round;
+      if (!state.sched || state.sched.season !== season) {
+        const sc = await j(`${API}/${season}.json?limit=100`);
+        const races = sc.MRData.RaceTable.Races || [];
+        state.sched = {season, names: Object.fromEntries(races.map(r => [r.round, String(r.raceName).replace(/ Grand Prix$/, "")])),
+          remRaces: races.filter(r => +r.round > last).length, remSprints: races.filter(r => +r.round > last && (r.Sprint || r.SprintQualifying)).length, total: races.length};
+      }
+      const rounds = Array.from({length: last}, (_, i) => i + 1);
+      let done = 0;
+      const results = await pool(rounds, 6, async r => {
+        const d = await j(`${API}/${season}/${r}/${file}.json?limit=100`);
+        state.progress = `Loading round ${++done} of ${last}…`; if (!$("f1-prog").hidden) draw();
+        return (d.MRData.StandingsTable.StandingsLists[0] || {})[kind === "drivers" ? "DriverStandings" : "ConstructorStandings"] || [];
+      });
+      const map = new Map();
+      results.forEach((rows, ri) => (rows || []).forEach(row => {
+        const id = kind === "drivers" ? row.Driver.driverId : row.Constructor.constructorId;
+        if (!map.has(id)) {
+          const t = kind === "drivers" ? (row.Constructors || []).slice(-1)[0] || {} : row.Constructor;
+          map.set(id, {id, pts: Array(last).fill(null), team: t.constructorId,
+            name: kind === "drivers" ? row.Driver.familyName : row.Constructor.name,
+            full: kind === "drivers" ? `${row.Driver.givenName} ${row.Driver.familyName}` : row.Constructor.name,
+            code: kind === "drivers" ? (row.Driver.code || row.Driver.familyName.slice(0, 3).toUpperCase()) : row.Constructor.name});
+        }
+        const o = map.get(id); o.pts[ri] = +row.points;
+        if (kind === "drivers") { const t = (row.Constructors || []).slice(-1)[0]; if (t) o.team = t.constructorId; }
+      }));
+      const series = [...map.values()].map(o => {                  // fill gaps: points never go backwards
+        let prev = 0; o.pts = o.pts.map(v => { prev = v == null ? prev : v; return prev; }); o.final = o.pts[o.pts.length - 1]; return o;
+      }).sort((a, b) => b.final - a.final);
+      const seen = {};
+      series.forEach((o, i) => {                                   // colour by team; teammates get a dash pattern
+        const n = seen[o.team] = (seen[o.team] || 0) + 1;
+        o.color = TEAM_COLORS[o.team] || FALLBACK[i % FALLBACK.length];
+        o.dash = kind === "drivers" ? (n === 2 ? "7 5" : n >= 3 ? "2 4" : "") : "";
+      });
+      state.data[kind] = {season, last, series};
+      state.hidden = null;
+    } catch (e) { state.error = e.message; }
+    state.loading = false; draw();
+  }
+  const favIds = kind => { try { return [...sportsFavorites].filter(k => k.startsWith(kind === "drivers" ? "f1-driver:" : "f1-team:")).map(k => k.split(":").slice(1).join(":")); } catch { return []; } };
+  function visibleSet(D){
+    if (state.shown) return state.shown;
+    const ids = D.series.map(o => o.id);
+    if (state.filter === "all") return new Set(ids);
+    if (state.filter === "fav") return new Set(favIds(state.kind).filter(id => ids.includes(id)));
+    return new Set(ids.slice(0, state.filter === "top10" ? 10 : 5));
+  }
+  const niceCeil = v => { const s = [25, 50, 100, 150, 200, 250, 300, 400, 500, 600, 800, 1000]; return s.find(x => x >= v) || Math.ceil(v / 500) * 500; };
+
+  function titleBlock(D){
+    const S = D.series, lead = S[0]; if (!lead) return "";
+    const perRace = state.kind === "drivers" ? 25 : 43, perSprint = state.kind === "drivers" ? 8 : 15;
+    const rem = state.sched.remRaces * perRace + state.sched.remSprints * perSprint;
+    const unit = state.kind === "drivers" ? "driver" : "team";
+    const gap = S[1] ? lead.final - S[1].final : 0;
+    const contenders = S.filter(o => o !== lead && o.final + rem >= lead.final);
+    if (!state.sched.remRaces) return `<div class="f1p-card f1p-title"><h3>${esc(D.season)} season complete</h3><ul><li><b>${esc(lead.full)}</b> finished first with <b>${lead.final}</b> points${S[1] ? `, ${gap} ahead of ${esc(S[1].full)}` : ""}.</li></ul></div>`;
+    return `<div class="f1p-card f1p-title"><h3>The title picture</h3><ul>
+      <li><b>${esc(lead.full)}</b> leads on <b>${lead.final}</b> points${S[1] ? `, <b>${gap}</b> ahead of ${esc(S[1].full)}` : ""}.</li>
+      <li><b>${rem}</b> points are still available (${state.sched.remRaces} race${state.sched.remRaces === 1 ? "" : "s"}${state.sched.remSprints ? ` and ${state.sched.remSprints} sprint${state.sched.remSprints === 1 ? "" : "s"}` : ""} left).</li>
+      <li>${contenders.length ? `Still mathematically in the title fight: <b>${contenders.map(o => esc(o.full)).join(", ")}</b>.` : `No other ${unit} can catch ${esc(lead.full)} on points.`}</li></ul>
+      <div class="f1p-note">${state.kind === "constructors" ? `Assumes a 1–2 finish (${perRace} points) in every race and a 1–2 in every sprint (${perSprint} points)` : `Assumes ${perRace} points for a win and ${perSprint} for a sprint win`}; it ignores penalties and any points changes.</div></div>`;
+  }
+  function chart(D, vis){
+    const N = D.last;
+    if (N < 2) return `<div class="f1p-note">The chart appears once two rounds have been run.</div>`;
+    const W = 760, H = 380, L = 44, R = 76, T = 16, B = 34;
+    const series = D.series.filter(o => vis.has(o.id));
+    if (!series.length) return `<div class="f1p-note" style="padding:30px 0;text-align:center">${state.filter === "fav" ? "None of your favorites are in this list. Tap ☆ on a " + (state.kind === "drivers" ? "driver" : "team") + " in Standings to add one." : "Nothing selected. Tap names below to show them."}</div>`;
+    const maxY = niceCeil(Math.max(...series.map(o => o.final)) * 1.04);
+    const X = r => L + r / N * (W - L - R), Y = v => T + (1 - v / maxY) * (H - T - B);
+    let grid = "";
+    for (let i = 0; i <= 5; i++) { const v = maxY / 5 * i; grid += `<line class="grid" x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${L - 7}" y="${Y(v) + 4}" text-anchor="end">${Math.round(v)}</text>`; }
+    const step = N > 16 ? 2 : 1;
+    for (let r = 1; r <= N; r += step) grid += `<text class="ax" x="${X(r)}" y="${H - 12}" text-anchor="middle">${r}</text>`;
+    const lines = series.map(o => `<path class="ln" stroke="${o.color}" ${o.dash ? `stroke-dasharray="${o.dash}"` : ""} d="${["M" + X(0).toFixed(1) + " " + Y(0).toFixed(1)].concat(o.pts.map((v, i) => `L${X(i + 1).toFixed(1)} ${Y(v).toFixed(1)}`)).join("")}"><title>${esc(o.full)}: ${o.final} pts</title></path>`).join("");
+    // end labels, nudged apart so they don't overlap
+    const labels = series.map(o => ({o, y: Y(o.final)})).sort((a, b) => a.y - b.y);
+    for (let i = 1; i < labels.length; i++) if (labels[i].y - labels[i - 1].y < 13) labels[i].y = labels[i - 1].y + 13;
+    const ends = labels.map(l => `<text class="end" x="${W - R + 6}" y="${l.y + 4}" fill="${l.o.color}">${esc(state.kind === "drivers" ? l.o.code : l.o.name.slice(0, 10))} ${l.o.final}</text>`).join("");
+    return `<div class="f1p-wrap"><svg class="f1p-chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Championship points after each round">${grid}${lines}${ends}<line class="cross" id="f1p-cross" y1="${T}" y2="${H - B}" style="display:none"/></svg><div class="f1p-tip" id="f1p-tip"></div></div>`;
+  }
+  function bindChart(D, vis){
+    const svg = document.querySelector(".f1p-chart"); if (!svg) return;
+    const W = 760, L = 44, R = 76, N = D.last, cross = $("f1p-cross"), tip = $("f1p-tip");
+    const series = D.series.filter(o => vis.has(o.id));
+    const move = e => {
+      const r = svg.getBoundingClientRect(); if (!r.width) return;
+      const vx = (e.clientX - r.left) / r.width * W;
+      const rd = Math.max(1, Math.min(N, Math.round((vx - L) / (W - L - R) * N)));
+      const x = L + rd / N * (W - L - R); cross.style.display = ""; cross.setAttribute("x1", x); cross.setAttribute("x2", x);
+      const rows = series.map(o => ({o, v: o.pts[rd - 1], d: o.pts[rd - 1] - (rd > 1 ? o.pts[rd - 2] : 0)})).sort((a, b) => b.v - a.v).slice(0, 10);
+      tip.innerHTML = `<div class="h">Round ${rd}${state.sched.names[rd] ? " · " + esc(state.sched.names[rd]) : ""}</div>` + rows.map(x => `<div class="r"><span><i style="background:${x.o.color}"></i>${esc(x.o.name)}</span><span><b>${x.v}</b>${x.d ? ` <span style="color:var(--green)">+${x.d}</span>` : ""}</span></div>`).join("");
+      tip.style.display = "block";
+      const wrap = svg.parentElement.getBoundingClientRect(), tx = (e.clientX - wrap.left);
+      tip.style.left = (tx > wrap.width / 2 ? Math.max(8, tx - tip.offsetWidth - 14) : Math.min(wrap.width - tip.offsetWidth - 8, tx + 14)) + "px";
+    };
+    svg.addEventListener("pointermove", move); svg.addEventListener("pointerdown", move);
+    svg.addEventListener("pointerleave", () => { cross.style.display = "none"; tip.style.display = "none"; });
+  }
+  function draw(){
+    const el = $("f1-prog"); if (!el || el.hidden) return;
+    const seg = (name, items, cur) => `<div class="seg" role="group" aria-label="${name}">${items.map(([k, l]) => `<button type="button" data-f1p-${name}="${k}" aria-pressed="${k === cur}">${l}</button>`).join("")}</div>`;
+    const controls = `<div class="f1p-controls">${seg("kind", [["drivers", "Drivers"], ["constructors", "Constructors"]], state.kind)}${seg("filter", [["top5", "Top 5"], ["top10", "Top 10"], ["all", "All"], ["fav", "★ Favorites"]], state.shown ? "" : state.filter)}</div>`;
+    const D = state.data[state.kind];
+    if (!D) {
+      el.innerHTML = controls + `<div class="f1p-card"><div class="f1p-note" style="font-size:14px;text-align:center;padding:26px 0">${state.error ? `Couldn’t load the points history (${esc(state.error)}). <button class="refresh" type="button" data-f1p-retry>Retry</button>` : esc(state.progress || "Loading the season’s points…")}</div></div>`;
+      return;
+    }
+    const vis = visibleSet(D);
+    el.innerHTML = controls + `<div class="f1p-card"><div class="h" style="font:700 14px 'Barlow Condensed',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px">${esc(D.season)} ${state.kind === "drivers" ? "drivers’" : "constructors’"} championship · points after each round</div>${chart(D, vis)}
+      <div class="f1p-legend">${D.series.map(o => `<button type="button" data-f1p-toggle="${esc(o.id)}" aria-pressed="${vis.has(o.id)}"><i style="background:${o.color}${o.dash ? ";opacity:.75" : ""}"></i>${esc(state.kind === "drivers" ? o.full : o.name)}</button>`).join("")}</div></div>${titleBlock(D)}`;
+    bindChart(D, vis);
+  }
+  document.addEventListener("f1view", e => { if (e.detail.view === "progression") { draw(); load(state.kind); } });
+  document.addEventListener("click", e => {
+    const k = e.target.closest("[data-f1p-kind]"); if (k) { state.kind = k.dataset.f1pKind; state.shown = null; draw(); load(state.kind); return; }
+    const f = e.target.closest("[data-f1p-filter]"); if (f) { state.filter = f.dataset.f1pFilter; state.shown = null; draw(); return; }
+    const t = e.target.closest("[data-f1p-toggle]");
+    if (t) { const D = state.data[state.kind]; if (!D) return; const cur = new Set(visibleSet(D)); const id = t.dataset.f1pToggle; cur.has(id) ? cur.delete(id) : cur.add(id); state.shown = cur; draw(); return; }
+    if (e.target.closest("[data-f1p-retry]")) { state.error = ""; load(state.kind); }
+  });
+  window.addEventListener("sportsfavoriteschange", () => { if (state.filter === "fav" && !state.shown) draw(); });
+})();
+</script>
+<script>
+/* ---------- F1 race replay: every driver on the track, lap by lap ---------- */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = v => String(v ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const API = "https://api.jolpi.ca/ergast/f1";
+  // Circuit outlines derived from bacinger/f1-circuits (github.com/bacinger/f1-circuits), resampled to 130 points and scaled to 0–1000.
+  // NOTE: that repository has no licence file, so check you are happy to publish them (or ask the author) before going public.
+  const TRACKS = [{"id":"au-1953","n":"Albert Park Circuit","l":"Melbourne","lat":-37.8459,"lng":144.9704,"len":5278,"w":820,"h":1000,"p":"325,738,309,722,293,706,276,690,260,673,244,657,228,640,211,624,195,608,199,587,205,565,204,542,196,520,181,503,164,488,147,472,131,455,115,439,99,422,85,404,70,386,56,368,44,348,32,329,21,309,9,289,0,268,15,254,37,250,60,245,78,234,80,211,79,188,78,165,78,142,77,119,92,102,110,89,129,75,148,62,168,51,189,42,211,34,232,26,253,16,273,4,294,0,311,16,330,27,353,31,376,33,398,39,418,49,436,64,451,82,461,102,468,124,472,147,476,169,480,192,484,215,480,237,471,258,457,276,445,296,440,318,435,341,431,364,427,386,424,409,424,432,426,455,431,477,438,499,449,520,461,540,474,558,491,574,508,590,525,605,543,620,563,630,585,634,608,633,631,634,652,644,669,660,687,674,704,689,722,704,739,719,754,737,766,756,775,777,783,799,789,821,796,843,802,865,808,887,814,910,820,932,820,953,798,961,777,970,755,978,734,987,713,995,690,1000,670,991,656,973,645,953,634,933,622,913,610,893,593,885,577,902,562,920,544,933,521,932,503,918,487,902,471,885,455,869,439,853,422,836,406,820,390,804,374,787,358,771,342,754"},{"id":"bh-2002","n":"Bahrain International Circuit","l":"Sakhir","lat":26.0322,"lng":50.5142,"len":5412,"w":682,"h":1000,"p":"22,475,23,440,24,405,25,370,26,335,27,300,28,265,29,230,30,195,31,160,33,125,34,90,35,55,37,20,54,0,80,23,106,46,140,41,173,30,208,23,242,29,277,35,311,42,345,48,380,55,414,62,448,68,483,75,517,81,551,88,586,95,620,101,655,108,682,125,673,158,647,181,619,202,591,223,566,247,542,272,523,302,509,334,483,356,448,355,414,350,381,359,357,385,335,412,313,439,291,467,269,494,240,499,236,465,242,430,248,396,253,361,259,327,265,292,270,257,275,223,266,189,241,165,213,146,204,178,199,213,194,247,191,282,189,317,187,352,186,387,184,422,182,457,180,492,179,527,178,562,177,597,175,632,174,667,172,702,173,737,200,757,234,757,267,746,296,727,319,700,333,669,346,636,363,606,390,583,422,571,457,569,490,581,521,596,553,611,582,629,603,657,600,689,573,711,543,728,512,745,481,762,451,779,420,796,390,813,359,830,328,847,298,864,267,881,237,898,206,915,175,932,145,949,114,966,84,983,53,1000,23,995,8,963,0,929,0,894,2,859,3,824,4,789,5,755,6,720,8,685,10,650,12,615,15,580,17,545,20,510"},{"id":"cn-2004","n":"Shanghai International Circuit","l":"Shanghai","lat":31.3402,"lng":121.2193,"len":5451,"w":1000,"h":865,"p":"264,781,231,789,198,797,164,801,132,791,106,769,93,738,95,704,115,677,147,670,171,691,164,725,174,754,206,751,222,722,225,688,210,658,187,632,164,607,142,581,121,554,98,529,75,504,56,476,44,443,33,411,22,379,11,347,0,314,18,295,47,312,71,336,92,362,110,392,127,421,144,451,161,480,181,508,208,529,240,539,274,537,305,525,332,503,350,474,364,443,380,413,406,391,438,383,470,393,493,418,509,448,525,478,556,485,578,460,598,432,589,401,571,371,554,342,537,312,519,283,501,254,483,225,465,196,447,167,430,138,412,108,386,97,363,122,332,124,310,99,303,66,310,33,334,9,367,0,401,3,432,16,457,39,477,67,495,95,514,124,533,153,552,181,571,210,589,238,608,267,627,295,646,324,665,352,683,381,702,409,721,437,740,466,759,494,778,523,797,551,816,580,834,608,853,637,872,666,891,694,910,722,929,751,948,779,968,807,987,835,1000,865,970,864,942,845,921,818,901,791,881,763,860,736,840,708,820,681,796,658,763,663,730,671,696,679,663,687,630,694,597,702,563,710,530,718,497,726,464,734,430,741,397,749,364,757,331,765,297,773"},{"id":"es-1991","n":"Circuit de Barcelona-Catalunya","l":"Barcelona","lat":41.569,"lng":2.2573,"len":4655,"w":823,"h":1000,"p":"649,446,632,472,616,498,599,524,583,550,566,575,550,601,534,627,517,653,501,679,485,705,468,731,452,757,435,783,419,809,402,835,386,861,370,887,354,913,337,939,314,958,285,953,258,937,228,934,201,948,177,966,152,985,124,997,94,1000,64,994,38,978,18,955,5,927,0,897,1,866,8,836,17,807,32,781,49,755,65,729,82,703,98,677,114,651,131,625,151,603,181,598,208,612,225,637,231,667,227,697,214,725,198,751,182,777,165,802,149,828,133,854,137,883,164,894,193,883,221,870,249,858,277,845,304,831,328,812,349,790,366,764,382,738,399,712,401,683,380,662,354,644,337,619,325,591,313,563,301,534,289,506,277,478,274,448,282,419,301,395,327,379,355,365,382,351,409,337,437,323,464,309,491,296,519,282,546,268,573,254,601,240,628,226,655,212,683,198,704,177,694,149,668,134,638,129,608,134,581,149,557,169,529,178,500,168,483,144,483,113,501,89,524,70,548,50,572,31,596,11,624,0,654,1,681,14,707,31,733,48,759,64,785,80,808,100,821,128,823,158,813,187,797,213,781,239,764,265,748,291,731,316,715,342,698,368,682,394,665,420"},{"id":"mc-1929","n":"Circuit de Monaco","l":"Monaco","lat":43.7371,"lng":7.4253,"len":3337,"w":762,"h":1000,"p":"498,194,501,169,515,146,531,126,547,104,563,83,578,62,594,41,610,20,627,0,651,7,659,31,665,56,681,78,693,101,711,89,693,69,677,49,677,24,701,15,726,6,752,1,762,23,760,49,759,76,757,102,753,128,749,154,742,180,735,205,726,230,713,253,699,275,682,296,665,315,647,335,624,349,602,363,579,375,555,386,531,397,507,408,482,417,456,424,431,430,405,436,379,440,354,447,343,468,318,465,292,465,266,469,240,472,214,475,188,479,162,483,135,487,109,491,84,497,71,519,60,543,53,569,49,595,49,621,51,647,70,665,84,686,88,713,93,739,97,765,103,790,96,813,83,832,91,857,100,882,113,905,129,926,148,944,172,956,188,974,174,991,149,997,122,1000,100,989,95,963,79,943,64,920,52,897,43,872,36,847,29,822,21,796,15,771,11,745,7,718,4,692,1,666,0,640,0,613,2,587,4,560,12,535,19,510,19,483,39,470,65,467,91,464,117,461,143,456,169,448,194,441,219,434,245,427,271,422,297,420,322,413,346,401,370,390,395,380,420,373,446,368,472,364,498,359,521,347,540,329,553,306,554,280,546,254,533,232,513,215"},{"id":"ca-1978","n":"Circuit Gilles-Villeneuve","l":"Montreal","lat":45.5044,"lng":-73.5265,"len":4361,"w":328,"h":1000,"p":"275,723,279,741,282,758,286,775,290,792,293,809,297,827,300,844,302,861,302,879,300,896,298,914,296,931,294,949,303,963,319,970,328,983,319,997,302,1000,285,996,268,991,251,985,236,977,221,967,207,956,194,945,181,933,168,921,160,906,165,889,161,873,149,859,138,845,127,832,114,820,100,809,88,797,81,781,77,764,76,746,76,729,76,711,76,693,76,676,62,667,45,669,29,664,17,651,11,634,7,617,5,600,4,582,2,565,1,547,0,530,0,512,1,495,1,477,3,459,5,442,8,425,11,407,15,390,20,373,24,356,28,339,36,324,53,321,67,311,76,295,80,278,84,261,89,244,93,227,97,210,100,193,103,175,106,158,107,140,108,123,109,105,108,88,105,70,101,53,98,36,94,19,93,1,108,0,112,17,114,34,115,52,122,68,129,84,137,100,144,116,150,132,157,149,163,165,169,182,176,198,182,214,188,231,194,248,197,265,201,282,204,299,208,316,212,334,215,351,219,368,223,385,226,403,230,420,233,437,237,454,241,471,244,489,248,506,252,523,255,540,259,558,262,575,266,592,257,604,253,620,256,637,260,655,264,672,268,689,271,706"},{"id":"at-1969","n":"Red Bull Ring","l":"Spielberg","lat":47.2234,"lng":14.762,"len":4318,"w":1000,"h":625,"p":"667,562,642,569,616,575,591,582,565,589,540,596,514,603,489,610,463,617,438,624,413,625,399,603,384,581,368,559,353,538,337,517,322,495,307,474,293,451,279,429,265,406,252,384,238,361,227,337,216,313,205,289,194,265,183,241,172,217,158,194,143,173,126,152,109,132,90,114,71,95,53,76,34,58,15,39,0,19,20,7,46,4,72,1,99,0,125,0,151,0,178,3,204,6,230,10,256,14,282,19,308,24,334,29,360,34,386,39,412,43,438,47,464,50,490,52,517,53,543,54,570,55,596,56,622,59,638,77,631,102,615,123,597,142,575,157,551,168,526,175,500,179,474,178,447,174,421,170,395,166,369,161,343,157,317,161,295,175,280,196,276,222,281,248,294,271,307,294,320,317,333,340,347,362,368,378,394,383,419,377,440,362,457,341,475,322,497,307,521,297,546,290,573,288,599,287,625,286,652,286,678,285,705,285,731,284,757,284,784,283,810,282,837,282,863,281,889,280,916,280,941,288,959,307,970,331,978,356,985,381,993,407,1000,432,992,455,970,469,946,481,922,492,897,500,871,507,846,514,820,521,795,527,769,534,744,541,718,548,693,555"},{"id":"gb-1948","n":"Silverstone Circuit","l":"Silverstone","lat":52.0718,"lng":-1.0164,"len":5891,"w":601,"h":1000,"p":"357,9,384,7,410,5,436,2,463,0,489,2,512,14,527,35,536,60,543,86,549,111,555,137,558,163,560,190,562,216,563,243,564,269,565,295,574,320,587,343,591,369,582,394,573,419,569,445,578,469,593,491,601,515,594,540,575,557,552,571,531,586,516,608,504,632,491,655,478,678,466,701,453,725,440,748,428,771,415,794,402,817,389,841,377,864,364,887,351,910,336,932,322,954,307,976,287,994,262,1000,237,993,218,975,207,952,194,928,179,907,162,886,144,867,126,847,109,827,92,807,69,812,47,824,27,809,12,787,2,762,0,737,14,714,30,693,47,672,63,651,79,631,95,610,111,589,128,568,144,547,160,526,177,505,200,494,226,494,252,498,278,501,305,501,330,493,352,478,372,462,393,445,414,429,436,416,454,432,462,457,471,482,493,483,505,459,513,434,517,408,514,382,495,363,476,345,456,327,436,310,417,292,397,274,378,256,358,238,338,221,319,203,299,185,280,167,260,150,240,132,218,117,192,116,172,132,167,158,164,184,147,202,121,201,104,182,108,156,120,132,132,109,144,85,160,64,179,47,201,32,226,22,252,19,278,16,305,14,331,12"},{"id":"hu-1986","n":"Hungaroring","l":"Budapest","lat":47.5827,"lng":19.2509,"len":4381,"w":885,"h":1000,"p":"217,754,196,736,174,719,152,702,130,684,108,667,87,650,65,632,43,615,21,598,0,580,0,554,26,546,53,546,81,548,108,554,135,563,160,576,182,592,204,609,226,626,248,643,270,660,292,678,314,695,341,701,365,689,377,665,372,638,358,614,344,590,331,565,332,538,342,512,355,488,368,463,380,438,392,413,405,388,417,363,430,338,442,313,455,288,468,264,484,241,502,220,513,195,506,168,499,142,492,115,484,88,477,61,478,33,494,11,519,0,546,5,570,19,593,35,614,53,633,74,652,94,671,114,690,135,695,160,681,182,687,209,694,236,702,263,709,290,723,314,749,322,777,326,804,331,827,347,834,373,830,401,826,428,822,456,819,483,820,511,831,537,846,560,861,584,876,607,885,633,882,661,865,683,847,704,828,724,809,745,791,766,772,787,754,808,736,829,718,850,699,871,681,891,656,900,636,881,618,861,599,840,580,820,558,803,536,786,509,782,489,801,488,828,506,848,528,866,550,883,572,900,593,919,601,945,596,972,578,992,551,1000,524,994,502,978,480,961,458,943,436,926,414,909,392,892,371,874,349,857,327,840,305,823,283,805,261,788,239,771"},{"id":"be-1925","n":"Circuit de Spa-Francorchamps","l":"Spa Francorchamps","lat":50.4347,"lng":5.9687,"len":7004,"w":623,"h":1000,"p":"188,105,175,82,162,60,149,37,136,14,144,0,168,11,192,23,215,35,237,49,257,65,277,82,294,102,311,122,328,142,345,162,362,182,380,201,402,215,420,234,428,258,432,284,444,307,458,329,472,351,486,374,500,396,513,419,522,443,529,468,537,493,544,518,551,543,558,569,566,594,573,619,580,644,588,669,595,694,602,719,610,745,617,770,623,795,610,816,594,836,598,861,604,887,598,911,577,927,555,942,534,957,512,971,491,986,469,1000,445,994,439,970,457,952,479,938,502,924,511,901,503,876,495,851,487,826,481,801,476,775,471,750,466,724,462,698,455,673,436,655,411,649,385,647,360,653,338,667,323,688,312,712,303,736,293,760,283,785,273,809,263,833,245,851,219,853,197,841,171,838,150,853,136,875,122,897,107,919,91,939,66,939,45,924,24,909,6,890,0,865,7,840,16,815,29,793,45,772,63,753,82,735,102,718,124,705,148,692,171,680,194,668,216,655,236,637,251,616,263,593,274,569,285,545,294,521,293,495,284,470,274,446,265,421,256,397,248,372,244,346,241,320,239,294,238,268,249,251,267,241,254,218,240,196,227,173,214,150,201,128"},{"id":"it-1922","n":"Autodromo Nazionale Monza","l":"Monza","lat":45.6234,"lng":9.2866,"len":5793,"w":585,"h":1000,"p":"19,635,21,615,22,594,24,574,26,553,28,533,29,512,31,492,33,471,35,451,37,430,38,409,40,389,42,368,47,349,64,343,60,323,55,303,51,283,51,263,52,242,54,221,55,201,59,181,67,161,77,143,89,127,104,113,121,101,139,91,158,83,178,77,198,74,219,72,239,70,260,68,280,67,301,65,321,64,342,63,363,61,383,60,394,44,412,37,432,32,452,26,471,19,491,13,510,6,530,0,550,0,567,12,575,31,576,51,578,72,580,92,582,113,585,133,580,152,562,163,544,173,526,182,508,192,490,202,472,212,453,222,435,232,418,244,402,257,387,270,371,284,355,297,340,311,324,324,309,338,293,352,278,365,262,379,247,392,231,406,216,419,200,433,188,449,189,469,187,489,176,507,160,520,155,540,152,560,150,581,147,601,145,622,143,642,141,663,139,683,136,704,134,724,132,745,130,765,128,786,126,806,124,827,121,848,119,868,117,889,115,909,113,930,111,950,108,971,99,989,82,999,62,1000,43,992,27,979,15,962,8,943,3,923,1,903,1,882,0,861,0,841,0,820,1,800,3,779,5,758,7,738,10,717,12,697,14,676,16,656"},{"id":"sg-2008","n":"Marina Bay Street Circuit","l":"Singapore","lat":1.2907,"lng":103.858,"len":4928,"w":1000,"h":638,"p":"979,242,976,216,972,190,968,163,965,137,962,111,960,84,958,58,947,35,921,34,896,24,878,5,856,0,843,23,840,49,839,76,846,101,856,126,866,151,874,176,879,202,882,228,880,254,861,272,836,278,809,277,783,275,756,274,729,272,703,270,676,269,650,267,623,266,597,264,570,261,545,252,522,240,499,227,476,214,452,201,429,187,406,174,383,161,360,148,337,137,320,156,307,179,293,202,281,226,269,249,251,261,233,241,214,222,196,203,176,186,152,176,130,190,118,213,105,237,92,260,79,283,66,306,52,329,39,353,26,376,13,399,0,422,0,448,17,468,39,482,64,492,62,516,67,541,84,562,103,579,124,596,140,616,156,638,179,637,187,613,192,586,197,560,203,534,208,508,213,482,218,456,223,430,228,404,233,378,239,352,246,326,254,301,274,287,297,299,317,316,337,334,357,351,377,369,399,384,424,393,450,396,477,397,503,398,530,400,556,401,583,403,609,404,636,406,662,407,689,408,716,410,742,411,750,432,761,455,785,464,812,467,838,470,865,473,891,475,918,476,944,478,968,471,983,449,997,426,1000,401,997,374,993,348,990,321,986,295,983,269"},{"id":"jp-1962","n":"Suzuka International Racing Course","l":"Suzuka","lat":34.8446,"lng":136.5328,"len":5807,"w":1000,"h":531,"p":"854,284,869,301,883,318,898,336,912,353,927,371,941,389,956,406,970,424,985,441,997,460,1000,483,994,504,983,524,962,531,942,521,930,502,917,483,905,464,892,445,873,434,850,433,829,427,816,409,810,387,803,366,788,349,766,343,743,342,722,336,707,319,702,297,709,275,717,254,717,232,706,213,686,202,665,192,643,187,620,187,599,192,578,202,560,216,545,233,530,250,516,268,501,285,480,290,457,292,435,295,414,291,408,269,403,246,398,224,394,202,390,179,387,157,384,134,389,112,399,92,403,71,384,71,372,91,361,110,348,129,333,146,315,160,294,167,271,169,248,169,226,165,204,158,183,150,163,139,145,125,129,109,117,90,108,69,100,47,91,27,79,8,58,0,35,2,14,9,0,26,1,48,15,66,32,81,49,96,67,110,86,123,105,135,125,145,146,155,167,164,188,172,210,179,231,188,252,196,274,203,295,211,317,217,339,224,360,232,382,239,403,247,424,254,447,251,468,244,489,233,507,221,524,206,541,190,558,175,575,159,593,145,612,144,631,153,649,139,670,130,692,130,714,136,734,147,752,161,767,178,782,196,796,213,811,231,825,248,840,266"},{"id":"us-2012","n":"Circuit of the Americas","l":"Austin","lat":30.1352,"lng":-97.6347,"len":5514,"w":1000,"h":568,"p":"200,466,218,480,237,494,255,509,273,523,291,538,310,551,330,563,351,568,349,546,341,524,334,502,326,480,323,457,329,435,342,416,362,403,381,391,401,379,421,367,440,353,451,333,461,312,478,298,500,288,512,270,516,247,525,226,541,209,562,198,584,197,606,206,627,216,648,224,669,214,686,198,700,180,720,170,742,176,756,195,778,196,801,191,823,186,846,181,868,175,884,158,899,140,913,122,928,104,943,86,958,69,973,51,987,32,1000,13,989,0,966,7,944,14,922,21,900,28,878,35,855,41,833,47,810,53,788,59,765,64,743,70,720,74,697,79,674,83,652,88,629,92,606,96,583,99,560,103,537,106,514,108,491,111,468,114,444,116,421,119,398,121,375,124,360,134,375,152,389,171,403,190,415,209,423,230,403,238,380,236,365,220,356,199,340,182,320,173,299,178,308,199,320,219,332,239,343,259,352,280,348,303,339,324,320,337,299,347,276,351,253,348,232,338,216,322,203,303,189,284,175,266,161,248,141,237,119,244,98,253,76,263,55,272,34,281,13,290,0,307,17,322,35,337,53,351,72,366,90,380,108,394,127,409,145,423,163,437,182,451"},{"id":"mx-1962","n":"Autódromo Hermanos Rodríguez","l":"Mexico City","lat":19.4027,"lng":-99.0897,"len":4304,"w":1000,"h":716,"p":"182,14,205,17,228,20,250,23,273,26,296,29,319,33,341,36,364,39,387,42,410,45,432,48,455,51,478,54,501,57,523,60,546,62,569,64,592,66,615,68,637,71,660,74,683,78,706,81,728,84,751,87,774,90,796,94,819,97,842,101,865,104,887,107,910,111,933,114,955,119,976,127,976,149,972,172,979,191,999,202,1000,224,996,247,990,269,982,290,972,311,960,330,948,350,937,370,925,390,913,409,901,429,890,449,877,468,865,488,853,507,840,526,828,546,816,565,803,584,791,603,779,623,788,642,808,654,811,671,793,685,775,698,756,712,736,716,726,698,729,675,732,652,735,629,737,607,740,584,743,561,746,538,749,516,751,493,738,475,718,463,700,450,686,432,678,411,663,393,643,382,620,379,598,375,575,372,552,368,532,358,523,338,516,316,503,298,483,286,463,275,443,265,422,254,401,245,379,240,356,236,334,232,311,229,288,226,265,223,243,219,220,216,197,213,175,209,152,206,132,197,130,174,129,152,127,129,124,106,120,84,101,85,86,102,64,98,42,93,19,90,0,81,4,59,14,38,28,20,47,7,69,0,91,1,114,4,137,7,160,10"},{"id":"br-1940","n":"Autódromo José Carlos Pace - Interlagos","l":"Sao Paulo","lat":-23.7009,"lng":-46.698,"len":4309,"w":636,"h":1000,"p":"61,718,69,748,77,779,85,810,93,840,101,871,109,901,117,932,126,962,143,989,171,1000,198,985,220,962,248,952,276,966,305,980,335,987,367,986,398,979,426,964,449,943,468,918,482,889,491,859,500,829,509,798,517,768,525,737,533,706,541,676,548,645,556,614,564,584,572,553,580,522,588,492,596,461,604,431,612,400,620,369,629,339,636,308,628,278,600,263,569,257,538,251,507,248,476,252,447,266,423,285,402,310,383,335,364,360,345,386,327,411,309,437,290,463,271,488,252,514,233,539,213,563,183,573,151,572,121,563,94,546,78,520,70,489,64,458,59,427,58,395,78,373,107,382,133,400,164,402,188,382,192,351,177,324,154,302,132,279,113,254,104,224,97,193,99,162,126,152,148,174,169,198,190,221,214,242,244,252,275,253,306,245,332,227,351,202,368,175,384,148,401,121,417,94,433,67,424,39,395,25,365,14,336,3,305,0,273,4,242,11,212,19,182,31,154,45,126,60,102,80,80,103,65,131,56,161,48,192,40,223,34,254,29,285,21,315,13,346,6,377,0,408,0,440,3,471,9,502,16,533,24,564,31,595,39,625,46,656,54,687"},{"id":"ae-2009","n":"Yas Marina Circuit","l":"Yas Marina","lat":24.4694,"lng":54.6056,"len":5281,"w":472,"h":1000,"p":"231,559,254,556,278,553,302,550,325,547,349,544,372,540,388,524,385,501,380,478,374,455,369,432,363,409,349,390,327,381,304,374,283,363,265,348,252,328,247,305,250,282,257,259,263,236,266,212,268,189,266,165,263,141,260,118,257,94,254,71,251,47,248,23,238,3,216,0,203,20,196,42,191,66,184,88,177,111,169,133,162,156,154,178,146,201,139,224,131,246,124,269,116,291,108,314,101,336,93,359,85,381,78,404,70,426,63,449,57,472,50,495,43,517,36,540,29,563,21,585,14,608,6,630,0,653,21,657,41,662,47,685,53,708,61,730,71,752,85,771,100,790,118,806,136,821,155,836,173,850,192,865,211,880,229,894,248,909,268,922,288,935,309,947,330,957,352,967,373,977,395,987,417,996,440,1000,461,990,472,970,472,946,461,925,441,912,418,909,394,907,371,905,347,903,323,901,300,895,280,883,260,870,241,856,233,834,228,811,223,788,239,776,263,772,285,766,292,744,292,720,287,698,264,691,241,692,217,696,194,699,170,703,147,706,123,705,105,691,93,670,82,649,69,629,62,607,67,585,90,580,113,576,137,573,160,570,184,566,207,563"},{"id":"it-1953","n":"Autodromo Enzo e Dino Ferrari","l":"Imola","lat":44.3409,"lng":11.7126,"len":4909,"w":1000,"h":511,"p":"634,59,614,58,594,54,574,49,554,45,534,41,514,36,494,34,473,31,453,30,433,31,412,33,392,35,371,37,351,39,331,40,311,45,291,49,271,54,259,70,253,89,236,100,218,109,200,118,185,132,177,151,169,170,162,189,154,208,146,227,139,245,131,264,123,283,116,302,108,321,101,340,103,360,109,380,102,398,87,412,71,425,55,438,40,451,24,465,9,478,0,495,11,511,31,511,51,508,72,506,92,503,112,501,133,498,153,495,173,493,194,491,214,491,234,492,255,495,275,499,295,503,315,507,334,501,346,485,355,466,363,447,367,428,367,407,364,387,359,367,355,347,351,327,347,307,351,288,362,271,373,253,391,250,410,257,430,259,450,259,471,259,491,258,512,258,532,258,553,258,573,258,594,258,614,258,635,257,654,260,666,273,685,265,704,257,723,250,742,242,761,234,778,223,795,212,811,200,827,186,841,172,856,157,870,143,885,129,900,114,916,102,934,93,953,85,972,77,991,69,1000,53,992,34,984,16,972,0,952,1,933,9,913,16,894,23,875,30,856,38,837,45,818,52,798,57,778,59,757,59,737,59,716,59,696,59,675,59,655,59"},{"id":"pt-2008","n":"Autódromo Internacional do Algarve","l":"Portimão","lat":37.2312,"lng":-8.6277,"len":4653,"w":590,"h":1000,"p":"95,420,86,390,77,360,69,331,60,301,51,271,43,241,34,212,25,182,16,152,8,122,0,92,15,68,40,50,65,31,90,13,118,0,148,6,178,13,208,20,238,29,239,56,213,72,186,88,162,106,151,135,156,165,165,195,173,225,182,254,190,284,199,314,208,344,216,373,225,403,233,433,242,463,251,493,259,522,268,552,277,582,300,592,310,565,313,534,317,503,320,472,323,442,324,411,318,380,307,352,292,324,278,297,263,269,249,242,245,212,259,185,279,161,299,138,325,126,348,144,353,174,357,205,361,236,366,266,370,297,375,328,379,358,384,389,392,419,410,444,435,461,463,475,491,489,518,503,546,517,569,537,583,564,590,594,570,615,540,624,511,633,481,642,451,651,425,666,405,690,395,719,390,750,386,780,381,811,383,841,409,854,432,836,452,813,472,789,492,765,514,744,544,744,566,765,576,794,572,825,556,851,536,875,516,899,497,922,477,946,455,968,429,985,400,996,370,1000,339,997,310,987,282,972,261,950,242,925,233,896,225,866,216,836,207,807,199,777,190,747,181,717,173,688,164,658,155,628,147,598,138,569,129,539,121,509,112,479,104,450"},{"id":"tr-2005","n":"Intercity Istanbul Park","l":"Istanbul","lat":40.9572,"lng":29.4109,"len":5338,"w":1000,"h":871,"p":"351,818,379,812,406,806,433,800,460,794,488,788,514,780,522,757,515,730,508,702,507,675,515,648,531,626,552,607,576,593,601,580,626,570,653,561,680,556,708,550,736,548,763,547,791,549,819,550,843,537,858,514,860,486,856,458,860,432,886,430,914,433,942,432,960,415,957,387,950,360,928,344,903,332,878,319,853,306,828,294,803,281,778,269,753,256,728,243,703,231,679,217,664,195,674,170,698,157,726,152,753,156,781,161,808,167,835,173,863,179,890,187,917,193,942,183,967,170,986,151,994,124,1000,97,988,72,974,48,955,28,935,8,909,0,881,2,854,10,827,17,801,25,774,33,747,41,720,49,693,57,667,65,640,73,613,81,586,89,560,97,536,111,541,137,554,161,551,189,542,215,533,242,525,268,516,295,508,321,499,348,490,374,482,401,473,428,464,454,456,481,442,505,422,524,398,538,374,551,349,564,324,578,300,591,275,604,251,617,226,631,201,644,177,657,152,670,128,684,103,697,78,710,54,723,29,737,5,751,0,776,21,791,49,791,55,815,51,842,51,869,77,871,104,866,132,860,159,855,187,850,214,845,242,839,269,834,296,829,324,824"},{"id":"nl-1948","n":"Circuit Zandvoort","l":"Zandvoort","lat":52.3877,"lng":4.5455,"len":4259,"w":1000,"h":848,"p":"121,387,134,356,147,325,160,294,173,263,186,232,199,200,212,169,225,138,238,107,251,76,264,45,279,15,307,0,338,10,352,39,343,71,330,102,317,133,304,164,295,197,290,230,290,263,288,297,266,321,236,335,204,347,176,365,175,397,199,419,232,415,264,405,296,395,328,386,362,381,395,380,429,382,462,387,494,396,527,402,561,404,594,397,625,386,655,370,683,351,713,336,745,327,779,324,812,325,846,327,880,329,913,332,945,342,972,362,991,390,1000,422,999,455,987,486,968,514,948,541,929,569,911,597,897,628,883,658,866,686,834,694,800,693,767,687,736,675,706,659,680,638,662,611,675,581,704,564,737,556,770,550,803,542,834,530,860,510,867,478,851,450,821,436,788,432,754,428,721,427,687,428,653,429,620,433,586,437,554,445,521,453,489,463,457,473,425,485,394,497,363,511,334,528,304,533,286,504,256,494,229,512,226,544,232,578,237,611,243,644,249,677,254,710,260,743,266,777,263,810,243,836,212,846,178,847,144,848,111,845,79,835,50,818,27,794,9,766,0,733,0,700,6,667,18,635,31,604,43,573,56,542,69,511,82,480,95,449,108,418"},{"id":"sa-2021","n":"Jeddah Corniche Circuit","l":"Jeddah","lat":21.6389,"lng":39.1027,"len":6175,"w":216,"h":1000,"p":"160,770,154,754,148,738,143,721,137,705,131,688,126,672,120,655,114,639,109,623,94,621,82,613,85,596,90,579,93,562,91,545,88,528,85,511,82,494,79,477,77,460,63,451,50,439,44,424,44,406,52,391,59,375,58,358,54,342,42,329,30,317,29,300,30,282,34,266,47,255,63,249,69,233,72,216,77,199,83,183,86,166,86,148,86,131,85,114,85,96,84,79,83,62,82,44,81,27,78,10,64,0,48,3,37,16,36,33,40,50,49,65,58,80,63,96,66,113,64,131,59,147,52,163,44,179,41,196,40,213,26,223,11,230,3,245,0,262,0,279,2,297,7,313,15,329,22,345,27,361,31,378,31,396,30,413,31,430,36,447,42,463,52,478,61,492,68,508,73,525,75,542,76,559,75,577,73,594,68,611,72,627,85,639,95,652,99,669,102,686,98,703,90,718,82,733,74,749,67,765,63,782,62,799,63,816,68,833,72,850,77,867,83,883,90,899,99,914,109,928,120,941,132,954,145,965,160,975,174,985,188,994,204,1000,216,989,213,972,209,955,205,938,201,921,198,904,194,887,191,870,186,853,181,836,176,820,171,803,165,787"},{"id":"us-2022","n":"Miami International Autodrome","l":"Miami","lat":25.9576,"lng":-80.2378,"len":5412,"w":1000,"h":396,"p":"493,111,517,125,541,140,564,154,588,169,612,184,632,201,618,222,596,239,587,264,588,292,581,318,560,336,535,348,508,355,481,357,453,353,428,342,404,328,380,314,356,300,332,285,308,271,284,257,259,247,231,251,207,264,184,278,156,280,132,266,112,247,87,235,60,236,34,245,12,261,0,286,0,313,20,331,47,327,75,329,102,335,129,340,156,346,184,349,212,348,239,347,267,346,295,345,323,344,351,343,377,350,404,359,430,368,456,377,483,385,510,391,537,396,565,396,593,394,620,389,646,380,673,371,699,362,725,352,751,343,777,333,803,323,829,312,853,300,878,287,902,274,926,259,943,239,924,221,904,203,902,176,920,157,947,157,974,152,992,131,1000,106,986,87,994,60,992,36,964,33,937,32,909,31,881,30,853,29,825,28,798,27,770,26,742,25,714,24,687,23,659,22,631,21,603,20,575,19,548,18,520,17,492,16,464,15,436,14,409,12,381,11,353,10,325,9,298,7,270,6,242,5,214,4,186,2,159,1,131,0,120,18,140,37,163,53,189,63,216,59,241,49,267,37,293,29,321,27,348,29,375,39,399,52,422,67,446,81,470,96"},{"id":"qa-2004","n":"Losail International Circuit","l":"Lusail","lat":25.4918,"lng":51.4543,"len":5380,"w":854,"h":1000,"p":"149,606,135,581,121,556,108,531,94,506,80,481,67,456,53,432,39,407,25,382,12,357,0,331,3,304,24,285,51,283,76,296,101,311,125,326,149,340,175,350,202,344,219,321,220,293,220,265,219,236,220,208,231,182,250,161,269,140,288,119,307,98,326,77,345,56,364,35,383,14,407,0,435,4,457,22,477,41,493,64,491,92,474,114,455,135,435,156,416,177,397,198,382,221,397,243,424,237,450,227,477,216,503,206,529,195,556,185,582,174,610,170,635,182,646,207,638,234,618,253,599,275,584,298,572,324,564,351,556,379,535,396,508,404,480,411,453,417,426,426,413,451,423,476,443,496,466,514,490,529,516,540,543,548,571,552,599,553,627,550,656,547,684,544,712,541,740,538,769,536,795,545,815,565,829,590,842,615,854,641,849,668,834,693,819,717,804,741,788,764,761,772,733,768,705,762,678,757,650,751,622,745,594,740,566,741,545,759,532,784,519,809,506,834,492,859,479,885,466,910,453,935,440,960,426,985,403,1000,376,997,356,978,342,954,328,929,314,904,300,879,287,854,273,829,259,805,245,780,231,755,218,730,204,705,190,680,176,655,163,631"},{"id":"es-2026","n":"Circuito de Madring","l":"Madrid","lat":40.4728,"lng":-3.6215,"len":5474,"w":624,"h":1000,"p":"396,945,373,949,351,953,328,957,305,961,286,970,284,993,262,998,239,1000,217,994,198,982,185,963,172,944,160,924,148,905,136,885,123,866,111,846,98,827,86,808,73,788,63,768,53,747,45,725,39,703,35,681,33,658,34,635,37,612,43,590,52,569,62,549,54,532,58,510,52,488,44,466,31,447,23,426,17,403,11,381,0,361,16,346,23,326,13,304,2,284,0,261,0,238,0,215,2,192,18,176,36,162,47,142,44,120,35,98,26,77,22,55,26,32,39,13,59,2,81,0,103,5,122,18,137,35,144,57,144,80,138,102,127,122,114,141,100,159,85,177,71,195,57,213,44,233,33,253,43,272,61,286,80,299,98,313,111,332,114,354,114,377,114,401,120,423,132,442,148,458,169,467,192,468,215,468,238,468,260,463,281,453,295,471,308,490,319,510,331,530,342,550,361,562,384,561,406,558,429,558,451,564,469,579,477,600,482,623,486,645,490,668,494,691,498,713,502,736,511,754,531,744,553,741,576,738,594,746,601,768,607,790,612,812,617,835,621,858,624,880,621,902,600,910,578,914,555,918,532,922,509,926,487,930,464,933,441,937,419,941"},{"id":"az-2016","n":"Baku City Circuit","l":"Baku","lat":40.3689,"lng":49.8408,"len":6003,"w":1000,"h":727,"p":"921,182,941,173,962,164,982,156,1000,143,995,122,985,102,976,82,966,61,957,41,948,20,939,0,919,0,898,9,878,17,857,25,836,33,815,41,794,49,773,57,753,66,733,75,712,85,692,94,671,103,651,112,631,121,610,130,590,140,570,149,549,159,551,180,559,200,568,221,576,242,584,263,568,274,547,283,526,292,506,301,487,313,468,324,450,338,447,358,444,377,427,391,409,405,391,418,373,432,356,445,338,459,320,472,301,484,290,467,282,446,275,424,267,403,252,394,231,388,214,379,206,358,186,361,165,369,144,377,124,386,103,396,83,405,64,417,45,428,29,443,21,464,14,485,8,507,2,528,0,550,1,573,3,595,4,617,5,640,14,657,34,668,54,678,74,688,93,699,113,709,134,718,154,727,169,713,180,694,190,674,201,654,213,636,230,621,246,606,263,591,280,576,294,559,299,537,303,515,307,493,322,477,340,464,358,450,376,437,393,423,411,409,429,396,448,384,468,374,488,365,509,356,529,348,550,339,570,330,591,321,611,312,632,303,653,295,673,286,694,277,714,268,735,260,756,251,776,242,797,234,817,225,838,216,859,208,879,199,900,190"},{"id":"us-2023","n":"Las Vegas Street Circuit","l":"Las Vegas","lat":36.1165,"lng":-115.1658,"len":6201,"w":604,"h":1000,"p":"554,888,570,869,587,851,592,829,572,817,548,818,526,829,508,846,487,856,463,853,442,840,429,820,424,796,424,772,424,747,424,723,423,698,423,674,423,649,423,625,423,600,422,576,422,551,422,526,422,502,422,477,421,453,421,428,421,404,421,379,429,359,454,359,478,359,503,360,527,360,552,359,572,347,589,329,600,307,604,283,594,266,577,253,582,230,593,208,590,187,566,182,542,181,517,180,493,180,468,179,444,179,419,178,395,174,371,171,348,161,331,143,320,122,309,100,299,77,290,55,275,36,255,21,232,12,209,5,185,0,168,11,157,33,146,55,135,77,123,99,112,120,100,142,87,163,75,184,65,206,55,229,47,252,40,276,33,299,27,323,21,347,17,371,14,395,11,419,10,444,9,469,9,493,9,518,9,542,9,567,9,591,10,616,9,640,8,665,7,689,6,714,5,738,4,763,3,787,3,812,2,836,2,861,2,886,2,910,1,935,0,959,18,969,37,984,58,996,82,999,107,999,131,1000,156,1000,180,1000,205,999,229,999,254,999,278,999,303,999,328,999,352,999,377,999,401,997,425,993,449,988,472,979,489,961,505,943,521,924,538,906"}];
+  const TEAM_COLORS = {red_bull:"#3671c6",ferrari:"#e8002d",mercedes:"#27f4d2",mclaren:"#ff8000",aston_martin:"#229971",alpine:"#ff87bc",williams:"#64c4ff",rb:"#6692ff",racing_bulls:"#6692ff",alphatauri:"#5e8faa",sauber:"#52e252",kick_sauber:"#52e252",haas:"#b6babd",alfa:"#c92d4b",renault:"#ffd800",audi:"#bb0a30",cadillac:"#9aa0a6"};
+  const FALLBACK = ["#e4b84b","#6aa8ff","#ff7a70","#7fd08a","#c3a4ff","#ffa94d","#4dd0e1","#f48fb1"];
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const pad = n => String(n).padStart(2, "0");
+  const clock = s => `${Math.floor(s / 3600)}:${pad(Math.floor(s % 3600 / 60))}:${pad(Math.floor(s % 60))}`;
+  const lapSecs = s => { if (!s) return 0; const p = String(s).split(":"); return p.length === 2 ? (+p[0]) * 60 + (+p[1]) : (+p[0]) || 0; };
+  async function jr(url, tries = 4){                                   // Jolpica allows ~4 requests/second
+    for (let i = 0; i < tries; i++) {
+      const r = await fetch(url);
+      if (r.status === 429) { await sleep(1200 * (i + 1)); continue; }
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }
+    throw new Error("The data service is busy — try again in a minute");
+  }
+  const st = {season: "", races: null, round: "", data: null, geom: null, track: null, loading: false, error: "", progress: "", t: 0, playing: false, speed: 30, sel: "", raf: 0, lastTs: 0, boardAt: 0, token: 0};
+
+  /* ----- track geometry ----- */
+  const hav = (a, b, c, d) => { const R = 6371, r = Math.PI / 180, dl = (c - a) * r, dg = (d - b) * r, x = Math.sin(dl / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin(dg / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(x)); };
+  function findTrack(c){
+    const lat = +(c.Location || {}).lat, lng = +(c.Location || {}).long; let best = null, bd = 1e9;
+    if (Number.isFinite(lat) && Number.isFinite(lng)) for (const t of TRACKS) { const d = hav(lat, lng, t.lat, t.lng); if (d < bd) { bd = d; best = t; } }
+    if (best && bd < 30) return best;
+    const nm = String(c.circuitName || "").toLowerCase();
+    return TRACKS.find(t => nm && (t.n.toLowerCase().includes(nm) || nm.includes(t.n.toLowerCase()))) || null;
+  }
+  function ovalTrack(){
+    const pts = []; for (let i = 0; i < 120; i++) { const a = i / 120 * 2 * Math.PI, c = Math.cos(a), s = Math.sin(a); pts.push(Math.round(500 + 470 * Math.sign(c) * Math.abs(c) ** .55), Math.round(300 + 260 * Math.sign(s) * Math.abs(s) ** .55)); }
+    return {id: "", n: "", l: "", w: 1000, h: 600, p: pts.join(","), schematic: true};
+  }
+  function buildGeom(track){
+    const a = track.p.split(",").map(Number), pts = [];
+    for (let i = 0; i < a.length; i += 2) pts.push([a[i], a[i + 1]]);
+    pts.push(pts[0]);
+    const cum = [0]; for (let i = 1; i < pts.length; i++) cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+    return {pts, cum, L: cum[cum.length - 1], w: track.w, h: track.h};
+  }
+  function at(g, f){
+    f = ((f % 1) + 1) % 1; const s = f * g.L;
+    let lo = 0, hi = g.cum.length - 1; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (g.cum[m] <= s) lo = m; else hi = m; }
+    const seg = g.cum[hi] - g.cum[lo] || 1, u = (s - g.cum[lo]) / seg;
+    const [x1, y1] = g.pts[lo], [x2, y2] = g.pts[hi], dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy) || 1;
+    return {x: x1 + dx * u, y: y1 + dy * u, nx: -dy / len, ny: dx / len};
+  }
+
+  /* ----- data ----- */
+  const CK = "gridline-laps-v1";
+  const cacheGet = key => { try { return (JSON.parse(localStorage.getItem(CK) || "{}"))[key] || null; } catch { return null; } };
+  function cachePut(key, val){
+    try { const o = JSON.parse(localStorage.getItem(CK) || "{}"); delete o[key]; o[key] = val; const keys = Object.keys(o); while (keys.length > 5) delete o[keys.shift()]; localStorage.setItem(CK, JSON.stringify(o)); } catch {}
+  }
+  async function loadRaces(){
+    if (st.races) return;
+    const d = await jr(`${API}/current.json?limit=100`), list = d.MRData.RaceTable.Races || [];
+    st.season = list[0] ? list[0].season : "";
+    const now = Date.now();
+    st.races = list.filter(r => new Date(r.date + "T" + (r.time || "13:00:00Z")).getTime() + 3.5 * 36e5 < now);
+  }
+  async function fetchRace(round){
+    const key = `${st.season}/${round}`, hit = cacheGet(key);
+    if (hit) { hit.drivers.forEach(d => { d.times = d.times.map(ms => ms / 1000); }); return hit; }
+    st.progress = "Loading the race result…"; draw();
+    const res = await jr(`${API}/${st.season}/${round}/results.json?limit=30`);
+    const race = (res.MRData.RaceTable.Races || [])[0];
+    if (!race || !(race.Results || []).length) throw new Error("This race has no result yet");
+    const drivers = race.Results.map(r => ({id: r.Driver.driverId, code: r.Driver.code || r.Driver.familyName.slice(0, 3).toUpperCase(), name: `${r.Driver.givenName} ${r.Driver.familyName}`,
+      team: r.Constructor.constructorId, teamName: r.Constructor.name, grid: +r.grid || 0, pos: +r.position, status: r.status || "", laps: +r.laps || 0, times: []}));
+    const byId = new Map(drivers.map(d => [d.id, d]));
+    const take = pg => { const laps = ((pg.MRData.RaceTable.Races || [])[0] || {}).Laps || []; laps.forEach(L => (L.Timings || []).forEach(tm => { const d = byId.get(tm.driverId); if (d) d.times[+L.number - 1] = lapSecs(tm.time); })); return laps.length; };
+    const expected = drivers.reduce((a, d) => a + d.laps, 0), pages = Math.max(1, Math.ceil(expected / 100));
+    for (let i = 0; i < pages; i++) {
+      take(await jr(`${API}/${st.season}/${round}/laps.json?limit=100&offset=${i * 100}`));
+      st.progress = `Loading lap times… ${i + 1} of ${pages}`; draw();
+      await sleep(280);
+    }
+    const missing = () => drivers.some(d => { let n = 0; for (let k = 0; k < d.laps; k++) if (d.times[k]) n++; return n < d.laps - 1; });
+    for (let extra = 0; extra < 4 && missing(); extra++) {           // the feed split a lap across pages: keep reading
+      const got = take(await jr(`${API}/${st.season}/${round}/laps.json?limit=100&offset=${(pages + extra) * 100}`));
+      await sleep(280); if (!got) break;
+    }
+    const data = {season: st.season, round, raceName: race.raceName, date: race.date, circuit: race.Circuit, drivers};
+    cachePut(key, {...data, drivers: drivers.map(d => ({...d, times: Array.from({length: d.laps}, (_, k) => Math.round((d.times[k] || 0) * 1000))}))});
+    return data;
+  }
+  function prep(data){
+    data.drivers.forEach(d => {
+      let sum = 0, n = 0; d.times.forEach(t => { if (t) { sum += t; n++; } });
+      const avg = n ? sum / n : 90;
+      d.lap = []; d.cum = [0];
+      for (let k = 0; k < d.laps; k++) { const t = d.times[k] || avg; d.lap.push(t); d.cum.push(d.cum[k] + t); }
+      d.finish = d.cum[d.laps];
+      d.fin = d.status === "Finished" || /^\+\d+ Laps?$/.test(d.status);
+    });
+    data.leader = data.drivers.find(d => d.pos === 1) || data.drivers[0];
+    data.raceLaps = data.leader.laps;
+    data.tmax = Math.max(...data.drivers.filter(d => d.fin).map(d => d.finish), data.leader.finish);
+    return data;
+  }
+  const timeAt = (d, p) => { const k = Math.floor(p + 1e-9); return k >= d.laps ? d.cum[d.laps] : d.cum[k] + (p - k) * d.lap[k]; };
+
+  /* ----- the replay maths: where is everyone at race time t? ----- */
+  function snapshot(t){
+    const D = st.data, rows = D.drivers.map(d => {
+      let p, state = "run";
+      if (t >= d.finish) { p = d.laps; state = d.fin ? "fin" : "out"; }
+      else { let lo = 0, hi = d.laps; while (hi - lo > 1) { const m = (lo + hi) >> 1; if (d.cum[m] <= t) lo = m; else hi = m; } p = lo + (t - d.cum[lo]) / (d.lap[lo] || 1); }
+      const pe = p - (d.grid > 0 ? (d.grid - 1) * 0.0016 : (D.drivers.length - 1) * 0.0016) * Math.max(0, 1 - p);   // cars start on their grid slot, behind the line
+      return {d, p, pe, state};
+    });
+    const running = rows.filter(r => r.state !== "out").sort((a, b) => b.pe - a.pe || a.d.finish - b.d.finish);
+    const outs = rows.filter(r => r.state === "out").sort((a, b) => b.d.laps - a.d.laps);
+    const lead = running[0];
+    running.forEach((r, i) => {
+      if (!lead || i === 0) { r.gap = ""; return; }
+      const down = Math.floor(lead.p - r.p + 1e-6);
+      r.gap = down >= 1 ? `+${down} lap${down > 1 ? "s" : ""}` : "+" + Math.max(0, (r.state === "fin" ? r.d.finish : t) - timeAt(lead.d, r.p)).toFixed(1) + "s";
+    });
+    outs.forEach(r => { r.gap = `OUT · lap ${r.d.laps}`; });
+    const lap = !lead ? 0 : lead.state === "fin" ? D.raceLaps : Math.min(D.raceLaps, Math.floor(lead.p) + 1);
+    const order = running.concat(outs);
+    order.forEach((r, i) => {                                       // positions gained / lost against the starting grid
+      r.pos = i + 1; r.start = r.d.grid > 0 ? r.d.grid : D.drivers.length;
+      r.gain = r.state === "out" ? null : r.start - r.pos;
+    });
+    const live = order.filter(r => r.gain !== null);
+    const best = live.reduce((m, r) => r.gain > (m ? m.gain : 0) ? r : m, null), worst = live.reduce((m, r) => r.gain < (m ? m.gain : 0) ? r : m, null);
+    return {order, lap, over: lead && lead.state === "fin" && running.every(r => r.state === "fin"), best, worst};
+  }
+
+  /* ----- drawing ----- */
+  const isFav = id => { try { return window.isSportsFavorite("f1-driver", id); } catch { return false; } };
+  const colorOf = (d, i) => TEAM_COLORS[d.team] || FALLBACK[i % FALLBACK.length];
+  function trackSVG(g){
+    const d = "M" + g.pts.slice(0, -1).map(p => p.join(" ")).join("L") + "Z";
+    const sf = at(g, 0), arrows = [0.18, 0.43, 0.68, 0.9].map(f => { const a = at(g, f), tx = a.ny, ty = -a.nx; return `<polygon fill="#ffffff" fill-opacity=".45" points="${(a.x + tx * 13).toFixed(1)},${(a.y + ty * 13).toFixed(1)} ${(a.x - tx * 7 + a.nx * 8).toFixed(1)},${(a.y - ty * 7 + a.ny * 8).toFixed(1)} ${(a.x - tx * 7 - a.nx * 8).toFixed(1)},${(a.y - ty * 7 - a.ny * 8).toFixed(1)}"/>`; }).join("");
+    const line = (w, c, extra = "") => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round" ${extra}/>`;
+    return `<svg class="f1r-svg" id="f1r-svg" viewBox="-50 -50 ${g.w + 100} ${g.h + 100}" role="img" aria-label="Track map with every driver">
+      ${line(34, "#0b0c10")}${line(26, "#3b404c")}${line(1.8, "#e9ecf2", 'stroke-opacity=".4" stroke-dasharray="7 10"')}${arrows}
+      <line x1="${sf.x + sf.nx * 17}" y1="${sf.y + sf.ny * 17}" x2="${sf.x - sf.nx * 17}" y2="${sf.y - sf.ny * 17}" stroke="#fff" stroke-width="7"/>
+      <line x1="${sf.x + sf.nx * 17}" y1="${sf.y + sf.ny * 17}" x2="${sf.x - sf.nx * 17}" y2="${sf.y - sf.ny * 17}" stroke="#0b0c10" stroke-width="7" stroke-dasharray="5 5"/>
+      <g id="f1r-cars">${st.data.drivers.map((d, i) => `<g class="f1r-car" data-f1r-sel="${esc(d.id)}" data-id="${esc(d.id)}" transform="translate(-200 -200)"><circle class="ring" r="15"/><circle r="10" fill="${colorOf(d, i)}" stroke="#0a0b0e" stroke-width="3"/><text y="-17">${esc(d.code)}</text><title>${esc(d.name)} · ${esc(d.teamName)}</title></g>`).join("")}</g></svg>`;
+  }
+  function draw(){
+    const el = $("f1-replay"); if (!el || el.hidden) return;
+    if (!st.races) { el.innerHTML = `<div class="f1r-msg">${st.error ? `${esc(st.error)} <button class="refresh" type="button" data-f1r="retry">Retry</button>` : "Loading the race list…"}</div>`; return; }
+    if (!st.races.length) { el.innerHTML = `<div class="f1r-msg">No race has been completed this season yet. Come back after the first Grand Prix.</div>`; return; }
+    const opts = st.races.map(r => `<option value="${esc(r.round)}"${r.round === st.round ? " selected" : ""}>R${esc(r.round)} · ${esc(String(r.raceName).replace(" Grand Prix", " GP"))}</option>`).join("");
+    const top = `<div class="f1r-top"><label>Race <select id="f1r-race" aria-label="Choose a race">${opts}</select></label><span class="f1r-title" id="f1r-title"></span></div>`;
+    if (!st.data) {
+      el.innerHTML = top + `<div class="f1r-msg">${st.error ? `${esc(st.error)} <button class="refresh" type="button" data-f1r="retry">Retry</button>` : esc(st.progress || "Loading the race…")}</div>`;
+      return;
+    }
+    if (el.dataset.built === `${st.season}/${st.round}`) return;      // already on screen
+    const D = st.data, g = st.geom, tr = st.track;
+    el.dataset.built = `${st.season}/${st.round}`;
+    el.innerHTML = top + `<div class="f1r-main"><div class="f1r-stage">${trackSVG(g)}
+        <div class="f1r-hud"><b id="f1r-lap">Lap 1</b><span id="f1r-clock">0:00:00</span></div>
+        <div class="f1r-name">${esc(tr.schematic ? "Schematic layout — outline unavailable" : tr.n)}${tr.len && !tr.schematic ? ` · ${(tr.len / 1000).toFixed(2)} km` : ""}</div></div>
+      <div><ol class="f1r-board" id="f1r-board" aria-label="Running order, with places gained or lost since the start"></ol><div class="f1r-movers" id="f1r-movers"></div></div></div>
+      <div class="f1r-controls">
+        <button type="button" data-f1r="restart" aria-label="Restart">⏮</button><button type="button" data-f1r="prevlap">◀ Lap</button>
+        <button type="button" class="primary" data-f1r="play" id="f1r-play">▶ Play</button><button type="button" data-f1r="nextlap">Lap ▶</button>
+        <label>Speed <select id="f1r-speed" aria-label="Replay speed">${[10, 30, 60, 120, 240].map(v => `<option value="${v}"${v === st.speed ? " selected" : ""}>${v}×</option>`).join("")}</select></label>
+        <input type="range" id="f1r-range" min="0" max="${Math.ceil(D.tmax)}" step="0.5" value="${st.t}" aria-label="Race time">
+      </div>
+      <div class="f1r-note">▲ / ▼ show places gained or lost since the starting grid (pit-lane starters count as last). Cars move at each driver’s real lap times from the timing data (pit-stop and safety-car laps included), spread evenly around the lap, so exact corner positions are approximate. Click a driver to follow them. Track outlines: <a href="https://github.com/bacinger/f1-circuits" target="_blank" rel="noopener" style="color:inherit">bacinger/f1-circuits</a>.</div>`;
+    $("f1r-title").textContent = `${D.raceName} · ${D.circuit.circuitName} · ${D.raceLaps} laps`;
+    update(true);
+  }
+  function deltaHTML(r){
+    if (r.state === "out") return `<span class="d dnf" title="Retired">DNF</span>`;
+    const g = r.gain;
+    return g > 0 ? `<span class="d up" title="Started P${r.start}, now P${r.pos}">▲${g}</span>` : g < 0 ? `<span class="d down" title="Started P${r.start}, now P${r.pos}">▼${-g}</span>` : `<span class="d" title="Started P${r.start}">–</span>`;
+  }
+  function update(forceBoard){
+    if (!st.data || !$("f1r-svg")) return;
+    const D = st.data, g = st.geom, snap = snapshot(st.t);
+    const rank = new Map(snap.order.map((r, i) => [r.d.id, i]));
+    snap.order.forEach((r, i) => {
+      const node = document.querySelector(`.f1r-car[data-id="${(window.CSS && CSS.escape) ? CSS.escape(r.d.id) : r.d.id}"]`); if (!node) return;
+      if (r.state === "out") { node.style.display = "none"; return; }
+      node.style.display = "";
+      const pos = at(g, r.pe), lane = ((i % 3) - 1) * 9;
+      node.setAttribute("transform", `translate(${(pos.x + pos.nx * lane).toFixed(1)} ${(pos.y + pos.ny * lane).toFixed(1)})`);
+      const showLabel = i < 3 || r.d.id === st.sel || isFav(r.d.id);
+      node.querySelector("text").style.display = showLabel ? "" : "none";
+      node.classList.toggle("sel", r.d.id === st.sel);
+    });
+    $("f1r-lap").textContent = snap.over ? "Finished" : `Lap ${snap.lap} / ${D.raceLaps}`;
+    $("f1r-clock").textContent = clock(st.t);
+    const range = $("f1r-range"); if (range && document.activeElement !== range) range.value = st.t;
+    const now = performance.now();
+    if (forceBoard || now - st.boardAt > 220) {
+      st.boardAt = now;
+      $("f1r-board").innerHTML = snap.order.map((r, i) => `<li class="${r.state === "out" ? "out" : ""}${r.d.id === st.sel ? " sel" : ""}" data-f1r-sel="${esc(r.d.id)}"><span class="p">${r.state === "out" ? "–" : i + 1}</span><span class="c" style="background:${colorOf(r.d, D.drivers.indexOf(r.d))}"></span><span class="n">${isFav(r.d.id) ? "★ " : ""}${esc(r.d.name)}<small>${esc(r.d.code)}</small></span>${deltaHTML(r)}<span class="g">${esc(r.gap || (r.state === "out" ? "" : "Leader"))}</span></li>`).join("");
+      const mv = $("f1r-movers");
+      if (mv) mv.innerHTML = (snap.best ? `<span class="up">▲ Biggest climber: <b>${esc(snap.best.d.name)}</b> +${snap.best.gain} (P${snap.best.start} → P${snap.best.pos})</span>` : "")
+        + (snap.worst ? `<span class="down">▼ Biggest drop: <b>${esc(snap.worst.d.name)}</b> −${-snap.worst.gain} (P${snap.worst.start} → P${snap.worst.pos})</span>` : "")
+        + (!snap.best && !snap.worst ? `<span>Nobody has changed place yet.</span>` : "");
+    }
+    const play = $("f1r-play"); if (play) play.textContent = st.playing ? "⏸ Pause" : (snap.over ? "↺ Replay" : "▶ Play");
+  }
+  function frame(ts){
+    if (!st.playing) return;
+    const dt = Math.min(0.25, (ts - st.lastTs) / 1000); st.lastTs = ts;
+    st.t = Math.min(st.data.tmax, st.t + dt * st.speed);
+    update(false);
+    if (st.t >= st.data.tmax) { st.playing = false; update(true); return; }
+    st.raf = requestAnimationFrame(frame);
+  }
+  function setPlaying(on){
+    cancelAnimationFrame(st.raf); st.playing = !!on && !!st.data;
+    if (st.playing) { if (st.t >= st.data.tmax) st.t = 0; st.lastTs = performance.now(); st.raf = requestAnimationFrame(frame); }
+    update(true);
+  }
+  const lapStart = k => st.data.leader.cum[Math.max(0, Math.min(st.data.raceLaps, k))];
+  function jumpLap(delta){
+    const snap = snapshot(st.t), cur = snap.over ? st.data.raceLaps : snap.lap - 1;   // laps the leader has completed
+    st.t = lapStart(cur + delta) + (delta > 0 ? 0.01 : 0); update(true);
+  }
+  async function selectRace(round){
+    const token = ++st.token; setPlaying(false);
+    st.round = round; st.data = null; st.error = ""; st.t = 0; st.sel = ""; $("f1-replay").dataset.built = ""; draw();
+    try {
+      const data = prep(await fetchRace(round));
+      if (token !== st.token) return;
+      st.track = findTrack(data.circuit) || ovalTrack(); st.geom = buildGeom(st.track); st.data = data;
+    } catch (e) { if (token !== st.token) return; st.error = e.message; }
+    draw();
+  }
+  async function ensure(wantRound){
+    try {
+      st.error = ""; draw(); await loadRaces();
+      if (!st.races.length) { draw(); return; }
+      const target = wantRound && st.races.some(r => r.round === String(wantRound)) ? String(wantRound) : (st.round || st.races[st.races.length - 1].round);
+      if (target !== st.round || !st.data) await selectRace(target); else draw();
+    } catch (e) { st.error = e.message; draw(); }
+  }
+
+  /* ----- wiring ----- */
+  document.addEventListener("f1view", e => { if (e.detail.view === "replay") ensure(); else setPlaying(false); });
+  document.addEventListener("visibilitychange", () => { if (document.hidden) setPlaying(false); });
+  document.addEventListener("change", e => {
+    if (e.target.id === "f1r-race") selectRace(e.target.value);
+    if (e.target.id === "f1r-speed") st.speed = +e.target.value;
+  });
+  document.addEventListener("input", e => { if (e.target.id === "f1r-range") { st.t = +e.target.value; update(true); } });
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-f1r]");
+    if (b) {
+      const a = b.dataset.f1r;
+      if (a === "play") setPlaying(!st.playing); else if (a === "restart") { st.t = 0; update(true); }
+      else if (a === "prevlap") jumpLap(-1); else if (a === "nextlap") jumpLap(1); else if (a === "retry") { st.races = st.races || null; ensure(); }
+      return;
+    }
+    const sel = e.target.closest("[data-f1r-sel]");
+    if (sel && $("f1-replay").contains(sel)) { st.sel = st.sel === sel.dataset.f1rSel ? "" : sel.dataset.f1rSel; update(true); }
+  });
+  window.F1Replay = {
+    open(round){ const btn = document.querySelector('[data-f1view="replay"]'); if (typeof show === "function") show("f1", true); if (btn) btn.click(); ensure(round); },
+    snapshot, _state: st
+  };
 })();
 </script>
 </body>
