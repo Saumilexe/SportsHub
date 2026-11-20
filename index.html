@@ -645,6 +645,26 @@ body[data-tab=mysports]{--accent:#6d5bd0;--glow-a:rgba(109,91,208,.28);--glow-b:
 .f1r-note{color:var(--mute);font-size:12px;margin:8px 2px 0}
 .f1r-msg{padding:40px 16px;text-align:center;color:var(--mute);background:var(--panel);border:1px solid var(--line);border-radius:14px}
 @media(max-width:820px){.f1r-main{grid-template-columns:1fr}.f1r-board{max-height:340px}}
+/* ---- Test match: days & sessions ---- */
+.day-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.day-h small{color:var(--mute);font:500 13px Barlow,sans-serif;text-transform:none;letter-spacing:0}
+.sess{list-style:none;margin:8px 0 0;padding:0}
+.sess li{display:grid;grid-template-columns:70px minmax(0,1fr) 84px;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.sess .s{font:800 16px "Barlow Condensed",sans-serif;text-transform:uppercase;color:var(--mute)}
+.sess .m{min-width:0;font-size:13px;color:var(--mute)}
+.sess .m b{color:var(--ink);font-weight:600}
+.sess .bar{display:block;height:6px;margin-top:6px;background:var(--bg);border-radius:99px;overflow:hidden}
+.sess .bar i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.sess .r{text-align:right;font:800 22px "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.sess .r small{display:block;font:500 12px Barlow,sans-serif;color:var(--mute)}
+.sess li.now .s::after{content:" ●";color:var(--green)}
+.sc-stats .score-at{color:var(--ink)}
+@media(max-width:640px){.sess li{grid-template-columns:58px minmax(0,1fr) 70px}}
+/* ---- Test match line on live cards ---- */
+.test-line{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:13px}
+.test-line .chip{padding:2px 10px;border-radius:99px;background:color-mix(in srgb,var(--accent) 24%,var(--panel2));border:1px solid color-mix(in srgb,var(--accent) 50%,var(--line));font:700 12px Barlow,sans-serif;letter-spacing:.03em}
+.test-line .badge{font:800 11px "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--mute);text-transform:uppercase}
+.test-line b{font-weight:700}
 @media(prefers-reduced-motion:reduce){.scene *{animation:none!important}.sixtxt,.goaltxt,.gotxt{opacity:0}.fcar{opacity:1}.fc1{transform:translate(400px,0)}.fc2{transform:translate(150px,0)}.fc3,.fc4{display:none}}
 </style>
 </head>
@@ -1261,11 +1281,19 @@ function scorecardHTML(data){
 }
 let scorecardRequest = 0, scorecardFocus = null;
 /* ---------- Over by over + commentary (inside the cricket scorecard) ---------- */
-let scTab = "scorecard", scCur = {match: "", series: ""}, scInningsTeams = {}, scLive = false, scPlays = {key: "", at: 0, items: null}, scLimit = 60, scPoll = null;
+let scTab = "scorecard", scCur = {match: "", series: ""}, scInningsTeams = {}, scMatchInfo = {}, scLive = false, scPlays = {key: "", at: 0, items: null}, scLimit = 60, scPoll = null;
 const numOr = (v, d) => { const n = Number(v); return v !== null && v !== "" && Number.isFinite(n) ? n : d; };
 
 
 // Turns one raw ESPN "play" into a simple delivery record (or null if it isn't a delivery).
+function tsOf(p){
+  const raw = [p.wallclock, p.timestamp, p.dateTime, p.date, p.time, p.clock && (p.clock.wallclock || p.clock.timestamp)].find(v => v !== undefined && v !== null && v !== "");
+  if (raw === undefined) return NaN;
+  const n = typeof raw === "number" ? (raw < 1e12 ? raw * 1000 : raw) : Date.parse(raw);
+  return Number.isFinite(n) && n > 9.4e11 ? n : NaN;
+}
+const dayOf = p => numOr(p.day ?? p.dayNumber ?? (p.innings && p.innings.day) ?? (p.over && p.over.day), NaN);
+const sessionOf = p => numOr(p.session ?? p.sessionNumber ?? (p.over && p.over.session), NaN);
 function normPlay(p){
   if (!p || typeof p !== "object") return null;
   if (p.norm) return p;
@@ -1296,7 +1324,7 @@ function normPlay(p){
   const m = /^(.+?) to (.+?)(?:,|\.| - |$)/.exec(shortText || text);
   const inn = numOr(p.period ?? (p.innings && (p.innings.number ?? p.innings.id)), 1);
   const seq = numOr(p.sequence ?? p.sequenceNumber, numOr(p.id, inn * 1e4 + over0 * 10 + ball));
-  return {id: String(p.id ?? p.$ref ?? seq), seq, inn, over: over0 + 1, ball, label: `${over0}.${ball}`, text, runs, extra, wicket,
+  return {ts: tsOf(p), dayNo: dayOf(p), sessionNo: sessionOf(p), id: String(p.id ?? p.$ref ?? seq), seq, inn, over: over0 + 1, ball, label: `${over0}.${ball}`, text, runs, extra, wicket,
     four: (runs === 4 || /\bFOUR\b/i.test(shortText)) && !extra && !wicket, six: (runs === 6 || /\bSIX\b/i.test(shortText)) && !extra && !wicket,
     bowler: (p.bowler && p.bowler.athlete && p.bowler.athlete.displayName) || (m ? m[1] : ""),
     batter: (p.batsman && p.batsman.athlete && p.batsman.athlete.displayName) || (m ? m[2] : "")};
@@ -1403,7 +1431,7 @@ async function getPlays(force){
 async function renderPlaysPane(tab, force){
   const pane = $("sc-pane-" + tab); if (!pane) return;
   const request = scorecardRequest;
-  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${({overs: "over-by-over stats", worm: "the worm chart", partnerships: "wickets and partnerships", commentary: "commentary"})[tab] || "data"}…</div>`;
+  if (!pane.dataset.done) pane.innerHTML = `<div class="scorecard-state">Loading ${({overs: "over-by-over stats", worm: "the worm chart", partnerships: "wickets and partnerships", days: "days and sessions", commentary: "commentary"})[tab] || "data"}…</div>`;
   try {
     const res = await getPlays(force);
     const an = analysePlays(res.items);
@@ -1423,7 +1451,7 @@ async function renderPlaysPane(tab, force){
 function showScTab(tab){
   scTab = tab;
   document.querySelectorAll("[data-sctab]").forEach(b => b.setAttribute("aria-pressed", b.dataset.sctab === tab));
-  ["scorecard", "overs", "worm", "partnerships", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
+  ["scorecard", "overs", "worm", "partnerships", "days", "commentary"].forEach(t => { const p = $("sc-pane-" + t); if (p) p.hidden = t !== tab; });
   clearInterval(scPoll); scPoll = null;
   if (tab !== "scorecard") {
     renderPlaysPane(tab, false);
@@ -1444,10 +1472,11 @@ async function loadMatchScorecard(matchId, seriesId, buttonText){
     scInningsTeams = {};
     for (const c of data.matchcards || []) if (c.inningsNumber && c.teamName) scInningsTeams[c.inningsNumber] = c.teamName;
     scLive = (data.header?.competitions?.[0]?.status?.type?.state) === "in";
+    { const st0 = data.header?.competitions?.[0]?.status || {}; scMatchInfo = {detail: (st0.type && (st0.type.detail || st0.type.description)) || "", summary: st0.summary || "", live: scLive, kind: typeof matchKind === "function" ? matchKind(data) : "unknown"}; }
     scPlays = {key: "", at: 0, items: null};
-    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["worm", "Worm"], ["partnerships", "Wickets & partnerships"], ["commentary", "Commentary"]];
+    const tabs = [["scorecard", "Scorecard"], ["overs", "Over by over"], ["worm", "Worm"], ["partnerships", "Wickets & partnerships"], ["days", "Days & sessions"], ["commentary", "Commentary"]];
     content.innerHTML = `<div class="seg sc-tabs" role="group" aria-label="Match view">${tabs.map(([k, l]) => `<button type="button" data-sctab="${k}" aria-pressed="${k === scTab}">${l}</button>`).join("")}</div>
-      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-worm" aria-live="off" hidden></div><div id="sc-pane-partnerships" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
+      <div id="sc-pane-scorecard">${scorecardHTML(data)}</div><div id="sc-pane-overs" aria-live="off" hidden></div><div id="sc-pane-worm" aria-live="off" hidden></div><div id="sc-pane-partnerships" aria-live="off" hidden></div><div id="sc-pane-days" aria-live="off" hidden></div><div id="sc-pane-commentary" aria-live="off" hidden></div>
       <button type="button" class="scorecard-toggle" data-scorecard-refresh data-scorecard="${esc(matchId)}" data-series="${esc(seriesId)}">${buttonText}</button>`;
     showScTab(scTab);
   } catch (error) {
@@ -1491,11 +1520,13 @@ function card(event, sport){
   }).join("");
   const extra = [sport === "cricket" ? (status.summary || type.detail) : "", comp.venue?.fullName, comp.series?.summary]
     .filter((v, i, a) => v && a.indexOf(v) === i && v !== label).join(" · ");
+  const testLine = sport === "cricket" && typeof testCardLine === "function" ? testCardLine(event, comp, status, type) : "";
   const link = (event.links || []).find(l => (l.rel || []).some(r => r === "summary" || r === "event" || r === "desktop"));
   const seriesId = sport === "cricket" && live ? cricketSeriesId(event) : "";
   return `<article class="score-card${sport === "cricket" ? " is-cricket" : ""}${live ? " is-live" : ""}">
     <div class="match-top"><span>${esc(event._league || "")}</span><span class="status${live ? " live" : ""}">${live ? (sport === "cricket" ? `<i class="score-live-dot" aria-hidden="true"></i>` : "● ") : ""}${esc(label)}</span></div>
     <div class="teams">${rows || `<div class="team"><span class="team-name">${esc(event.name || "Match")}</span><span class="score">—</span></div>`}</div>
+    ${testLine}
     ${extra ? `<div class="details">${esc(extra)}</div>` : ""}
     ${link?.href ? `<div class="details"><a href="${esc(link.href)}" target="_blank" rel="noopener">Match page ↗</a></div>` : ""}
     ${seriesId ? `<button class="scorecard-toggle" type="button" data-scorecard-open data-scorecard="${esc(event.id)}" data-series="${esc(seriesId)}" data-match-name="${esc(event.name || "Live match")}" data-league="${esc(event._league || "Cricket")}">View full scorecard</button>` : ""}
@@ -2649,6 +2680,7 @@ load();
 function playsPaneHTML(tab, an){
   if (tab === "worm") return wormHTML(an);
   if (tab === "partnerships") return partnershipsHTML(an);
+  if (tab === "days") return daysHTML(an);
   return tab === "overs" ? oversHTML(an) : commentaryHTML(an, scLimit);
 }
 const WORM_COLORS = ["var(--accent)", "#ffd666", "#6aa8ff", "#ff7a70"];
@@ -3182,6 +3214,142 @@ function bindPlaysPane(pane, tab, an){ if (tab === "worm") bindWorm(pane, an); }
     snapshot, _state: st
   };
 })();
+</script>
+<script>
+/* ---------- Test matches: day by day and session by session ---------- */
+
+/* ---------- Live Test cards: day, session and lead / trail / runs needed ---------- */
+function parseTestInnings(str){
+  const clean = String(str || "").replace(/\([^)]*\)/g, " ").replace(/\bf\/o\b/gi, " ");
+  return clean.split("&").map(part => {
+    const m = /(\d+)\s*(?:\/\s*(\d+))?\s*(d|dec|declared)?\b/i.exec(part);
+    if (!m) return null;
+    const wk = m[2] !== undefined ? +m[2] : 10, declared = !!m[3];
+    return {runs: +m[1], wk, declared, done: wk >= 10 || declared};
+  }).filter(Boolean);
+}
+function testCardLine(event, comp, status, type){
+  if (!type || type.state !== "in") return "";
+  const detail = `${type.detail || ""} ${type.shortDetail || ""} ${type.description || ""}`;
+  const comps = (comp.competitors || []).slice(0, 2);
+  const scoreOf = c => (c && ((c.score && c.score.displayValue) || (typeof c.score === "string" ? c.score : ""))) || "";
+  const isTest = /\bday\s*\d|\d(?:st|nd|rd|th)\s*day/i.test(detail) || comps.some(c => /&/.test(scoreOf(c))) || /^test$/i.test(String((comp.class && (comp.class.eventType || comp.class.generalClassCard)) || ""));
+  if (!isTest) return "";
+  const day = /day\s*(\d+)/i.exec(detail) || /(\d+)(?:st|nd|rd|th)\s*day/i.exec(detail), sess = /session\s*(\d+)/i.exec(detail);
+  const brk = /\b(stumps|lunch|tea|innings break|rain|bad light|delayed|drinks|abandoned)\b/i.exec(detail);
+  const when = [day ? `Day ${day[1]}` : "", sess ? `Session ${sess[1]}` : brk ? brk[1][0].toUpperCase() + brk[1].slice(1).toLowerCase() : ""].filter(Boolean).join(" · ");
+  // lead / trail / chase from the published scores
+  let note = "";
+  if (comps.length === 2 && !/lead|trail|need|won|draw|tied|level/i.test(status.summary || "")) {
+    const side = comps.map(c => ({name: (c.team && (c.team.displayName || c.team.name)) || c.displayName || "Team", inns: parseTestInnings(scoreOf(c))}));
+    side.forEach(x => { x.total = x.inns.reduce((a, i) => a + i.runs, 0); x.batting = x.inns.length && !x.inns[x.inns.length - 1].done; });
+    if (side[0].inns.length && side[1].inns.length) {
+      const bat = side.filter(x => x.batting);
+      const count = side[0].inns.length + side[1].inns.length;
+      if (bat.length === 1 && count === 4) {
+        const other = side.find(x => x !== bat[0]), need = other.total - bat[0].total + 1, last = bat[0].inns[bat[0].inns.length - 1];
+        if (need > 0) note = `<b>${esc(bat[0].name)}</b> need <b>${need}</b> to win · ${10 - last.wk} wicket${10 - last.wk === 1 ? "" : "s"} in hand`;
+      } else {
+        const d = side[0].total - side[1].total;
+        note = d === 0 ? "Scores level" : `<b>${esc(d > 0 ? side[0].name : side[1].name)}</b> lead by <b>${Math.abs(d)}</b>`;
+      }
+    }
+  }
+  if (!when && !note) return `<div class="test-line"><span class="badge">Test</span></div>`;
+  return `<div class="test-line"><span class="badge">Test</span>${when ? `<span class="chip">${esc(when)}</span>` : ""}${note ? `<span>${note}</span>` : ""}</div>`;
+}
+function matchKind(data){
+  const h = (data && data.header) || {}, c = (h.competitions && h.competitions[0]) || {};
+  const detail = (c.status && c.status.type && (c.status.type.detail || c.status.type.description)) || "";
+  const scores = (c.competitors || []).map(x => String((x.score && x.score.displayValue) || x.score || "")).join(" ");
+  const cls = String((c.class && (c.class.eventType || c.class.generalClassCard)) || "");
+  const inns = new Set(((data && data.matchcards) || []).map(m => m.inningsNumber)).size;
+  if (/^test$/i.test(cls)) return "test";
+  if (/odi|t20|one[- ]day/i.test(cls)) return "limited";
+  if (/\bday\s*\d/i.test(detail) || /&|f\/o/i.test(scores) || inns >= 3) return "test";
+  if (/target|\/\d+\s*ov/i.test(scores + " " + detail)) return "limited";
+  const bag = [c.type && c.type.text, h.league && h.league.name, c.description, h.description].filter(Boolean).join(" ");
+  return /\btest\b/i.test(bag) ? "test" : "unknown";
+}
+function sessionStats(balls){
+  let runs = 0, wk = 0, legal = 0, fours = 0, sixes = 0; const bow = {};
+  for (const b of balls) {
+    runs += b.runs; if (b.wicket) { wk++; if (b.bowler) bow[b.bowler] = (bow[b.bowler] || 0) + 1; }
+    if (b.extra !== "wd" && b.extra !== "nb") legal++; if (b.four) fours++; if (b.six) sixes++;
+  }
+  const star = Object.entries(bow).sort((a, b) => b[1] - a[1])[0];
+  return {runs, wk, legal, overs: `${Math.floor(legal / 6)}.${legal % 6}`, rr: legal ? runs / legal * 6 : 0, fours, sixes, star: star ? `${star[0]} ${star[1]} wkt${star[1] > 1 ? "s" : ""}` : ""};
+}
+function testBreakdown(an){
+  const info = scMatchInfo || {};
+  const balls = an.flatMap(I => I.overs.flatMap(o => o.balls));
+  const tot = {};
+  balls.forEach(b => { const T = tot[b.inn] || (tot[b.inn] = {runs: 0, wk: 0}); T.runs += b.runs; if (b.wicket) T.wk++; b._runs = T.runs; b._wk = T.wk; });
+  const n = balls.length, labelled = n && balls.filter(b => Number.isFinite(b.dayNo) && Number.isFinite(b.sessionNo)).length >= n * .8;
+  const timed = n && balls.filter(b => Number.isFinite(b.ts)).length >= n * .8;
+  const mode = labelled ? "labelled" : timed ? "timed" : "estimated";
+  let ordered = balls.slice();
+  if (mode === "timed") ordered = balls.filter(b => Number.isFinite(b.ts)).sort((a, b) => a.ts - b.ts || a.inn - b.inn || a.over - b.over || a.ball - b.ball);
+  let day = 1, session = 1, legal = 0, prev = null;
+  for (const b of ordered) {
+    if (mode === "labelled") { b._d = b.dayNo; b._s = b.sessionNo; }
+    else if (mode === "timed") {
+      if (prev) { const gap = b.ts - prev.ts; if (gap > 6 * 36e5) { day++; session = 1; } else if (gap >= 18 * 6e4) session++; }
+      b._d = day; b._s = session; prev = b;
+    } else {
+      const idx = legal / 6; b._d = Math.floor(idx / 90) + 1; b._s = Math.floor((idx % 90) / 30) + 1;
+      if (b.extra !== "wd" && b.extra !== "nb") legal++;
+    }
+  }
+  const days = new Map();
+  ordered.forEach(b => { if (!days.has(b._d)) days.set(b._d, new Map()); const D = days.get(b._d); if (!D.has(b._s)) D.set(b._s, []); D.get(b._s).push(b); });
+  const idxs = [...days.keys()].sort((a, b) => a - b), lastIdx = idxs[idxs.length - 1] || 1;
+  const complete = an.length && an.every(I => I.overs.length && I.overs[0].over === 1);
+  const sd = /day\s*(\d+)/i.exec(info.detail || "");
+  let offset = 0, uncertain = false;
+  if (mode !== "labelled") {
+    if (!complete && sd && info.live) offset = +sd[1] - lastIdx;
+    else if (!complete) uncertain = true;
+  }
+  const rows = idxs.map(di => {
+    const sess = [...days.get(di).entries()].sort((a, b) => a[0] - b[0]).map(([sn, bs]) => {
+      const st = sessionStats(bs), last = bs[bs.length - 1], first = bs[0];
+      return {n: sn, balls: bs, st, first, last, end: `${scInningsTeams[last.inn] || "Innings " + last.inn} ${last._runs}/${last._wk}`};
+    });
+    const all = sess.flatMap(x => x.balls), st = sessionStats(all);
+    return {idx: di, label: di + offset, sess, st, first: all[0], last: all[all.length - 1]};
+  });
+  // lead / trail once every innings is complete from over 1
+  let lead = "";
+  const teams = {};
+  if (complete) an.forEach(I => { const t = scInningsTeams[I.inn]; const last = I.overs[I.overs.length - 1]; if (t && last) teams[t] = (teams[t] || 0) + last.cumRuns; });
+  const names = Object.keys(teams);
+  if (complete && names.length === 2 && an.length >= 2) { const [a, b] = names, d = teams[a] - teams[b]; lead = d === 0 ? "Scores level" : `${d > 0 ? a : b} lead by ${Math.abs(d)} run${Math.abs(d) === 1 ? "" : "s"} overall`; }
+  return {mode, rows, uncertain, lead, complete};
+}
+function daysHTML(an){
+  const info = scMatchInfo || {};
+  if (info.kind === "limited") return `<div class="scorecard-state">Day-by-day and session breakdowns are for Test matches. This looks like a limited-overs match, so use <b>Over by over</b> and <b>Worm</b> instead.</div>`;
+  const B = testBreakdown(an);
+  const notes = {
+    labelled: "Days and sessions come straight from the data provider.",
+    timed: "Sessions are worked out from the delivery times: a break of 18 minutes or more in play (lunch, tea, stumps, rain or bad light) starts a new session, and a gap of over 6 hours starts a new day.",
+    estimated: "ESPN doesn’t publish delivery times for this match, so days and sessions are estimated from over counts (about 30 overs a session, 90 a day). Rain, breaks and slow over rates make this approximate."
+  };
+  const fmtT = ts => Number.isFinite(ts) ? new Intl.DateTimeFormat(undefined, {hour: "2-digit", minute: "2-digit"}).format(new Date(ts)) : "";
+  const fmtD = ts => Number.isFinite(ts) ? new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric", month: "short"}).format(new Date(ts)) : "";
+  const maxRuns = Math.max(30, ...B.rows.flatMap(d => d.sess.map(s => s.st.runs)));
+  const top = `<section class="sc-inn"><h4>Test match · day by day</h4>
+    <div class="sc-stats">${info.detail ? `<span><b>${esc(info.detail)}</b></span>` : ""}${B.lead ? `<span class="score-at">${esc(B.lead)}</span>` : ""}${info.summary ? `<span>${esc(info.summary)}</span>` : ""}</div>
+    <div class="scorecard-state">${notes[B.mode]}${B.uncertain ? " The data starts part-way through the match, so the day numbers here count from the first day shown." : ""}${B.mode !== "labelled" && !B.complete && !B.uncertain ? " Only part of the innings was available, so scores at the end of sessions may be incomplete." : ""}</div></section>`;
+  if (!B.rows.length) return top + `<div class="scorecard-state">No deliveries to group yet.</div>`;
+  const days = B.rows.slice().reverse().map(d => `<section class="sc-inn"><h4 class="day-h">Day ${d.label}${B.mode === "timed" ? `<small>${esc(fmtD(d.first.ts))}</small>` : ""}</h4>
+    <div class="sc-stats"><span><b>${d.st.runs}</b> runs</span><span><b>${d.st.wk}</b> wicket${d.st.wk === 1 ? "" : "s"}</span><span><b>${esc(d.st.overs)}</b> overs</span><span>Run rate <b>${d.st.rr.toFixed(2)}</b></span><span class="score-at">At the close: <b>${esc(d.sess[d.sess.length - 1].end)}</b></span></div>
+    <ol class="sess">${d.sess.map((x, i) => `<li class="${B.rows[B.rows.length - 1] === d && i === d.sess.length - 1 && info.live ? "now" : ""}"><span class="s">Session ${x.n}</span>
+      <span class="m"><b>${esc(x.st.overs)}</b> ov${B.mode === "timed" ? ` · ${esc(fmtT(x.first.ts))}–${esc(fmtT(x.last.ts))}` : ""} · RR ${x.st.rr.toFixed(2)}${x.st.fours || x.st.sixes ? ` · ${x.st.fours}×4 ${x.st.sixes}×6` : ""}${x.st.star ? ` · ${esc(x.st.star)}` : ""}<br>${esc(x.end)}<span class="bar"><i style="width:${Math.max(2, Math.round(x.st.runs / maxRuns * 100))}%"></i></span></span>
+      <span class="r">${x.st.runs}/${x.st.wk}<small>runs / wkts</small></span></li>`).join("")}</ol></section>`).join("");
+  return top + days;
+}
 </script>
 </body>
 </html>
