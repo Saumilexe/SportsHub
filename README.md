@@ -4,7 +4,7 @@ A single-page sports hub with five tabs:
 
 - **My Sports** – a dashboard of everything you starred (☆): your F1 drivers and constructors with their championship position, points and gap to the leader, a live countdown to the next race, your F1 favourites' **last race** result (podium, pole, fastest lap, and how your drivers and teams finished), your cricket teams' live, next and **last match** scoreboards, and your favourite cricket players with their records and their country's next match. It opens first when you have favourites.
 - **Formula 1** – driver and constructor standings (click a driver or team for details), race countdown, full-season calendar with per-race results, a **race replay** (every driver moving around an outline of the real circuit, lap by lap, with play/pause, speed, a lap scrubber and a live running order that shows places gained or lost since the grid) and a **points progression** chart (points after every round for drivers or constructors, with a "title picture" showing who can still win), and a live panel while a session is running. A session is treated as live when either the schedule or ESPN says so.
-- **Cricket Live** – live and upcoming *international* matches (ICC events and bilateral series; domestic leagues, "A" teams and U19 are filtered out), with team filters, team flags and a match pop-up that has three views: the full scorecard, over-by-over stats (runs per over chart, ball chips, run rate, boundaries) ball-by-ball commentary, a **worm chart** (cumulative runs by over for each innings, with wickets marked) and **Wickets & partnerships** (fall of wickets, a wicket timeline and every partnership with its runs and balls). In the full scorecard, the current batting side is listed first with its innings score and current run rate; chase metrics appear when the feed provides enough structured data. Every newly detected delivery is shown in sequence, with full-screen indicators for wickets, runs, boundaries and structured extras (wides, no-balls, byes and leg-byes).
+- **Cricket Live** – live and upcoming *international* matches (ICC events and bilateral series; domestic leagues, "A" teams and U19 are filtered out), with team filters, team flags and a match pop-up that has three views: the full scorecard, over-by-over stats (runs per over chart, ball chips, run rate, boundaries) ball-by-ball commentary, a **worm chart** (cumulative runs by over for each innings, with wickets marked) **Wickets & partnerships**, and (for Test matches) **Days & sessions** (fall of wickets, a wicket timeline and every partnership with its runs and balls). In the full scorecard, the current batting side is listed first with its innings score and current run rate; chase metrics appear when the feed provides enough structured data. Every newly detected delivery is shown in sequence, with full-screen indicators for wickets, runs, boundaries and structured extras (wides, no-balls, byes and leg-byes).
 - **Football Live** – live and upcoming matches from the Premier League, Champions League, Europa League, La Liga, Bundesliga, Serie A, Ligue 1 and MLS.
 - **Cricket Stats** – all-time Test / ODI / T20I records, World Cup winners, and player info pop-ups. Star a player (☆) to pin them on My Sports and at the top of this tab.
 
@@ -46,6 +46,18 @@ GitHub Pages can't run the `api/` function, so use Vercel (or any host that supp
 - Lap times come from Jolpica's `laps` endpoint (about 15 requests per race; the service allows about 4 per second, so loading takes a few seconds). Races are cached in your browser, so replaying one again makes no requests.
 - Cars move at each driver's real lap times, spread evenly around the lap, so the gaps and pit-stop / safety-car effects are real but exact positions within a lap are approximate.
 - Track outlines are derived from [bacinger/f1-circuits](https://github.com/bacinger/f1-circuits) (27 circuits embedded in `index.html`, search for `TRACKS`). **That repository has no licence file**, so confirm you are happy to publish the outlines, or ask the author, before making the site public. A schematic oval is drawn for any circuit that isn't in the list.
+
+## Days & sessions (Test matches)
+
+The match pop-up has a **Days & sessions** tab that groups the ball-by-ball data into days and sessions, with runs, wickets, overs, run rate, boundaries, the best wicket-taker and the score at the end of each session. It works in whichever of three modes the data allows, and says which one it used:
+
+1. **Labelled** – ESPN's deliveries carry their own day and session numbers (used as-is).
+2. **Timed** – deliveries carry timestamps: a break of 18+ minutes starts a new session and a gap of 6+ hours starts a new day.
+3. **Estimated** – no timestamps: about 30 overs per session and 90 per day. Rain and slow over rates make this approximate.
+
+Limited-overs matches show a short note instead.
+
+Live Test matches also get a line on their cards (in Cricket Live and My Sports): a **Test** tag, the day and session (for example "Day 3 · Session 2", or "Day 2 · Stumps"), and the lead, or the runs needed and wickets in hand when a team is chasing. These are read from ESPN's status text and score display; if ESPN's own summary already says who leads, the card shows that instead. Which mode you get depends on what ESPN publishes for the match.
 
 ## Notes
 
